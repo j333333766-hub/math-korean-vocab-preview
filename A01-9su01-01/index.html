@@ -134,6 +134,10 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .lmt th.lg{background:#fff;border:0}
 .lmt td{border:.1em solid #111;padding:.22em .4em;text-align:center;font-weight:700;background:#fff}
 .lmt td.lg{color:#2f6fe4;font-weight:800;white-space:nowrap;background:#f1f6ff}
+#google_translate_element{position:absolute;left:-9999px;top:-9999px}
+#langSel{font:inherit;font-size:13px;font-weight:700;border:0;background:transparent;max-width:210px;cursor:pointer}
+#langReset{border:1px solid #cfd5df;background:#fff7dc;color:#1d2433;border-radius:99px;padding:3px 10px;font-size:12.5px;font-weight:800}
+#langReset.off{opacity:.45}
 /* 제작 메모 */
 .memo{width:300px;align-self:stretch;background:#fffdf3;border:1px solid #e6dca8;border-radius:12px;padding:12px;overflow:auto;font-size:13px;line-height:1.55;display:none}
 .memo.on{display:block}
@@ -149,13 +153,13 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
     <h1 id="lessonTitle" class="notranslate"></h1>
     <div class="meta" id="lessonMeta"></div>
     <div class="toc" id="toc"></div>
-    <div class="note notranslate">이 화면은 제작팀 전달용 <b>시안</b>입니다.<br>· 영상 자리는 장면을 한 컷씩 넘겨 보는 <b>영상 대본</b>으로 대신했습니다.<br>· 인물은 임시 그림입니다. 실제 캐릭터로 바꿉니다.<br>· 말하기 녹음, 손글씨 인식, 점수는 화면만 있고 채점하지 않습니다.<br>· 오른쪽 위 <b>제작 메모</b>를 켜면 화면마다 원본 유형과 메모가 보입니다.<br>· 위쪽 <b>🌐 번역</b>에서 언어를 고르면 지시문, 대사, 자막, 도움말이 그 언어로 바뀝니다(인터넷 필요, 기계 번역). 오늘의 낱말과 한국어로 푸는 문장·보기는 한국어로 남습니다.</div>
+    <div class="note notranslate">이 화면은 제작팀 전달용 <b>시안</b>입니다.<br>· 영상 자리는 장면을 한 컷씩 넘겨 보는 <b>영상 대본</b>으로 대신했습니다.<br>· 인물은 임시 그림입니다. 실제 캐릭터로 바꿉니다.<br>· 말하기 녹음, 손글씨 인식, 점수는 화면만 있고 채점하지 않습니다.<br>· 오른쪽 위 <b>제작 메모</b>를 켜면 화면마다 원본 유형과 메모가 보입니다.<br>· 위쪽 <b>🌐</b> 칸에서 언어를 고르면 지시문, 대사, 자막, 도움말이 그 언어로 바뀝니다(인터넷 필요, 기계 번역). 오늘의 낱말과 한국어로 푸는 문장·보기는 한국어로 남습니다. <b>↺ 한국어</b>를 누르면 한국어로 돌아옵니다.</div>
   </aside>
   <section class="main">
     <div class="top">
       <a class="homebtn notranslate" href="../">🏠 홈</a>
       <button class="ghost notranslate" id="memoBtn">제작 메모</button>
-      <div class="lang notranslate"><span>🌐 번역</span><div id="google_translate_element"></div></div>
+      <div class="lang notranslate" translate="no"><span>🌐</span><select id="langSel" aria-label="번역 언어 선택 / Language"></select><button id="langReset" title="한국어로 되돌리기 / Back to Korean">↺ 한국어 · Korean</button><div id="google_translate_element"></div></div>
       <div class="ttl notranslate" id="topTitle"></div>
       <button id="prevMod">‹ 목차</button><button id="nextMod">목차 ›</button>
     </div>
@@ -398,6 +402,18 @@ function init(){
 }
 window.onerror=(m,s,l)=>{ document.title='ERR '+m+' @'+l; };
 init();
+const LANGS=[['en','영어','English'],['zh-CN','중국어 간체','中文(简体)'],['zh-TW','중국어 번체','中文(繁體)'],['vi','베트남어','Tiếng Việt'],['ru','러시아어','Русский'],['ja','일본어','日本語'],['tl','필리핀어','Filipino'],['mn','몽골어','Монгол'],['kk','카자흐어','Қазақ тілі'],['uz','우즈베크어','Oʻzbekcha'],['km','크메르어','ភាសាខ្មែរ'],['th','태국어','ไทย'],['ne','네팔어','नेपाली'],['my','미얀마어','မြန်မာ'],['id','인도네시아어','Bahasa Indonesia'],['ar','아랍어','العربية'],['fr','프랑스어','Français'],['es','스페인어','Español']];
+function curLang(){ const m=document.cookie.match(/googtrans=\/[^\/]*\/([^;]+)/); return m?decodeURIComponent(m[1]):''; }
+function clearLangCookie(){ const h=location.hostname, parts=h.split('.'); const doms=['',h,'.'+h]; if(parts.length>2) doms.push('.'+parts.slice(-2).join('.'), '.'+parts.slice(-3).join('.'));
+  doms.forEach(d=>{ document.cookie='googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'+(d?'; domain='+d:''); }); }
+function setLang(code){ clearLangCookie(); if(!code){ location.reload(); return; }
+  document.cookie='googtrans=/ko/'+code+'; path=/';
+  const combo=document.querySelector('select.goog-te-combo');
+  if(combo&&combo.options.length>1){ combo.value=code; combo.dispatchEvent(new Event('change')); syncLang(code); } else location.reload(); }
+function syncLang(code){ const sel=document.getElementById('langSel'); if(sel) sel.value=code||''; const r=document.getElementById('langReset'); if(r) r.classList.toggle('off',!code); }
+(function(){ const sel=document.getElementById('langSel'); if(!sel) return;
+  sel.innerHTML='<option value="">번역 · Translate</option>'+LANGS.map(l=>'<option value="'+l[0]+'">'+l[1]+' ('+l[2]+')</option>').join('');
+  sel.onchange=()=>setLang(sel.value); document.getElementById('langReset').onclick=()=>setLang(''); syncLang(curLang()); })();
 function googleTranslateElementInit(){ new google.translate.TranslateElement({pageLanguage:'ko',includedLanguages:'en,zh-CN,zh-TW,vi,ru,km,ja,tl,kk,mn,ar,uz,th,ne,my,id,fr,es',autoDisplay:false},'google_translate_element'); }
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
