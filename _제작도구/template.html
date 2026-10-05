@@ -113,6 +113,8 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .goog-te-banner-frame,iframe.skiptranslate{display:none!important}body{top:0!important}
 #goog-gt-tt,.goog-te-balloon-frame{display:none!important}.goog-text-highlight{background:none!important;box-shadow:none!important}
 .kw{white-space:nowrap}
+.homebtn{text-decoration:none;background:#1d2433;color:#fff;border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;white-space:nowrap}
+.side .badge.code{background:#2f6fe4;color:#fff;font-weight:800}
 /* 제작 메모 */
 .memo{width:300px;align-self:stretch;background:#fffdf3;border:1px solid #e6dca8;border-radius:12px;padding:12px;overflow:auto;font-size:13px;line-height:1.55;display:none}
 .memo.on{display:block}
@@ -124,7 +126,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 <body>
 <div class="app">
   <aside class="side">
-    <span class="badge notranslate">차시명</span>
+    <span class="badge code notranslate" id="lessonCode"></span> <span class="badge notranslate">차시명</span>
     <h1 id="lessonTitle" class="notranslate"></h1>
     <div class="meta" id="lessonMeta"></div>
     <div class="toc" id="toc"></div>
@@ -132,6 +134,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
   </aside>
   <section class="main">
     <div class="top">
+      <a class="homebtn notranslate" href="../">🏠 홈</a>
       <button class="ghost notranslate" id="memoBtn">제작 메모</button>
       <div class="lang notranslate"><span>🌐 번역</span><div id="google_translate_element"></div></div>
       <div class="ttl notranslate" id="topTitle"></div>
@@ -313,7 +316,7 @@ function render(){
 }
 function go(d){ const mod=LESSON.modules[mi]; if(d>0){ if(si<mod.screens.length-1) si++; else if(mi<LESSON.modules.length-1){mi++;si=0;} } else { if(si>0) si--; else if(mi>0){mi--;si=LESSON.modules[mi].screens.length-1;} } render(); }
 function init(){
-  $('#lessonTitle').textContent=LESSON.title; $('#topTitle').textContent=LESSON.title; $('#lessonMeta').textContent=LESSON.grade+' · '+LESSON.standard;
+  $('#lessonCode').textContent=LESSON.code||''; $('#lessonTitle').textContent=LESSON.title; $('#topTitle').textContent=LESSON.title; $('#lessonMeta').textContent=LESSON.grade+' · '+LESSON.standard;
   LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();}; $('#toc').append(b); });
   $('#prevMod').onclick=()=>{ if(mi>0){mi--;si=0;render();} }; $('#nextMod').onclick=()=>{ if(mi<LESSON.modules.length-1){mi++;si=0;render();} };
   $('#memoBtn').onclick=()=>{ memoOn=!memoOn; $('#memo').classList.toggle('on',memoOn); $('#memoBtn').classList.toggle('on',memoOn); render(); };
