@@ -1,0 +1,141 @@
+{
+    "quiz": [
+        {
+            "data_type": "choice",
+            "data_jung_dap": "3",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "12를 소인수분해한 것을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "12 = 2 × 6"
+                },
+                {
+                    "txt": "12 = 3 × 4"
+                },
+                {
+                    "txt": "12 = 2² × 3"
+                },
+                {
+                    "txt": "12 = 1 × 12"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "OX",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
+            "sub_question": "20을 소인수분해한 것이다.",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "문제에서 무엇을 하라고 하나요?",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "30을 소수들의 곱으로 나타낸다."
+                },
+                {
+                    "txt": "30의 약수를 모두 더한다."
+                },
+                {
+                    "txt": "30을 3으로 나눈 나머지를 구한다."
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "drag_drop",
+            "data_jung_dap": "3,1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "보기에서 알맞은 말을 골라 문장을 완성해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "구하시오"
+                },
+                {
+                    "txt": "소수점"
+                },
+                {
+                    "txt": "소인수분해"
+                },
+                {
+                    "txt": "그리시오"
+                }
+            ],
+            "basket_name": "",
+            "drop": "drop,를 이용하여 24와 36의 최대공약수를 ,drop,.",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "12를 소인수분해하면 2² × 3입니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "다음을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
+        }
+    ]
+}

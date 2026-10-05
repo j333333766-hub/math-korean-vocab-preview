@@ -1,0 +1,67 @@
+{
+    "quiz": [
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "오늘의 낱말은 어디에 쓰일까요?",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "먼저 아는 말: 소수, 인수(약수), 거듭제곱"
+                },
+                {
+                    "txt": "오늘의 낱말: 소인수분해"
+                },
+                {
+                    "txt": "이 낱말이 나오는 단원: 최대공약수와 최소공배수, 유한소수와 순환소수"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation",
+            "intro": "true"
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "이 말을 알고 있나요? 표시해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "소수 — 1보다 큰 자연수 중에서 1과 자기 자신만 약수로 가지는 수. 예: 2, 3, 5, 7"
+                },
+                {
+                    "txt": "인수 — 12 = 3 × 4에서 3과 4는 12의 인수(약수)"
+                },
+                {
+                    "txt": "거듭제곱 — 같은 수를 여러 번 곱한 것. 예: 2 × 2 × 2 = 2³"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "checklist"
+        }
+    ]
+}

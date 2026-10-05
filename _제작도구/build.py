@@ -50,6 +50,9 @@ def to_origin(sc):
     elif t == 'input': base['data_jung_dap'] = sc['answer'][0]; base['selection'] = 'input_txt'; base['sub_question'] = plain(sc.get('sentence', ''))
     elif t == 'step_recorde': base['data_jung_dap'] = plain(sc['sentence']); base['custom'] = 'STT'
     elif t == 'ocr': base['data_jung_dap'] = sc['word']; base['object'] = [{"txt": "<type=blank>"}]
+    elif t == 'curation': base['data_type'] = 'click'; base['custom'] = 'curation'; base['object'] = [{"txt": plain(col['label']) + ': ' + ', '.join(plain(i if isinstance(i, str) else i['t']) for i in col['items'])} for col in sc['cols']]
+    elif t == 'checklist': base['data_type'] = 'click'; base['custom'] = 'checklist'; base['object'] = [{"txt": i['t'] + ' — ' + plain(i['ex'])} for i in sc['items']]
+    elif t == 'lang_match': base['data_type'] = 'click'; base['custom'] = 'lang_match'; base['data_jung_dap'] = sc['word']; base['object'] = [{"txt": i['lang'] + ': ' + i['term']} for i in sc['items']]
     return base
 
 def main(folder):

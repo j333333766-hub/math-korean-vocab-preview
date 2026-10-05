@@ -115,6 +115,20 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .kw{white-space:nowrap}
 .homebtn{text-decoration:none;background:#1d2433;color:#fff;border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;white-space:nowrap}
 .side .badge.code{background:#2f6fe4;color:#fff;font-weight:800}
+.cur{display:flex;align-items:stretch;gap:.4em;width:100%}
+.cur .col{flex:1;border:.12em solid #111;border-radius:.8em;padding:.6em .5em;background:#f1f6ff;display:flex;flex-direction:column;gap:.4em;align-items:center;justify-content:flex-start}
+.cur .col.hl{background:#fff1b8}.cur .lab{font-size:.8em;font-weight:800;color:#2f6fe4;text-align:center}
+.cur .it{background:#fff;border:.1em solid #111;border-radius:.6em;padding:.3em .5em;font-weight:800;font-size:.98em;width:100%;text-align:center}
+.cur .it small{display:block;font-weight:600;font-size:.7em;color:#6b7280}.cur .arr{align-self:center;font-size:1.5em;color:#f58a1f}
+.curnote{font-size:.88em;font-weight:700;text-align:center;color:#374151;line-height:1.5}
+.ck{width:100%;display:flex;flex-direction:column;gap:.45em}
+.ck .row{display:flex;align-items:center;gap:.6em;border:.12em solid #111;border-radius:.8em;padding:.35em .8em;background:#fff}
+.ck .tm{font-weight:900;font-size:1.15em;min-width:4.6em}.ck .ex{flex:1;font-size:.86em;font-weight:600;line-height:1.4}
+.ck .btn{font-size:.8em;padding:.25em .8em}.ck .go{font-size:.9em;color:#d23a3a;font-weight:800}
+.lmw{font-size:2.2em;font-weight:900;color:#0c7d66}
+.lm{display:grid;grid-template-columns:repeat(3,1fr);gap:.4em;width:100%}
+.lm div{border:.1em solid #111;border-radius:.6em;padding:.25em .4em;text-align:center;font-weight:800;font-size:.82em;background:#fff}
+.lm small{display:block;color:#2f6fe4;font-weight:800;font-size:.78em}
 /* 제작 메모 */
 .memo{width:300px;align-self:stretch;background:#fffdf3;border:1px solid #e6dca8;border-radius:12px;padding:12px;overflow:auto;font-size:13px;line-height:1.55;display:none}
 .memo.on{display:block}
@@ -148,11 +162,11 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 </div>
 <script>
 const LESSON = /*__LESSON__*/null;
-const TYPE_KO={vod:'영상(대본)',motion:'오늘의 어휘 제시',card_flip:'카드 뒤집기',listen:'듣고 따라 읽기',drag_drop:'끌어다 빈칸에 넣기',choice:'고르기',OX:'O·X 고르기',linetoline:'선으로 잇기',input:'직접 써넣기',step_recorde:'듣고 따라 말하기',ocr:'손글씨 쓰기'};
+const TYPE_KO={curation:'큐레이션',checklist:'선행 낱말 확인',lang_match:'아는 말과 연결',vod:'영상(대본)',motion:'오늘의 어휘 제시',card_flip:'카드 뒤집기',listen:'듣고 따라 읽기',drag_drop:'끌어다 빈칸에 넣기',choice:'고르기',OX:'O·X 고르기',linetoline:'선으로 잇기',input:'직접 써넣기',step_recorde:'듣고 따라 말하기',ocr:'손글씨 쓰기'};
 let mi=0, si=0, memoOn=false;
 const $=(s,r=document)=>r.querySelector(s);
 const el=(tag,cls,html)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e;};
-const KW=(LESSON.words||[]).slice().sort((a,b)=>b.length-a.length);
+const KW=(LESSON.keep||LESSON.words||[]).slice().sort((a,b)=>b.length-a.length);
 const keep=t=>{ for(const w of KW) t=t.split(w).join('\u0001'+KW.indexOf(w)+'\u0002'); return t.replace(/\u0001(\d+)\u0002/g,(m,i)=>'<span class="notranslate kw" translate="no">'+KW[+i]+'</span>'); };
 const rich=t=>keep(String(t==null?'':t)).replace(/\*\*(.+?)\*\*/g,'<b class="hl">$1</b>').replace(/\n/g,'<br>');
 const plain=t=>String(t==null?'':t).replace(/\*\*/g,'').replace(/\{\d\}/g,' ');
@@ -161,7 +175,7 @@ function speak(t,cb){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesis
 /* ---------- 그림: 두 직선과 한 직선 ---------- */
 const COL={A:'#ff8fb0',B:'#7db7ff',C:'#8fe0b0',D:'#ffd66b'};
 function fig(o){
-  o=o||{}; const W=420,H=320, rad=d=>d*Math.PI/180;
+  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); const W=420,H=320, rad=d=>d*Math.PI/180;
   const t=o.t||60, a1=0, a2=(o.par===false)?(o.tilt||-13):0;
   const P1={x:240,y:95}, Q={x:195,y:225};
   // 아래 직선과 가로지르는 직선의 교점
@@ -200,13 +214,32 @@ function fig(o){
   }
   return `<svg class="fig notranslate" translate="no" viewBox="0 0 ${W} ${H}" font-family="inherit" font-size="18" font-weight="700">${g}</svg>`;
 }
+function figTree(o){
+  let x=o.x0||130, y=42, m=o.n; const dx=72, dy=68, nodes=[{x,y,t:m}], edges=[];
+  while(true){ let q=2; while(m%q) q++; if(q===m) break;
+    const A={x:x-dx,y:y+dy,t:q,prime:true}, B={x:x+dx,y:y+dy,t:m/q};
+    edges.push([x,y,A.x,A.y],[x,y,B.x,B.y]); nodes.push(A,B); x=B.x; y=B.y; m=m/q; }
+  if(nodes.length>1) nodes[nodes.length-1].prime=true;
+  let g='';
+  for(const e of edges) g+=`<line x1="${e[0]}" y1="${e[1]+16}" x2="${e[2]}" y2="${e[3]-22}" stroke="#1b1b1b" stroke-width="2.5"/>`;
+  for(const d of nodes){ if(d.prime&&!o.plain) g+=`<circle cx="${d.x}" cy="${d.y}" r="21" fill="#ffd0de" stroke="#e23d6d" stroke-width="2.5"/>`;
+    g+=`<text x="${d.x}" y="${d.y+9}" text-anchor="middle" font-size="26" font-weight="800">${d.t}</text>`; }
+  if(o.eq) g+=`<text x="210" y="298" text-anchor="middle" font-size="25" font-weight="800">${o.eq}</text>`;
+  return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
+}
+function figEq(o){
+  const L=o.lines, fs=o.size||(L.length>2?30:38), gap=fs*1.6, y0=160-gap*(L.length-1)/2;
+  const row=(t,i)=>{ let h=''; String(t).split('**').forEach((q,k)=>{ h+= k%2 ? `<tspan fill="#d81e5b">${q}</tspan>` : q; });
+    return `<text x="210" y="${y0+i*gap+fs*0.35}" text-anchor="middle" font-size="${fs}" font-weight="800">${h}</text>`; };
+  return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${L.map(row).join('')}</svg>`;
+}
 function avatar(i){ const hair=['#3a2a1a','#111'][i], top=['#e9c46a','#b23a48'][i];
   return `<svg viewBox="0 0 80 96"><ellipse cx="40" cy="92" rx="30" ry="6" fill="#0002"/><path d="M14 96 q26 -44 52 0z" fill="${top}" stroke="#111" stroke-width="2"/><circle cx="40" cy="36" r="24" fill="#ffe0c2" stroke="#111" stroke-width="2"/><path d="M16 34 q4 -30 24 -26 q22 -4 24 26 q-12 -16 -48 0z" fill="${hair}"/><circle cx="32" cy="38" r="3"/><circle cx="48" cy="38" r="3"/><path d="M33 47 q7 6 14 0" fill="none" stroke="#111" stroke-width="2"/></svg>`; }
 
 /* ---------- 화면 그리기 ---------- */
 function frame(q,noBar){
   const st=$('#stage'); st.innerHTML=''; st.classList.remove('isvod');
-  if(!noBar){ const bar=el('div','qbar'+(q?'':' hide'),rich(q||'')); st.append(bar);
+  if(!noBar){ const bar=el('div','qbar'+(q?'':' hide'),'<span>'+rich(q||'')+'</span>'); st.append(bar);
     const tools=el('div','tools'); const sp=el('button','', '🔊'); sp.title='지시문 듣기'; sp.onclick=()=>speak(q); if(q) tools.append(sp); st.append(tools); }
   const pad=el('div','pad'+(q||noBar?'':' full')); if(!noBar) st.append(pad);
   return pad;
@@ -258,7 +291,7 @@ R.card_flip=sc=>{ const pad=frame(sc.q); const c=el('div','card'); const side=s=
   if(!sc.back.fig){ $('.b',c).style.cssText+='font-size:2.2em;font-weight:900;color:#0c7d66'; $('.b .cap',c)&&($('.b .cap',c).style.cssText='font-size:.42em;color:#1d2433;font-weight:700;margin-top:.5em;padding:0 1em'); }
   c.onclick=()=>c.classList.toggle('flip'); pad.append(c); };
 R.listen=sc=>{ const pad=frame(sc.q||'다음 낱말을 듣고 2번 따라 읽어 보세요.'); let n=0; const box=el('div','say'); const tx=el('span','',rich(sc.text)); const b=el('button','round','🔊'); const dots=el('div','dots','<i></i><i></i>');
-  b.onclick=()=>{ speak(sc.text,()=>{ n=Math.min(2,n+1); [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<n)); }); };
+  b.onclick=()=>{ speak(sc.say||sc.text,()=>{ n=Math.min(2,n+1); [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<n)); }); };
   box.append(tx,b,dots); pad.append(box); pad.append(el('div','', '<span style="font-size:.8em;color:#6b7280">🔊를 누르고 따라 읽으면 동그라미가 채워져요.</span>')); };
 R.drag_drop=sc=>{ const pad=frame(sc.q||'보기에서 알맞은 낱말을 골라 빈칸에 넣어 보세요.'); const host=withFig(pad,sc);
   const fill=[]; const sent=el('div','sent'); sent.innerHTML=rich(sc.sentence).replace(/\{(\d)\}/g,(m,i)=>`<span class="blank" data-i="${i}"></span>`);
@@ -288,13 +321,31 @@ R.input=sc=>{ const pad=frame(sc.q); const host=withFig(pad,sc); const row=el('d
   const fbk=feedback(host); const norm=s=>String(s).replace(/\s|°|도/g,'');
   checkRow(host,()=>{ const ok=sc.answer.map(norm).includes(norm(inp.value)); fbk(ok,ok?null:(sc.hint||null)); },()=>{inp.value='';fbk(true,'');}); inp.onkeydown=e=>{ if(e.key==='Enter') host.querySelector('.btn').click(); }; };
 R.step_recorde=sc=>{ const pad=frame(sc.q||'다음을 듣고 따라 말해 보세요.'); const host=withFig(pad,sc); const box=el('div','say col'); box.style.fontSize='1.1em'; const b=el('button','round','🔊'), r=el('button','round rec','●'); const stt=el('div','fb'); const br=el('div','btnrow');
-  b.onclick=()=>speak(sc.sentence); r.onclick=()=>{ stt.className='fb ok'; stt.textContent='녹음 중… (시안에서는 실제로 녹음하지 않아요)'; setTimeout(()=>{stt.textContent='잘 말했어요!';},2500); };
+  b.onclick=()=>speak(sc.say||sc.sentence); r.onclick=()=>{ stt.className='fb ok'; stt.textContent='녹음 중… (시안에서는 실제로 녹음하지 않아요)'; setTimeout(()=>{stt.textContent='잘 말했어요!';},2500); };
   br.append(b,r); box.append(el('span','',rich(sc.sentence)),br); host.append(box,stt); };
 R.ocr=sc=>{ const pad=frame(sc.q||'연필을 클릭해 낱말을 써 보세요.'); pad.append(el('div','ghostword notranslate',sc.word)); const cv=el('canvas','wr'); pad.append(cv);
   const fit=()=>{ const b=cv.getBoundingClientRect(); cv.width=b.width; cv.height=b.height; }; setTimeout(fit,0); let on=false; const ctx=()=>{const c=cv.getContext('2d'); c.lineWidth=Math.max(3,cv.width/90); c.lineCap='round'; c.strokeStyle='#1d2433'; return c;};
   const pos=e=>{const b=cv.getBoundingClientRect(); return [e.clientX-b.left,e.clientY-b.top];};
   cv.onpointerdown=e=>{on=true; const c=ctx(); c.beginPath(); c.moveTo(...pos(e));}; cv.onpointermove=e=>{ if(!on) return; const c=ctx(); c.lineTo(...pos(e)); c.stroke(); c.beginPath(); c.moveTo(...pos(e)); }; window.addEventListener('pointerup',()=>on=false);
   const r=el('div','btnrow'); const z=el('button','btn sub','지우기'); z.onclick=()=>cv.getContext('2d').clearRect(0,0,cv.width,cv.height); r.append(z); pad.append(r); };
+
+R.curation=sc=>{ const pad=frame(sc.q); const c=el('div','cur');
+  sc.cols.forEach((col,i)=>{ if(i) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));
+    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; d.append(el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':''))); }); c.append(d); });
+  pad.append(c); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
+R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el('div','fb');
+  const state=sc.items.map(()=>null);
+  sc.items.forEach((it,i)=>{ const row=el('div','row'); const go=el('div','go');
+    const y=el('button','btn sub','알아요'), n=el('button','btn sub','잘 몰라요');
+    const upd=()=>{ y.style.background=state[i]===true?'#c9f2df':'#fff'; n.style.background=state[i]===false?'#fbd0d0':'#fff'; go.innerHTML=state[i]===false?rich(it.go||''):'';
+      if(state.every(v=>v!==null)){ const k=state.filter(v=>v).length; sum.className='fb ok'; sum.textContent=k===state.length?'모두 아는 말이에요. 바로 시작해요!':'표시한 낱말의 차시를 먼저 봐도 좋아요.'; } };
+    y.onclick=()=>{state[i]=true;upd();}; n.onclick=()=>{state[i]=false;upd();};
+    const mid=el('div','ex'); mid.append(el('div','',rich(it.ex)),go);
+    row.append(el('div','tm notranslate',it.t),mid,y,n); box.append(row); });
+  pad.append(box,sum); };
+R.lang_match=sc=>{ const pad=frame(sc.q); pad.append(el('div','lmw notranslate',sc.word));
+  const g=el('div','lm notranslate'); sc.items.forEach(it=>g.append(el('div','','<small>'+it.lang+'</small>'+it.term))); pad.append(g);
+  if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
 
 function showMemo(sc,cut){
   const m=$('#memo'); let h=`<h3>제작 메모</h3><dl><dt>위치</dt><dd>${mi+1}. ${LESSON.modules[mi].name} · 화면 ${si+1}</dd><dt>원본 유형</dt><dd><code>${sc.type}</code> ${TYPE_KO[sc.type]||''}</dd>`;
@@ -310,7 +361,7 @@ function render(){
   [...$('#toc').children].forEach((b,i)=>b.classList.toggle('on',i===mi));
   const self=(R[sc.type]||(()=>{frame('준비 중인 유형: '+sc.type);}))(sc);
   if(!self){ chrome(sc); showMemo(sc); }
-  document.querySelectorAll('#stage .sent, #stage .chips, #stage .opts, #stage .ox, #stage .lt, #stage .say, #stage .card, #stage .motion, #stage .nav, #stage input').forEach(e=>{e.classList.add('notranslate'); e.setAttribute('translate','no');});
+  document.querySelectorAll('#stage .sent, #stage .chips, #stage .opts, #stage .ox, #stage .lt, #stage .say, #stage .card, #stage .motion, #stage .nav, #stage input, #stage .cur .it').forEach(e=>{e.classList.add('notranslate'); e.setAttribute('translate','no');});
   const st=$('#stage'); st.style.fontSize=(st.clientWidth/46)+'px';
   history.replaceState(null,'','#'+(mi+1)+'-'+(si+1));
 }

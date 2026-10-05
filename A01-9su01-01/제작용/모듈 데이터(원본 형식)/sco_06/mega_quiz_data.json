@@ -1,0 +1,61 @@
+{
+    "quiz": [
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "소인수분해",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "그림을 클릭해 낱말을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "자연수를 소수들의 곱으로 나타내는 것"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "i_t"
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "이 낱말은 여기에서 다시 만나요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "오늘 배운 낱말: 소인수분해, 소인수"
+                },
+                {
+                    "txt": "바로 이어지는 단원: 최대공약수, 최소공배수"
+                },
+                {
+                    "txt": "나중에 만나는 단원: 유한소수"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation",
+            "outro": "true"
+        }
+    ]
+}
