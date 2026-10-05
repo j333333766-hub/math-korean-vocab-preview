@@ -27,7 +27,7 @@
         },
         {
             "data_type": "card_flip",
-            "data_jung_dap": "합성수",
+            "data_jung_dap": "지수",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -41,14 +41,14 @@
             "img": "",
             "object": [
                 {
-                    "txt": "1보다 큰 자연수 중에서 소수가 아닌 수"
+                    "txt": "card(그림)"
                 }
             ],
             "basket_name": "",
             "drop": "",
             "character": "false",
             "commentary": "",
-            "custom": "t_t"
+            "custom": ""
         },
         {
             "data_type": "card_flip",
@@ -97,7 +97,7 @@
         },
         {
             "data_type": "click",
-            "data_jung_dap": "소수, 합성수, 소인수분해",
+            "data_jung_dap": "소수, 지수, 소인수분해",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -111,22 +111,22 @@
             "img": "",
             "object": [
                 {
-                    "txt": "English: prime number / composite number / prime factorization"
+                    "txt": "English: prime number / exponent / prime factorization"
                 },
                 {
-                    "txt": "中文: 质数 (素数) / 合数 / 分解质因数"
+                    "txt": "中文: 质数 (素数) / 指数 / 分解质因数"
                 },
                 {
-                    "txt": "日本語: 素数 / 合成数 / 素因数分解"
+                    "txt": "日本語: 素数 / 指数 / 素因数分解"
                 },
                 {
-                    "txt": "Tiếng Việt: số nguyên tố / hợp số / phân tích ra thừa số nguyên tố"
+                    "txt": "Tiếng Việt: số nguyên tố / số mũ / phân tích ra thừa số nguyên tố"
                 },
                 {
-                    "txt": "Русский: простое число / составное число / разложение на простые множители"
+                    "txt": "Русский: простое число / показатель степени / разложение на простые множители"
                 },
                 {
-                    "txt": "العربية: عدد أولي / عدد مركب / التحليل إلى العوامل الأولية"
+                    "txt": "العربية: عدد أولي / الأس / التحليل إلى العوامل الأولية"
                 }
             ],
             "basket_name": "",

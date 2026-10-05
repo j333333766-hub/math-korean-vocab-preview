@@ -22,7 +22,7 @@
         },
         {
             "data_type": "listen",
-            "data_jung_dap": "7은 소수이고, 9는 합성수입니다.",
+            "data_jung_dap": "2³에서 2는 밑이고, 3은 지수입니다.",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -36,7 +36,7 @@
             "img": "",
             "object": [
                 {
-                    "txt": "7은 소수이고, 9는 합성수입니다."
+                    "txt": "2³에서 2는 밑이고, 3은 지수입니다."
                 },
                 {
                     "txt": "12를 소인수분해하면 2² × 3입니다."
@@ -64,7 +64,7 @@
             "img": "",
             "object": [
                 {
-                    "txt": "합성수"
+                    "txt": "지수"
                 },
                 {
                     "txt": "소인수분해"
@@ -74,7 +74,7 @@
                 }
             ],
             "basket_name": "",
-            "drop": "2, 3, 5, 7은 ,drop,이고, 4, 6, 8, 9는 ,drop,입니다.",
+            "drop": "2, 3, 5, 7은 ,drop,입니다. 2³에서 3은 ,drop,입니다.",
             "character": "false",
             "commentary": ""
         },

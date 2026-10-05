@@ -180,7 +180,7 @@ function speak(t,cb){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesis
 /* ---------- 그림: 두 직선과 한 직선 ---------- */
 const COL={A:'#ff8fb0',B:'#7db7ff',C:'#8fe0b0',D:'#ffd66b'};
 function fig(o){
-  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); const W=420,H=320, rad=d=>d*Math.PI/180;
+  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='power') return figPower(o); const W=420,H=320, rad=d=>d*Math.PI/180;
   const t=o.t||60, a1=0, a2=(o.par===false)?(o.tilt||-13):0;
   const P1={x:240,y:95}, Q={x:195,y:225};
   // 아래 직선과 가로지르는 직선의 교점
@@ -238,6 +238,17 @@ function figEq(o){
     return `<text x="210" y="${y0+i*gap+fs*0.35}" text-anchor="middle" font-size="${fs}" font-weight="800">${h}</text>`; };
   return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${L.map(row).join('')}</svg>`;
 }
+function figPower(o){
+  const b=String(o.base), e=String(o.exp), bw=b.length*62, x0=150-bw/2;
+  let g=`<text x="${x0+bw/2}" y="190" text-anchor="middle" font-size="120" font-weight="800">${b}</text>`;
+  g+=`<text x="${x0+bw+8}" y="118" font-size="64" font-weight="800" fill="#d81e5b">${e}</text>`;
+  if(o.labels!==false){
+    g+=`<line x1="${x0+bw/2}" y1="206" x2="${x0+bw/2}" y2="236" stroke="#1b1b1b" stroke-width="2.5"/><text x="${x0+bw/2}" y="266" text-anchor="middle" font-size="28" font-weight="800">밑</text>`;
+    g+=`<line x1="${x0+bw+58}" y1="96" x2="${x0+bw+110}" y2="96" stroke="#d81e5b" stroke-width="2.5"/><text x="${x0+bw+120}" y="106" font-size="30" font-weight="800" fill="#d81e5b">지수</text>`;
+  }
+  if(o.eq) g+=`<text x="210" y="306" text-anchor="middle" font-size="24" font-weight="800">${o.eq}</text>`;
+  return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
+}
 function avatar(i){ const hair=['#3a2a1a','#111'][i], top=['#e9c46a','#b23a48'][i];
   return `<svg viewBox="0 0 80 96"><ellipse cx="40" cy="92" rx="30" ry="6" fill="#0002"/><path d="M14 96 q26 -44 52 0z" fill="${top}" stroke="#111" stroke-width="2"/><circle cx="40" cy="36" r="24" fill="#ffe0c2" stroke="#111" stroke-width="2"/><path d="M16 34 q4 -30 24 -26 q22 -4 24 26 q-12 -16 -48 0z" fill="${hair}"/><circle cx="32" cy="38" r="3"/><circle cx="48" cy="38" r="3"/><path d="M33 47 q7 6 14 0" fill="none" stroke="#111" stroke-width="2"/></svg>`; }
 
@@ -265,7 +276,7 @@ function withFig(pad,sc){ // 그림이 있으면 좌우로 나눔
 }
 const R={};
 R.vod=sc=>{
-  const st=$('#stage'); st.innerHTML=''; let ci=0, timer=null;
+  const st=$('#stage'); st.innerHTML=''; let ci=Math.min(sc.cuts.length-1,window.__cut||0), timer=null; window.__cut=0;
   const box=el('div','vod'); st.append(box); st.classList.add('isvod');
   const draw=()=>{
     const c=sc.cuts[ci]; st.innerHTML=''; st.append(box); box.innerHTML='';
@@ -379,7 +390,8 @@ function init(){
   LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();}; $('#toc').append(b); });
   $('#prevMod').onclick=()=>{ if(mi>0){mi--;si=0;render();} }; $('#nextMod').onclick=()=>{ if(mi<LESSON.modules.length-1){mi++;si=0;render();} };
   $('#memoBtn').onclick=()=>{ memoOn=!memoOn; $('#memo').classList.toggle('on',memoOn); $('#memoBtn').classList.toggle('on',memoOn); render(); };
-  const h=location.hash.match(/#(\d+)-(\d+)(m?)/); if(h){ mi=Math.min(LESSON.modules.length-1,h[1]-1); si=Math.min(LESSON.modules[mi].screens.length-1,h[2]-1); if(h[3]){memoOn=true;$('#memo').classList.add('on');$('#memoBtn').classList.add('on');} }
+  const hc=location.hash.match(/#\d+-\d+-(\d+)/); if(hc) window.__cut=hc[1]-1;
+  const h=location.hash.match(/#(\d+)-(\d+)(?:-\d+)?(m?)/); if(h){ mi=Math.min(LESSON.modules.length-1,h[1]-1); si=Math.min(LESSON.modules[mi].screens.length-1,h[2]-1); if(h[3]){memoOn=true;$('#memo').classList.add('on');$('#memoBtn').classList.add('on');} }
   window.addEventListener('resize',()=>{const st=$('#stage'); st.style.fontSize=(st.clientWidth/46)+'px';});
   document.addEventListener('keydown',e=>{ if(e.target.tagName==='INPUT') return; if(e.key==='ArrowRight') go(1); if(e.key==='ArrowLeft') go(-1); });
   render();

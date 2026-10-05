@@ -35,7 +35,7 @@
         },
         {
             "data_type": "OX",
-            "data_jung_dap": "2",
+            "data_jung_dap": "1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -44,7 +44,7 @@
             "data_guide": "false",
             "data_guide_points": "",
             "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
-            "sub_question": "1은 합성수이다.",
+            "sub_question": "5²에서 2는 지수이다.",
             "selection": "",
             "img": "",
             "object": [],
@@ -105,7 +105,7 @@
                     "txt": "소수"
                 },
                 {
-                    "txt": "합성수"
+                    "txt": "지수"
                 },
                 {
                     "txt": "소인수분해"
@@ -117,7 +117,7 @@
                     "txt": "약수가 1과 자기 자신뿐인 수"
                 },
                 {
-                    "txt": "1보다 큰 자연수 중에서 소수가 아닌 수"
+                    "txt": "거듭제곱에서 곱한 횟수를 나타내는 수"
                 }
             ],
             "basket_name": "",
