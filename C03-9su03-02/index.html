@@ -288,7 +288,7 @@ R.vod=sc=>{
     if(c.title){ const t=el('div','title'); t.innerHTML=`<div class="t1 notranslate">어휘쑥쑥</div><div class="t2">수학편</div><div class="t3">${LESSON.grade}</div><div class="t4 notranslate">${LESSON.title}</div>`; box.append(t); }
     else{
       const scene=el('div','scene'); if(c.bg) box.style.background=c.bg;
-      if(c.fig) scene.append(el('div','board',fig(c.fig))); else if(c.text) scene.append(el('div','board','<div style="font-size:1.5em;font-weight:900;text-align:center;line-height:1.6">'+rich(c.text)+'</div>'));
+      if(c.fig) scene.append(el('div','board',fig(c.fig))); else if(c.text) scene.append(el('div','board notranslate','<div style="font-size:1.5em;font-weight:900;text-align:center;line-height:1.6">'+rich(c.text)+'</div>'));
       (c.bubbles||[]).forEach((b,k)=>{ const w=el('div','who notranslate w'+b.who,avatar(b.who)+LESSON.cast[b.who]); scene.append(w);
         const bb=el('div','bub b'+b.who+((c.bubbles.filter(x=>x.who===b.who).indexOf(b)>0)?' low':''),rich(b.text)); scene.append(bb); });
       box.append(scene);
