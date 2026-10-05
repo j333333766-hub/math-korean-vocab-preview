@@ -1,0 +1,204 @@
+{
+    "quiz": [
+        {
+            "data_type": "vod",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "drag_drop",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "보기에서 알맞은 낱말을 골라 빈칸에 넣어 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "엇각"
+                },
+                {
+                    "txt": "동위각"
+                },
+                {
+                    "txt": "평행선"
+                }
+            ],
+            "basket_name": "",
+            "drop": "각 1과 각 5는 ,drop,입니다.",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "각 3의 엇각을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "각 5"
+                },
+                {
+                    "txt": "각 6"
+                },
+                {
+                    "txt": "각 7"
+                },
+                {
+                    "txt": "각 8"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "OX",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
+            "sub_question": "두 직선이 평행하지 않아도 동위각의 크기는 항상 같다.",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "linetoline",
+            "data_jung_dap": "1@c,2@a,3@b",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "알맞은 것끼리 연결해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "각 2의 동위각"
+                },
+                {
+                    "txt": "각 3의 엇각"
+                },
+                {
+                    "txt": "각 4의 동위각"
+                },
+                {
+                    "txt": "각 5"
+                },
+                {
+                    "txt": "각 8"
+                },
+                {
+                    "txt": "각 6"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "horizontal"
+        },
+        {
+            "data_type": "drag_drop",
+            "data_jung_dap": "2,4,1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "보기에서 알맞은 말을 골라 문장을 완성해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "같습니다"
+                },
+                {
+                    "txt": "평행"
+                },
+                {
+                    "txt": "다릅니다"
+                },
+                {
+                    "txt": "동위각"
+                },
+                {
+                    "txt": "교차"
+                }
+            ],
+            "basket_name": "",
+            "drop": "두 직선이 ,drop,하므로 ,drop,의 크기는 ,drop,.",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "두 직선이 평행하므로 엇각의 크기는 같습니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "다음을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
+        }
+    ]
+}

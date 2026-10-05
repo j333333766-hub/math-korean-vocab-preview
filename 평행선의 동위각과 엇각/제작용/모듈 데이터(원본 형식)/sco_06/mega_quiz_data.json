@@ -1,0 +1,163 @@
+{
+    "quiz": [
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "평행선",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "그림을 클릭해 낱말을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "한 평면 위에서 서로 만나지 않는 두 직선"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "i_t"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "동위각",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "그림을 클릭해 낱말을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "같은 위치에 있는 두 각"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "i_t"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "엇각",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "그림을 클릭해 낱말을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "두 직선 사이에서 엇갈린 위치에 있는 두 각"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "i_t"
+        },
+        {
+            "data_type": "ocr",
+            "data_jung_dap": "평행선",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "연필을 클릭해 낱말을 써 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "<type=blank>"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "input",
+            "data_jung_dap": "동위각",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "색칠한 두 각을 보고, 빈칸에 알맞은 낱말을 써 보세요.",
+            "sub_question": "두 직선이 평행하면 {0}의 크기는 같다.",
+            "selection": "input_txt",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "input",
+            "data_jung_dap": "엇각",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "색칠한 두 각을 보고, 빈칸에 알맞은 낱말을 써 보세요.",
+            "sub_question": "두 직선이 평행하면 {0}의 크기는 같다.",
+            "selection": "input_txt",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "vod",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        }
+    ]
+}

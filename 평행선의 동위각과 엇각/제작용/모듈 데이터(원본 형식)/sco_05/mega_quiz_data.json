@@ -1,0 +1,140 @@
+{
+    "quiz": [
+        {
+            "data_type": "choice",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "l ∥ m일 때, 각 x의 크기를 구하시오.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "25°"
+                },
+                {
+                    "txt": "65°"
+                },
+                {
+                    "txt": "115°"
+                },
+                {
+                    "txt": "125°"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "각 x의 크기가 65°인 까닭을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "두 직선이 평행하므로 동위각의 크기는 같습니다."
+                },
+                {
+                    "txt": "두 직선이 평행하므로 엇각의 크기는 같습니다."
+                },
+                {
+                    "txt": "맞꼭지각의 크기는 같습니다."
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "input",
+            "data_jung_dap": "50",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "l ∥ m일 때, 각 x의 크기를 구하시오.",
+            "sub_question": "각 x의 크기는 {0}°",
+            "selection": "input_txt",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "drag_drop",
+            "data_jung_dap": "3,2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "보기에서 알맞은 말을 골라 까닭을 완성해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "동위각"
+                },
+                {
+                    "txt": "50°"
+                },
+                {
+                    "txt": "엇각"
+                },
+                {
+                    "txt": "130°"
+                }
+            ],
+            "basket_name": "",
+            "drop": "두 직선이 평행하므로 ,drop,의 크기는 같습니다. 그래서 각 x는 ,drop,입니다.",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "input",
+            "data_jung_dap": "70",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "도전! l ∥ m일 때, 각 x의 크기를 구하시오.",
+            "sub_question": "각 x의 크기는 {0}°",
+            "selection": "input_txt",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        }
+    ]
+}
