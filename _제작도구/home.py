@@ -75,7 +75,7 @@ def build_home(root):
 <span><span class="x">함께 보는 말</span> 새 어휘와 같이 처음 나오는 낱말</span>
 <span><a class="r" href="#">앞에서 배운 말 <small>← n차시</small></a> 뜻만 확인. 모르면 그 낱말을 익히는 차시로 안내 (누르면 이동)</span>
 <span><span class="e">초등에서 배운 말 <small>초5-1</small></span> 앞 차시로 보내지 않고 이 차시 안에서 배경지식으로 안내</span></div>
-<a class="stat map" href="vocab-map.html">🗺 학습 어휘 지도 (마인드맵 · 위계 흐름) ▶</a><br>
+<a class="stat map" href="vocab-map.html">🗺 학습 어휘 지도 (마인드맵 · 위계 흐름) ▶</a><a class="stat map" href="vocab-map.html#std">📋 성취기준별 차시 ▶</a><a class="stat map" href="vocab-map.html#sec">📖 교과서 소단원별 차시 ▶</a><br>
 <span class="stat">전체 {len(L)}차시</span><span class="stat">시안 {done}차시</span><span class="stat">새 어휘 {sum(len(d['new']) for d in L if d['grade'] != '공통')}개</span>
 {''.join(out)}
 <footer>{e(cfg.get('foot', ''))}</footer>
@@ -84,7 +84,7 @@ def build_home(root):
     io.open(os.path.join(root, 'index.html'), 'w', encoding='utf-8').write(page)
     print(f'홈 화면(위계도): {len(L)}차시, 시안 {done}차시')
     # 어휘 지도(마인드맵·위계 흐름)
-    data = dict(lessons=L, ess=syl['ess'], built={k: v['folder'] for k, v in built.items() if os.path.exists(os.path.join(root, v['folder'], 'index.html'))})
+    data = dict(lessons=L, ess=syl['ess'], toc=syl['toc'], stds=syl['stds'], built={k: v['folder'] for k, v in built.items() if os.path.exists(os.path.join(root, v['folder'], 'index.html'))})
     t = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'map_template.html'), encoding='utf-8').read()
     io.open(os.path.join(root, 'vocab-map.html'), 'w', encoding='utf-8').write(t.replace('/*DATA*/', json.dumps(data, ensure_ascii=False).replace('</', '<\/')))
     print('어휘 지도: vocab-map.html')
