@@ -26,10 +26,10 @@ h2{font-size:17px;margin:26px 0 8px;padding:5px 12px;background:#2a1a00;color:#f
 a.r{border-radius:99px;padding:2px 9px;border:1.5px solid #2f6fe4;background:#eef4ff;color:#1e4fb3;text-decoration:none;font-size:12.5px;font-weight:700}
 a.r:hover{background:#2f6fe4;color:#fff}a.r small,.e small,.w small{opacity:.75;font-weight:600}
 .e{border-radius:99px;padding:2px 9px;border:1.5px solid #c3c9d4;background:#f4f6f9;color:#4b5563;font-size:12.5px;font-weight:700}
-.stat.map{background:#2f6fe4;color:#fff;text-decoration:none;font-size:15px;padding:6px 16px}.none{color:#b45309;font-weight:700;font-size:12.5px}
+.stat.map{background:#2f6fe4;color:#fff;text-decoration:none;font-size:15px;padding:6px 16px}.lab.p{color:#5b21b6}.pfc{border-radius:99px;padding:2px 9px;border:1.5px solid #7c3aed;background:#f3e8ff;color:#5b21b6;text-decoration:none;font-size:12.5px;font-weight:700}.pfc small{opacity:.75}.none{color:#b45309;font-weight:700;font-size:12.5px}
 .go{position:absolute;right:11px;top:10px;background:#19b394;color:#fff;border-radius:99px;padding:2px 11px;font-size:12px;font-weight:800;text-decoration:none}
 .go.old{background:#9aa3b2}.todo{position:absolute;right:11px;top:10px;color:#9aa3b2;font-size:12px;font-weight:700}
-.tp{font-size:11.5px;color:#6b7280;margin-left:6px}
+.tp{font-size:11px;font-weight:800;margin-left:6px;border-radius:5px;padding:0 6px;background:#e0f2fe;color:#075985}.tp.pf{background:#f3e8ff;color:#5b21b6}
 footer{margin-top:30px;font-size:13px;color:#6b7280;line-height:1.7}
 """
 
@@ -55,10 +55,12 @@ def build_home(root):
         for x, s in d['review']:
             if isinstance(s, int): rev += f'<a class="r" href="#L{s}" title="{s}차시 {e(L[s - 1]["name"])}">{star(x)} <small>← {s}차시</small></a>'
             else: el += f'<span class="e">{star(x)} <small>{e(s)}</small></span>'
-        h = f'<div class="card" id="L{d["no"]}"><span class="no">{d["no"]}</span><h3>{e(d["name"])}</h3><span class="tp">{e(d["type"])}</span>{link}'
+        h = f'<div class="card" id="L{d["no"]}"><span class="no">{d["no"]}</span><h3>{e(d["name"])}</h3><span class="tp{' pf' if d["type"] == "수행 중심" else ''}">{e(d["type"])}</span>{link}'
         h += f'<div class="sub">먼저 보고 배우는 소단원: {e(d["sub"])} {e(d["std"])}</div>'
         h += f'<div class="row"><div class="lab n">{"새 표현" if d["grade"] == "공통" else "새 어휘"}</div><div class="chips">{new}</div></div>'
         if aux: h += f'<div class="row"><div class="lab a">함께 보는 말</div><div class="chips">{aux}</div></div>'
+        pf = ''.join(f'<a class="pfc" href="#L{x[1]}">{e(x[0])} <small>← {x[1]}차시</small></a>' if x[1] else f'<span class="pfc">{e(x[0])}</span>' for x in d.get('perfs', []))
+        if pf: h += f'<div class="row"><div class="lab p">수행 도구어</div><div class="chips">{pf}</div></div>'
         if rev: h += f'<div class="row"><div class="lab b">앞에서 배운 말</div><div class="chips">{rev}</div></div>'
         if el: h += f'<div class="row"><div class="lab r">초등에서 배운 말</div><div class="chips">{el}</div></div>'
         out.append(h + '</div>')

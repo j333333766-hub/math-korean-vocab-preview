@@ -87,6 +87,12 @@ body.has-sel .row.s-self{opacity:1;background:#fffbe8;box-shadow:inset 5px 0 0 #
 body.has-sel .row.s-pre{opacity:1;background:#eef4ff;box-shadow:inset 5px 0 0 var(--pre)}
 body.has-sel .row.s-post{opacity:1;background:#fff3ea;box-shadow:inset 5px 0 0 var(--post)}
 .c.s-w{outline:3px solid #f6b21a}
+.kinds{flex-basis:100%;display:flex;flex-wrap:wrap;gap:4px 8px;font-size:12.5px;align-items:center}
+.kinds b{color:#6b7280;margin-left:4px}.kinds>span{border:1.5px solid #cbd5e1;border-radius:99px;padding:1px 10px;font-weight:700;background:#fff}
+.kinds i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:3px;vertical-align:-1px}
+.c.p{border:1.5px solid #7c3aed;background:#f3e8ff;color:#5b21b6;font-weight:700}
+.ty{font-size:10.5px;font-weight:800;border-radius:5px;padding:0 5px;background:#e0f2fe;color:#075985;vertical-align:1px}.ty.p{background:#f3e8ff;color:#5b21b6}
+#mm .w.perf text{fill:#5b21b6;font-weight:700}
 .wb{padding:6px 0;border-bottom:1px dashed #e2e8f0}
 .gd{font-size:12.5px;color:#374151;margin-top:2px;line-height:1.5}.gd b{color:#6b7280;font-size:11.5px;margin-right:4px}.gd.na{color:#9aa3b2}
 [data-cat]{cursor:pointer;border-radius:8px;padding:1px 5px}[data-cat].on{outline:2.5px solid #f6b21a;background:#fffbe8}
@@ -105,6 +111,7 @@ body.has-sel #mm .s-on{opacity:1}body.has-sel .row.s-on,body.has-sel .lc.s-on{op
 <button id="clear">선택 해제</button>
 <button id="fm" title="두 차시 이상에 나오는 낱말만 남깁니다">2차시 이상 나오는 어휘만</button>
 <div class="legend"><span data-cat="new"><i style="background:#19b394"></i>새 어휘 (★ 충남대 핵심어)</span><span data-cat="aux"><i style="background:#c9a24a"></i>함께 보는 말</span><span data-cat="pre"><i style="background:#1e4fb3"></i>먼저 익혀야 하는 차시·낱말</span><span data-cat="post"><i style="background:#c2410c"></i>이 낱말을 다시 쓰는 차시</span></div>
+<div class="kinds"><b>어휘 구분</b><span data-cat="core"><i style="background:#19b394"></i>핵심 개념어</span><span data-cat="sup"><i style="background:#c9a24a"></i>보조·배경 개념어</span><span data-cat="perf"><i style="background:#7c3aed"></i>수행 도구어</span><b>차시 유형</b><span data-cat="tc"><span class="ty">개념</span> 개념 중심 차시</span><span data-cat="tp"><span class="ty p">수행</span> 수행 중심 차시</span></div>
 </header>
 <div class="wrap">
 <main><svg id="mm" viewBox="-740 -740 1480 1480"></svg><div id="flow"><div id="flowin"><svg id="arcs"></svg><div id="rows"></div></div></div><div id="std" class="pg"></div><div id="sec" class="pg"></div></main>
@@ -123,6 +130,9 @@ const PAL=['#6b7280','#2f6fe4','#0d9488','#7c3aed','#db2777','#ea580c','#65a30d'
 const U=[];L.forEach(d=>{const k=ukey(d);let u=U[U.length-1];if(!u||u.k!==k){u={k,ls:[],col:PAL[U.length%PAL.length]};U.push(u)}u.ls.push(d);d.u=u});
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const star=w=>esc(w)+(ESS.has(w)?'★':'');
+const isC=d=>d.grade==='공통',puses={};L.forEach(d=>(d.perfs||[]).forEach(x=>{const k=x[2]||x[0];(puses[k]=puses[k]||[]).push(d.no)}));
+const tyb=d=>`<span class="ty ${d.type==='수행 중심'?'p':''}">${d.type==='수행 중심'?'수행':'개념'}</span>`;
+function wchips(d){const c=isC(d);return d.new.map(w=>`<span class="c ${c?'p':''}" data-w="${esc(w)}">${star(w)}</span>`).join('')+d.aux.map(w=>`<span class="c ${c?'p':'x'}" data-w="${esc(w)}">${esc(w)}</span>`).join('')+(d.perfs||[]).map(x=>`<span class="c p" data-w="${esc(x[2]||x[0])}">${esc(x[0])}</span>`).join('')}
 const NS='http://www.w3.org/2000/svg';
 function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
 
@@ -143,7 +153,7 @@ U.forEach(u=>{link(u.a,0,u.a,R1,u.col,gL).dataset.u=u.k;
   u.ls.forEach(d=>{link(u.a,R1,d.a,R2,u.col,gL);
     node(d.a,R2,'l',d.no+' '+d.name,u.col,gN,5.5,{'data-l':d.no});
     d.leaves.forEach((lf,i)=>{link(d.a,R2,d.la[i],R3,u.col,gL).dataset.w=lf[0];
-      node(d.la[i],R3,'w '+lf[1],lf[0]+(ESS.has(lf[0])?'★':''),lf[1]==='new'?'#19b394':'#c9a24a',gN,3.2,{'data-w':lf[0],'data-pl':d.no})})})});
+      node(d.la[i],R3,'w '+(isC(d)?'perf':lf[1]),lf[0]+(ESS.has(lf[0])?'★':''),isC(d)?'#7c3aed':lf[1]==='new'?'#19b394':'#c9a24a',gN,3.2,{'data-w':lf[0],'data-pl':d.no})})})});
 const rt=el('g',{class:'root'},gN);el('circle',{r:46,fill:'#2a1a00'},rt);el('text',{dy:'-.2em',style:'fill:#fff'},rt,'수학 한국어');el('text',{dy:'1em',style:'fill:#fff'},rt,'어휘 60차시');
 const VB0=[-740,-740,1480,1480];let vb=VB0.slice();const setVB=()=>mm.setAttribute('viewBox',vb.join(' '));
 function zoom(f,cx,cy){if(!f){vb=VB0.slice();return setVB()}const w=vb[2]/f,h=vb[3]/f;if(w<200||w>4000)return;cx=cx==null?vb[0]+vb[2]/2:cx;cy=cy==null?vb[1]+vb[3]/2:cy;vb=[cx-(cx-vb[0])/f,cy-(cy-vb[1])/f,w,h];setVB()}
@@ -160,8 +170,8 @@ const rows=document.getElementById('rows'),arcs=document.getElementById('arcs'),
 rows.style.marginLeft=AW+'px';let y=0;const Y={};let html='';
 U.forEach(u=>{html+=`<div class="uh" style="background:${u.col}">${esc(u.k)}</div>`;y+=32;
   u.ls.forEach(d=>{Y[d.no]=y+19;y+=38;
-    html+=`<div class="row" data-l="${d.no}"><span class="no">${d.no}</span><span class="nm">${esc(d.name)}</span><span class="sb">${esc(d.sub)}</span>`+
-      d.new.map(w=>`<span class="c" data-w="${esc(w)}">${star(w)}</span>`).join('')+d.aux.map(w=>`<span class="c x" data-w="${esc(w)}">${esc(w)}</span>`).join('')+'</div>'})});
+    html+=`<div class="row" data-l="${d.no}"><span class="no">${d.no}</span><span class="nm">${esc(d.name)} ${tyb(d)}</span><span class="sb">${esc(d.sub)}</span>`+
+      wchips(d)+'</div>'})});
 rows.innerHTML=html;arcs.setAttribute('width',AW);arcs.setAttribute('height',y);
 const E=[];L.forEach(d=>pre[d.no].forEach(a=>{const dx=Math.min(AW-14,16+(d.no-a)*(AW-30)/40);E.push({a,b:d.no,p:el('path',{d:`M${AW},${Y[a]}C${AW-dx},${Y[a]} ${AW-dx},${Y[d.no]} ${AW},${Y[d.no]}`},arcs)})}));
 
@@ -169,52 +179,69 @@ const E=[];L.forEach(d=>pre[d.no].forEach(a=>{const dx=Math.min(AW-14,16+(d.no-a
 let sel=null;const panel=document.getElementById('panel');
 const lref=n=>`<span class="lk" data-l="${n}">${n}차시 ${esc(byNo[n].name)}</span>`;
 function chips(ws,cls){return '<div class="chips">'+ws.map(w=>`<span class="c ${cls}" data-w="${esc(w)}">${star(w)}</span>`).join('')+'</div>'}
-const GL=D.gloss||{},multi=new Set(),cnt=w=>(home[w]?1:0)+(uses[w]||[]).length;
-[...new Set(Object.keys(home).concat(Object.keys(uses)))].forEach(w=>{if(cnt(w)>=2)multi.add(w)});
+const GL=D.gloss||{},multi=new Set(),cnt=w=>(home[w]?1:0)+(uses[w]||[]).length+(puses[w]||[]).length;
+[...new Set(Object.keys(home).concat(Object.keys(uses),Object.keys(puses)))].forEach(w=>{if(cnt(w)>=2)multi.add(w)});
 let fMulti=false;
-const wcls=w=>home[w]?(byNo[home[w]].new.includes(w)?'':'x'):'e';
+const wcls=w=>home[w]?(isC(byNo[home[w]])?'p':byNo[home[w]].new.includes(w)?'':'x'):(elem[w]?'e':'p');
 function gl(w){const g=GL[w];return g?`<div class="gd"><b>뜻</b>${esc(g.d||'-')}</div>${g.e?`<div class="gd"><b>용례</b>${esc(g.e)}</div>`:''}`:'<div class="gd na">정의·용례 자료 없음 (어휘 엑셀 목록 밖의 낱말)</div>'}
 function wblock(w,cls,extra){return `<div class="wb"><span class="c ${cls}" data-w="${esc(w)}">${star(w)}</span> ${extra||''}${gl(w)}</div>`}
 function showMulti(){const ws=[...multi].sort((a,b)=>cnt(b)-cnt(a)||(home[a]||0)-(home[b]||0));
-  panel.innerHTML=`<h2>2차시 이상 나오는 어휘</h2><div class="meta">${ws.length}개 · 많이 나오는 순. 지도에는 이 낱말만 남겼습니다. 초등에서 배운 말은 지도에 없고 이 목록에만 나옵니다.</div><ul>${ws.map(w=>`<li><span class="c ${wcls(w)}" data-w="${esc(w)}">${star(w)}</span> <b>${cnt(w)}개 차시</b> <span class="meta">${home[w]?home[w]+'차시에서 익힘 → ':esc(elem[w])+'에 배움 → '}${(uses[w]||[]).join(', ')}차시</span></li>`).join('')}</ul>`}
+  panel.innerHTML=`<h2>2차시 이상 나오는 어휘</h2><div class="meta">${ws.length}개 · 많이 나오는 순. 지도에는 이 낱말만 남겼습니다. 초등에서 배운 말은 지도에 없고 이 목록에만 나옵니다.</div><ul>${ws.map(w=>`<li><span class="c ${wcls(w)}" data-w="${esc(w)}">${star(w)}</span> <b>${cnt(w)}개 차시</b> <span class="meta">${home[w]?home[w]+'차시에서 익힘 → ':(elem[w]?esc(elem[w])+'에 배움 → ':'')}${(uses[w]||[]).concat(puses[w]||[]).join(', ')}차시</span></li>`).join('')}</ul>`}
 function intro(){if(fMulti)return showMulti();panel.innerHTML=`<div class="tip"><b>보는 법</b><br>차시나 낱말을 누르면, 그것을 익히기 전에 <b style="color:var(--pre)">먼저 알아야 하는 차시·낱말</b>과 <b style="color:var(--post)">그 낱말을 다시 쓰는 뒤 차시</b>가 표시됩니다. 차시를 누르면 낱말의 뜻과 용례도 나옵니다.<br>위쪽 범례와 아래 ‘어휘의 세 가지’를 누르면 그 종류의 낱말만 강조됩니다.</div>
 <h3>구성</h3>전체 ${L.length}차시 · 새 어휘 ${L.reduce((s,d)=>s+d.new.length,0)}개 · 함께 보는 말 ${L.reduce((s,d)=>s+d.aux.length,0)}개 · 2차시 이상 나오는 어휘 ${multi.size}개
 <h3>단원</h3><ul>${U.map(u=>`<li><b style="color:${u.col}">●</b> ${esc(u.k)} <span class="meta">${u.ls[0].no}~${u.ls[u.ls.length-1].no}차시</span></li>`).join('')}</ul>
 <h3>어휘의 세 가지 (누르면 강조)</h3><ul><li data-cat="new"><span class="c">새 어휘</span> 그 소단원에서 처음 나오는 말. 이 차시에서 익힘</li><li data-cat="pre"><span class="c r">앞에서 배운 말</span> 뜻만 확인. 모르면 그 낱말을 익히는 차시로</li><li data-cat="elem"><span class="c e">초등에서 배운 말</span> 차시 안에서 배경지식으로 안내</li></ul>`}
 const CAT={new:['새 어휘','그 소단원에서 처음 나오는 말입니다. 그 차시에서 익힙니다.'],aux:['함께 보는 말','새 어휘와 같이 처음 나오는 낱말입니다.'],pre:['앞에서 배운 말 — 먼저 익혀야 하는 낱말과 차시','뒤 차시에서 다시 쓰이는 낱말과, 그 낱말을 익히는 차시입니다. 뒤 차시에서는 뜻만 확인하고, 모르면 익히는 차시로 돌아갑니다.'],post:['앞에서 배운 낱말을 다시 쓰는 차시','앞 차시의 낱말을 뜻 확인용으로 다시 쓰는 차시입니다.'],elem:['초등에서 배운 말','앞 차시로 보내지 않고, 쓰이는 차시 안에서 배경지식으로 안내합니다.']};
-function showCat(c){let body='';
+const KIND={core:['핵심 개념어','단원 학습의 중심이 되는 교과 개념 어휘입니다. 각 차시(공통 차시 제외)의 새 어휘가 여기에 해당합니다.'],sup:['보조·배경 개념어','핵심 개념을 이해하는 데 필요한 선행 개념이나 배경 개념 어휘입니다. 함께 처음 보는 말, 앞에서 배운 말, 초등에서 배운 말이 여기에 해당합니다. 한 낱말이 익히는 차시에서는 핵심 개념어이고, 뒤 차시에서는 보조·배경 개념어가 됩니다.'],perf:['수행 도구어','교과 활동과 문제 수행에 쓰이는 동사와 표현입니다. 공통 차시(1~4차시)에서 익히고, 각 차시에서 문제의 지시문으로 다시 만납니다.'],tc:['개념 중심 차시','개념 어휘를 익히는 것이 중심인 차시입니다.'],tp:['수행 중심 차시','문제의 지시문이나 풀이 절차에 쓰는 말을 익히는 것이 중심인 차시입니다.']};
+function applyKind(c,role,wr){
+  if(c==='tc'||c==='tp'){L.forEach(d=>{if((d.type==='수행 중심')===(c==='tp'))role[d.no]='on'});return false}
+  L.forEach(d=>{const cm=isC(d);
+    if(c==='core'&&!cm){d.new.forEach(w=>wr[w]='self');role[d.no]='on'}
+    if(c==='sup'&&!cm){d.aux.forEach(w=>wr[w]='self');if(d.aux.length||d.review.length)role[d.no]='on'}
+    if(c==='perf'){if(cm){d.new.concat(d.aux).forEach(w=>wr[w]='self');role[d.no]='on'}else if((d.perfs||[]).length){d.perfs.forEach(x=>wr[x[2]||x[0]]='self');role[d.no]='on'}}});
+  return true}
+function showKind(c){let body='';const nc=L.filter(d=>!isC(d));
+  if(c==='core'){const ws=[];nc.forEach(d=>d.new.forEach(w=>ws.push(w)));body=`<div class="meta">${ws.length}개</div>`+chips(ws,'')}
+  else if(c==='sup'){const ax=[];nc.forEach(d=>d.aux.forEach(w=>ax.push(w)));const pv=Object.keys(home).filter(w=>uses[w]&&!isC(byNo[home[w]])).sort((a,b)=>home[a]-home[b]),ev=Object.keys(elem).sort((a,b)=>a.localeCompare(b,'ko'));
+    body=`<h3>함께 처음 보는 말 ${ax.length}개 (지도에서 강조)</h3>${chips(ax,'x')}<h3>뒤 차시에서 앞에서 배운 말로 다시 쓰이는 낱말 ${pv.length}개</h3>${chips(pv,'r')}<h3>초등에서 배운 말 ${ev.length}개</h3>${chips(ev,'e')}`}
+  else if(c==='perf'){const ks=[...new Set(L.filter(isC).flatMap(d=>d.new.concat(d.aux)).concat(Object.keys(puses)))];
+    body=`<div class="meta">${ks.length}개</div><ul>${ks.map(w=>`<li><span class="c p" data-w="${esc(w)}">${esc(w)}</span> ${home[w]?lref(home[w]):'<b style="color:#b45309">익히는 차시 없음</b>'}${puses[w]?` <span class="meta">→ 쓰이는 차시 ${puses[w].join(', ')}</span>`:''}</li>`).join('')}</ul>`}
+  else{const ls=L.filter(d=>(d.type==='수행 중심')===(c==='tp'));body=`<div class="meta">${ls.length}개 차시</div><ul>${ls.map(d=>`<li>${lref(d.no)} <span class="meta">${d.new.map(esc).join(', ')}</span></li>`).join('')}</ul>`}
+  panel.innerHTML=`<div class="meta">${c==='tc'||c==='tp'?'차시 유형':'어휘 구분'}</div><h2>${KIND[c][0]}</h2><div class="meta">${KIND[c][1]}</div>${body}`}
+function showCat(c){if(KIND[c])return showKind(c);let body='';
   if(c==='new'||c==='aux'){const ws=[];L.forEach(d=>d[c].forEach(w=>ws.push(w)));body=`<div class="meta">${ws.length}개</div>`+chips(ws,c==='aux'?'x':'')}
   else if(c==='pre'){const ws=Object.keys(home).filter(w=>uses[w]).sort((a,b)=>home[a]-home[b]);body=`<div class="meta">${ws.length}개</div><ul>${ws.map(w=>`<li><span class="c ${wcls(w)}" data-w="${esc(w)}">${star(w)}</span> ${lref(home[w])} <span class="meta">→ 다시 쓰는 차시 ${uses[w].join(', ')}</span></li>`).join('')}</ul>`}
   else if(c==='post'){const ls=L.filter(d=>pre[d.no].size);body=`<div class="meta">${ls.length}개 차시</div><ul>${ls.map(d=>`<li>${lref(d.no)}<br>${d.review.filter(r=>typeof r[1]==='number').map(r=>`<span class="c r" data-w="${esc(r[0])}">${star(r[0])} <small>← ${r[1]}차시</small></span>`).join(' ')}</li>`).join('')}</ul>`}
   else{const ws=Object.keys(elem).sort((a,b)=>elem[a].localeCompare(elem[b])||a.localeCompare(b,'ko')),en=[];L.forEach(d=>Object.keys(d.elemNew||{}).forEach(w=>en.push([w,d.elemNew[w],d.no])));
     body=`<h3>차시 안에서 안내하는 초등 낱말 ${ws.length}개</h3><ul>${ws.map(w=>`<li><span class="c e" data-w="${esc(w)}">${esc(w)} <small>${esc(elem[w])}</small></span> <span class="meta">쓰이는 차시 ${uses[w].join(', ')}</span></li>`).join('')}</ul><h3>초등 낱말이지만 새 어휘로 다시 익히는 것 ${en.length}개 (지도에서 강조)</h3><ul>${en.map(x=>`<li><span class="c" data-w="${esc(x[0])}">${star(x[0])} <small>${esc(x[1])}</small></span> ${lref(x[2])}</li>`).join('')}</ul>`}
   panel.innerHTML=`<div class="meta">어휘 종류</div><h2>${CAT[c][0]}</h2><div class="meta">${CAT[c][1]}</div>${body}`}
-function showLesson(n){const d=byNo[n],pr=d.review.filter(r=>typeof r[1]==='number'),el_=d.review.filter(r=>typeof r[1]!=='number'),ps=[...(post[n]||[])].sort((a,b)=>a-b),an=[...anc(n)].sort((a,b)=>a-b),b=BUILT[d.name],en=d.elemNew||{};
-  panel.innerHTML=`<div class="meta">${esc(ukey(d))} · ${esc(d.type)}</div><h2>${d.no}차시 ${esc(d.name)}</h2>
+function showLesson(n){const d=byNo[n],pr=d.review.filter(r=>typeof r[1]==='number'),el_=d.review.filter(r=>typeof r[1]!=='number'),ps=[...(post[n]||[])].sort((a,b)=>a-b),an=[...anc(n)].sort((a,b)=>a-b),b=BUILT[d.name],en=d.elemNew||{},pc=isC(d)?'p':'';
+  panel.innerHTML=`<div class="meta">${esc(ukey(d))} · ${tyb(d)} ${esc(d.type)} 차시</div><h2>${d.no}차시 ${esc(d.name)}</h2>
 <div class="meta">먼저 보고 배우는 소단원: <b>${esc(d.sub)}</b> ${esc(d.std)}</div>
 <a class="btn g" href="./#L${d.no}">목차 카드</a>${b?`<a class="btn" href="${b}/">시안 열기 ▶</a>`:''}
-<h3>새 어휘 — 이 차시에서 익힘</h3>${d.new.map(w=>wblock(w,'',en[w]?`<span class="meta">${esc(en[w])}에 배운 말을 다시 익힘</span>`:'')).join('')}
-${d.aux.length?'<h3>함께 처음 보는 말</h3>'+d.aux.map(w=>wblock(w,'x')).join(''):''}
-${pr.length?'<h3>앞에서 배운 말 — 뜻 확인, 모르면 그 차시를 먼저</h3>'+pr.map(r=>wblock(r[0],'r',`← ${lref(r[1])} <span class="meta">${esc(byNo[r[1]].grade)} ${esc(byNo[r[1]].sub)}</span>`)).join(''):''}
-${el_.length?'<h3>초등에서 배운 말 — 이 차시 안에서 안내</h3>'+el_.map(r=>wblock(r[0],'e',`<span class="meta">${esc(r[1])}에 배움</span>`)).join(''):''}
+<h3>${pc?'수행 도구어':'핵심 개념어'} · 새 어휘 — 이 차시에서 익힘</h3>${d.new.map(w=>wblock(w,pc,en[w]?`<span class="meta">${esc(en[w])}에 배운 말을 다시 익힘</span>`:'')).join('')}
+${d.aux.length?'<h3>'+(pc?'수행 도구어':'보조·배경 개념어')+' · 함께 처음 보는 말</h3>'+d.aux.map(w=>wblock(w,pc||'x')).join(''):''}
+${pr.length?'<h3>보조·배경 개념어 · 앞에서 배운 말 — 뜻 확인, 모르면 그 차시를 먼저</h3>'+pr.map(r=>wblock(r[0],'r',`← ${lref(r[1])} <span class="meta">${esc(byNo[r[1]].grade)} ${esc(byNo[r[1]].sub)}</span>`)).join(''):''}
+${el_.length?'<h3>보조·배경 개념어 · 초등에서 배운 말 — 이 차시 안에서 안내</h3>'+el_.map(r=>wblock(r[0],'e',`<span class="meta">${esc(r[1])}에 배움</span>`)).join(''):''}
+${(d.perfs||[]).length?'<h3>수행 도구어 — 문제에서 쓰는 말</h3>'+d.perfs.map(x=>`<div class="wb"><span class="c p" data-w="${esc(x[2]||x[0])}">${esc(x[0])}</span> ${x[1]?'← '+lref(x[1]):'<span class="meta">익히는 차시 없음</span>'}</div>`).join(''):''}
 ${ps.length?'<h3>이 차시의 낱말을 다시 쓰는 차시</h3><ul>'+ps.map(m=>`<li>${lref(m)} <span class="meta">${byNo[m].review.filter(r=>r[1]===n).map(r=>esc(r[0])).join(', ')}</span></li>`).join('')+'</ul>':''}
 ${an.length?'<h3>거슬러 올라간 선행 차시 전체</h3><ul>'+an.map(m=>`<li>${lref(m)}</li>`).join('')+'</ul>':'<h3>선행 차시</h3>없음 (초등에서 배운 말과 배경지식에서 시작)'}`}
 function showWord(w){const h=home[w],us=uses[w]||[];
-  panel.innerHTML=`<div class="meta">낱말</div><h2>${star(w)}</h2>${ESS.has(w)?'<div class="meta">충남대 핵심어</div>':''}${gl(w)}
+  panel.innerHTML=`<div class="meta">낱말</div><h2>${star(w)}</h2><div class="meta">${{'':'핵심 개념어 (익히는 차시에서) · 뒤 차시에서는 보조·배경 개념어',x:'보조·배경 개념어',e:'보조·배경 개념어 (초등에서 배운 말)',p:'수행 도구어'}[wcls(w)]}${ESS.has(w)?' · 충남대 핵심어':''}</div>${gl(w)}
 <h3>익히는 곳</h3>${h?lref(h)+` <span class="meta">${byNo[h].new.includes(w)?'새 어휘':'함께 보는 말'} · ${esc(byNo[h].grade)} ${esc(byNo[h].sub)}</span>`:(elem[w]?`초등학교에서 배운 말 (${esc(elem[w])}) <div class="meta">앞 차시로 보내지 않고, 쓰이는 차시 안에서 배경지식으로 안내합니다.</div>`:'-')}
-<h3>${h?'앞에서 배운 말로 다시 쓰이는 차시':'쓰이는 차시'}</h3>${us.length?'<ul>'+us.map(m=>`<li>${lref(m)}</li>`).join('')+'</ul>':'없음'}`}
+<h3>${h?'앞에서 배운 말로 다시 쓰이는 차시':'쓰이는 차시'}</h3>${us.length?'<ul>'+us.map(m=>`<li>${lref(m)}</li>`).join('')+'</ul>':'없음'}${puses[w]?'<h3>수행 도구어로 쓰이는 차시</h3><ul>'+puses[w].map(m=>`<li>${lref(m)}</li>`).join('')+'</ul>':''}`}
 function apply(scroll){
   document.querySelectorAll('.s-self,.s-pre,.s-post,.s-w,.s-on,.dimc').forEach(e=>e.classList.remove('s-self','s-pre','s-post','s-w','s-on','dimc'));
   document.querySelectorAll('[data-cat].on').forEach(e=>e.classList.remove('on'));
   E.forEach(e=>e.p.setAttribute('class',''));gO.innerHTML='';document.body.classList.toggle('has-sel',!!sel);
   if(!sel)return intro();
   const role={},wr={},hot=[];let dimChips=false;
-  if(sel.cat){const c=sel.cat;dimChips=c!=='post';
+  if(sel.cat){const c=sel.cat;dimChips=c!=='post';if(KIND[c])dimChips=applyKind(c,role,wr);else{
     L.forEach(d=>{if(c==='new'||c==='aux'){d[c].forEach(w=>wr[w]='self');if(d[c].length)role[d.no]='on'}
       else if(c==='pre'){if(post[d.no])role[d.no]='pre'}
       else if(c==='post'){if(pre[d.no].size)role[d.no]='post'}
       else{Object.keys(d.elemNew||{}).forEach(w=>wr[w]='self');if(d.review.some(r=>typeof r[1]!=='number')||Object.keys(d.elemNew||{}).length)role[d.no]='on'}});
-    if(c==='pre')Object.keys(home).forEach(w=>{if(uses[w])wr[w]='pre'});
+    if(c==='pre')Object.keys(home).forEach(w=>{if(uses[w])wr[w]='pre'})}
     showCat(c)}
   else if(sel.l){const n=sel.l,an=anc(n);an.forEach(a=>role[a]='pre');(post[n]||[]).forEach(m=>role[m]='post');role[n]='self';
     byNo[n].review.forEach(r=>{if(typeof r[1]==='number')wr[r[0]]='pre'});byNo[n].leaves.forEach(lf=>wr[lf[0]]='self');
@@ -238,7 +265,7 @@ function view(v){curV=v;VIEWS.forEach(x=>{document.body.classList.toggle('v-'+x,
 VIEWS.forEach(x=>document.getElementById('t-'+x).onclick=()=>view(x));
 /* ───── 성취기준별 · 교과서 소단원별 ───── */
 const ucol={};U.forEach(u=>ucol[u.k]=u.col);
-function lcard(d,note){return `<div class="lc" data-l="${d.no}"><span class="no">${d.no}</span> <b>${esc(d.name)}</b>${note?` <span class="sp">${note}</span>`:''}<div class="chips">`+d.new.map(w=>`<span class="c" data-w="${esc(w)}">${star(w)}</span>`).join('')+d.aux.map(w=>`<span class="c x" data-w="${esc(w)}">${esc(w)}</span>`).join('')+'</div></div>'}
+function lcard(d,note){return `<div class="lc" data-l="${d.no}"><span class="no">${d.no}</span> <b>${esc(d.name)}</b> ${tyb(d)}${note?` <span class="sp">${note}</span>`:''}<div class="chips">`+wchips(d)+'</div></div>'}
 function table(id,groups,unitName,lead){let h='<div class="jump">'+groups.map((g,i)=>`<button style="background:${g.col}" data-j="${id}-g${i}">${esc(g.k)}</button>`).join('')+'</div><div class="tr" style="border:0;padding-bottom:0"><span class="meta">'+lead+'</span></div>';
   groups.forEach((g,i)=>{const ls=new Set();g.rows.forEach(r=>r.ls.forEach(x=>ls.add(x[0].no)));
     h+=`<div class="gh" id="${id}-g${i}" style="background:${g.col}"><span>${esc(g.k)}</span><small>${g.common?'':unitName+' '+g.rows.length+'개 · '}차시 ${ls.size}개</small></div>`;
