@@ -26,7 +26,7 @@ h2{font-size:17px;margin:26px 0 8px;padding:5px 12px;background:#2a1a00;color:#f
 a.r{border-radius:99px;padding:2px 9px;border:1.5px solid #2f6fe4;background:#eef4ff;color:#1e4fb3;text-decoration:none;font-size:12.5px;font-weight:700}
 a.r:hover{background:#2f6fe4;color:#fff}a.r small,.e small,.w small{opacity:.75;font-weight:600}
 .e{border-radius:99px;padding:2px 9px;border:1.5px solid #c3c9d4;background:#f4f6f9;color:#4b5563;font-size:12.5px;font-weight:700}
-.none{color:#b45309;font-weight:700;font-size:12.5px}
+.stat.map{background:#2f6fe4;color:#fff;text-decoration:none;font-size:15px;padding:6px 16px}.none{color:#b45309;font-weight:700;font-size:12.5px}
 .go{position:absolute;right:11px;top:10px;background:#19b394;color:#fff;border-radius:99px;padding:2px 11px;font-size:12px;font-weight:800;text-decoration:none}
 .go.old{background:#9aa3b2}.todo{position:absolute;right:11px;top:10px;color:#9aa3b2;font-size:12px;font-weight:700}
 .tp{font-size:11.5px;color:#6b7280;margin-left:6px}
@@ -75,6 +75,7 @@ def build_home(root):
 <span><span class="x">함께 보는 말</span> 새 어휘와 같이 처음 나오는 낱말</span>
 <span><a class="r" href="#">앞에서 배운 말 <small>← n차시</small></a> 뜻만 확인. 모르면 그 낱말을 익히는 차시로 안내 (누르면 이동)</span>
 <span><span class="e">초등에서 배운 말 <small>초5-1</small></span> 앞 차시로 보내지 않고 이 차시 안에서 배경지식으로 안내</span></div>
+<a class="stat map" href="vocab-map.html">🗺 학습 어휘 지도 (마인드맵 · 위계 흐름) ▶</a><br>
 <span class="stat">전체 {len(L)}차시</span><span class="stat">시안 {done}차시</span><span class="stat">새 어휘 {sum(len(d['new']) for d in L if d['grade'] != '공통')}개</span>
 {''.join(out)}
 <footer>{e(cfg.get('foot', ''))}</footer>
@@ -82,6 +83,11 @@ def build_home(root):
 """
     io.open(os.path.join(root, 'index.html'), 'w', encoding='utf-8').write(page)
     print(f'홈 화면(위계도): {len(L)}차시, 시안 {done}차시')
+    # 어휘 지도(마인드맵·위계 흐름)
+    data = dict(lessons=L, ess=syl['ess'], built={k: v['folder'] for k, v in built.items() if os.path.exists(os.path.join(root, v['folder'], 'index.html'))})
+    t = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'map_template.html'), encoding='utf-8').read()
+    io.open(os.path.join(root, 'vocab-map.html'), 'w', encoding='utf-8').write(t.replace('/*DATA*/', json.dumps(data, ensure_ascii=False).replace('</', '<\/')))
+    print('어휘 지도: vocab-map.html')
 
 if __name__ == '__main__':
     build_home(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

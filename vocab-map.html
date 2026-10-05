@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>60차시 학습 어휘 지도</title>
+<style>
+:root{--ink:#1d2433;--line:#1b1b1b;--new:#0a5c4b;--newbg:#e3f8f1;--newbd:#19b394;--pre:#1e4fb3;--post:#c2410c;--pw:340px}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;background:#eef5fb;color:var(--ink);margin:0;display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;padding:9px 14px;background:#fff;border-bottom:2px solid var(--line)}
+header h1{font-size:17px;margin:0 6px 0 0}
+header a.home{text-decoration:none;font-weight:800;color:var(--ink);border:1.5px solid var(--line);border-radius:99px;padding:3px 11px;font-size:13px;background:#fff}
+.tabs{display:flex;border:1.5px solid var(--line);border-radius:99px;overflow:hidden}
+.tabs button{border:0;background:#fff;padding:5px 14px;font:inherit;font-weight:800;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.tabs button.on{background:#2a1a00;color:#fff}
+#q{border:1.5px solid var(--line);border-radius:99px;padding:5px 13px;font:inherit;font-size:13.5px;width:190px}
+.zoom button,#clear{border:1.5px solid var(--line);background:#fff;border-radius:8px;font:inherit;font-weight:800;font-size:13px;padding:3px 9px;cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:#4b5563;margin-left:auto;align-items:center}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:3px;vertical-align:-1px}
+.wrap{flex:1;display:flex;min-height:0}
+main{flex:1;min-width:0;position:relative;overflow:hidden}
+#mm{width:100%;height:100%;display:block;cursor:grab;touch-action:none;background:#f7fbff}
+#mm.drag{cursor:grabbing}
+#flow{position:absolute;inset:0;overflow:auto;display:none;background:#f7fbff}
+body.v-flow #flow{display:block}body.v-flow #mm{display:none}body.v-flow .zoom{display:none}
+aside{flex:0 0 var(--pw);background:#fff;border-left:2px solid var(--line);overflow:auto;padding:14px 15px 40px;font-size:13.5px;line-height:1.6}
+aside h2{font-size:18px;margin:0 0 2px}aside h3{font-size:12.5px;margin:13px 0 4px;color:#6b7280}
+aside .meta{color:#6b7280;font-size:12.5px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.c{border-radius:99px;padding:2px 9px;font-weight:800;font-size:13px;cursor:pointer;border:1.5px solid var(--newbd);background:var(--newbg);color:var(--new);white-space:nowrap}
+.c.x{border:1.5px dashed #c9a24a;background:#fff8e1;color:#6b4b00;font-weight:700}
+.c.r{border:1.5px solid #2f6fe4;background:#eef4ff;color:var(--pre);font-weight:700}
+.c.e{border:1.5px solid #c3c9d4;background:#f4f6f9;color:#4b5563;font-weight:700}
+.c small{opacity:.7;font-weight:600}
+aside ul{margin:0;padding:0;list-style:none}aside li{padding:3px 0;border-bottom:1px dashed #e2e8f0}
+.lk{color:var(--pre);font-weight:800;cursor:pointer;text-decoration:underline}
+.btn{display:inline-block;margin:8px 6px 0 0;border-radius:99px;padding:3px 12px;font-size:12.5px;font-weight:800;text-decoration:none;background:#19b394;color:#fff}
+.btn.g{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.tip{background:#fffbe8;border:1.5px solid #f6b21a;border-radius:10px;padding:8px 11px;font-size:12.5px;margin-bottom:10px}
+/* 마인드맵 */
+#mm text{font-size:11.5px;fill:var(--ink);cursor:pointer;user-select:none}
+#mm .tl{fill:none;stroke-width:1.2;opacity:.42}
+#mm .u text{font-size:13px;font-weight:800}
+#mm .l text{font-weight:700}
+#mm .w.new text{fill:var(--new);font-weight:800}
+#mm .w.aux text{fill:#8a5a00}
+#mm .root text{font-size:15px;font-weight:800;text-anchor:middle;cursor:default}
+#mm .ov{fill:none;stroke-width:2.6;opacity:.9}
+#mm .ov.pre{stroke:var(--pre)}#mm .ov.post{stroke:var(--post)}
+body.has-sel #mm .l,body.has-sel #mm .w,body.has-sel #mm .u,body.has-sel #mm .tl{opacity:.13}
+body.has-sel #mm .s-self,body.has-sel #mm .s-pre,body.has-sel #mm .s-post{opacity:1}
+#mm .l.s-self circle{stroke:#f6b21a;stroke-width:5}
+#mm .s-pre text{fill:var(--pre)!important;font-weight:800}
+#mm .s-post text{fill:var(--post)!important;font-weight:800}
+#mm .w.s-self text{font-size:13px}
+/* 위계 흐름 */
+#flowin{position:relative;min-width:980px}
+#arcs{position:absolute;left:0;top:0;pointer-events:none}
+#arcs path{fill:none;stroke:#9aa7ba;stroke-width:1;opacity:.5}
+#arcs path.pre{stroke:var(--pre);stroke-width:2.6;opacity:1}#arcs path.post{stroke:var(--post);stroke-width:2.6;opacity:1}
+body.has-sel #arcs path:not(.pre):not(.post){opacity:.08}
+.uh{height:32px;display:flex;align-items:center;font-weight:800;font-size:13.5px;color:#fff;padding:0 12px;border-radius:8px 0 0 8px}
+.row{height:38px;display:flex;align-items:center;gap:7px;padding:0 10px;border-bottom:1px solid #e3eaf3;cursor:pointer;white-space:nowrap;background:#fff}
+.row .no{flex:0 0 30px;text-align:center;background:#2f6fe4;color:#fff;border-radius:7px;font-weight:800;font-size:12.5px;padding:1px 0}
+.row .nm{flex:0 0 200px;font-weight:800;font-size:13.5px;overflow:hidden;text-overflow:ellipsis}
+.row .sb{flex:0 0 250px;font-size:11.5px;color:#6b7280;overflow:hidden;text-overflow:ellipsis}
+.row .c{font-size:12px;padding:1px 8px}
+body.has-sel .row{opacity:.28}
+body.has-sel .row.s-self{opacity:1;background:#fffbe8;box-shadow:inset 5px 0 0 #f6b21a}
+body.has-sel .row.s-pre{opacity:1;background:#eef4ff;box-shadow:inset 5px 0 0 var(--pre)}
+body.has-sel .row.s-post{opacity:1;background:#fff3ea;box-shadow:inset 5px 0 0 var(--post)}
+.c.s-w{outline:3px solid #f6b21a}
+@media(max-width:820px){.wrap{flex-direction:column}aside{flex:0 0 38vh;border-left:0;border-top:2px solid var(--line)}.legend{display:none}#q{width:130px}}
+</style></head>
+<body>
+<header>
+<a class="home" href="./">🏠 목차</a><h1>60차시 학습 어휘 지도</h1>
+<div class="tabs"><button id="t-mm" class="on">마인드맵</button><button id="t-flow">위계 흐름</button></div>
+<input id="q" placeholder="낱말 찾기 (예: 지수)" autocomplete="off">
+<span class="zoom"><button data-z="1.25">＋</button> <button data-z="0.8">－</button> <button data-z="0">맞춤</button></span>
+<button id="clear">선택 해제</button>
+<div class="legend"><span><i style="background:#19b394"></i>새 어휘 (★ 충남대 핵심어)</span><span><i style="background:#c9a24a"></i>함께 보는 말</span><span><i style="background:#1e4fb3"></i>먼저 익혀야 하는 차시·낱말</span><span><i style="background:#c2410c"></i>이 낱말을 다시 쓰는 차시</span></div>
+</header>
+<div class="wrap">
+<main><svg id="mm" viewBox="-740 -740 1480 1480"></svg><div id="flow"><div id="flowin"><svg id="arcs"></svg><div id="rows"></div></div></div></main>
+<aside id="panel"></aside>
+</div>
+<script>
+const D={"lessons": [{"no": 1, "grade": "공통", "unit": "공통(수행 중심)", "sub": "중1·중2 전 단원", "std": "", "name": "문제에서 쓰는 말 ① 구하기", "type": "수행 중심", "perf": "", "new": ["구하다(구하시오)", "계산하다(계산하시오)", "풀다(푸시오)"], "elemNew": {}, "aux": ["간단히 하다", "값", "답", "각각", "~일 때"], "review": []}, {"no": 2, "grade": "공통", "unit": "공통(수행 중심)", "sub": "중1·중2 전 단원", "std": "", "name": "문제에서 쓰는 말 ② 나타내기", "type": "수행 중심", "perf": "", "new": ["나타내다(나타내시오)", "써넣다(써넣으시오)", "그리다(그리시오)"], "elemNew": {}, "aux": ["기호", "빈칸", "완성하다"], "review": []}, {"no": 3, "grade": "공통", "unit": "공통(수행 중심)", "sub": "중1·중2 전 단원", "std": "", "name": "문제에서 쓰는 말 ③ 고르기", "type": "수행 중심", "perf": "", "new": ["고르다(고르시오)", "찾다(찾으시오)", "모두"], "elemNew": {}, "aux": ["보기", "옳은 것", "옳지 않은 것", "차례대로"], "review": []}, {"no": 4, "grade": "공통", "unit": "공통(수행 중심)", "sub": "중1·중2 전 단원", "std": "", "name": "문제에서 쓰는 말 ④ 설명하기", "type": "수행 중심", "perf": "", "new": ["설명하다(설명하시오)", "말하다(말하시오)", "까닭(이유)"], "elemNew": {}, "aux": ["~이므로", "~이기 때문에", "서술하다"], "review": []}, {"no": 5, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "1. 소인수분해", "std": "[9수01-01]", "name": "소수와 합성수", "type": "개념 중심", "perf": "구분하다", "new": ["소수", "합성수"], "elemNew": {}, "aux": [], "review": [["자연수", "초5-1"], ["약수", "초5-1"], ["배수", "초5-1"]]}, {"no": 6, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "1. 소인수분해", "std": "[9수01-01]", "name": "거듭제곱", "type": "개념 중심", "perf": "나타내다", "new": ["거듭제곱"], "elemNew": {}, "aux": ["제곱", "세제곱"], "review": [["곱", "초3-1"], ["자연수", "초5-1"]]}, {"no": 7, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "1. 소인수분해", "std": "[9수01-01]", "name": "밑과 지수", "type": "개념 중심", "perf": "나타내다", "new": ["밑", "지수"], "elemNew": {}, "aux": [], "review": [["거듭제곱", 6], ["곱", "초3-1"]]}, {"no": 8, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "1. 소인수분해", "std": "[9수01-01]", "name": "소인수분해", "type": "개념 중심", "perf": "나타내다", "new": ["소인수", "소인수분해"], "elemNew": {}, "aux": ["인수"], "review": [["소수", 5], ["지수", 7], ["거듭제곱", 6], ["밑", 7], ["약수", "초5-1"], ["곱", "초3-1"]]}, {"no": 9, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "2. 최대공약수와 최소공배수", "std": "[9수01-02]", "name": "최대공약수와 최소공배수", "type": "개념 중심", "perf": "구하다", "new": ["최대공약수", "최소공배수", "서로소"], "elemNew": {"최대공약수": "초5-1", "최소공배수": "초5-1"}, "aux": [], "review": [["공약수", "초5-1"], ["공배수", "초5-1"], ["약수", "초5-1"], ["배수", "초5-1"], ["소인수분해", 8], ["지수", 7]]}, {"no": 10, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "3. 정수와 유리수의 뜻과 대소 관계", "std": "[9수01-03]", "name": "양수와 음수", "type": "개념 중심", "perf": "나타내다", "new": ["양수", "음수"], "elemNew": {}, "aux": ["양의 부호", "음의 부호"], "review": [["자연수", "초5-1"]]}, {"no": 11, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "3. 정수와 유리수의 뜻과 대소 관계", "std": "[9수01-03]", "name": "정수와 유리수", "type": "개념 중심", "perf": "구분하다", "new": ["정수", "유리수"], "elemNew": {}, "aux": ["양의 정수", "음의 정수", "양의 유리수", "음의 유리수"], "review": [["양수", 10], ["음수", 10], ["자연수", "초5-1"], ["분수", "초3-1"]]}, {"no": 12, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "3. 정수와 유리수의 뜻과 대소 관계", "std": "[9수01-04]", "name": "절댓값과 대소 관계", "type": "개념 중심", "perf": "비교하다", "new": ["절댓값", "대소 관계", "부등호"], "elemNew": {}, "aux": ["원점"], "review": [["수직선", "초3-1"], ["양수", 10], ["음수", 10], ["이상", "초5-2"], ["이하", "초5-2"], ["초과", "초5-2"], ["미만", "초5-2"]]}, {"no": 13, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "4~6. 정수와 유리수의 덧셈·뺄셈·곱셈", "std": "[9수01-05]", "name": "계산 법칙", "type": "개념 중심", "perf": "계산하다", "new": ["덧셈의 교환법칙", "덧셈의 결합법칙", "분배법칙"], "elemNew": {}, "aux": ["곱셈의 교환법칙", "곱셈의 결합법칙"], "review": [["괄호", "초5-1"], ["유리수", 11], ["덧셈", "초3-1"], ["곱셈", "초3-1"]]}, {"no": 14, "grade": "중1", "unit": "Ⅰ. 수와 연산", "sub": "7. 정수와 유리수의 나눗셈", "std": "[9수01-05]", "name": "사칙계산과 역수", "type": "개념 중심", "perf": "계산하다", "new": ["사칙계산", "역수"], "elemNew": {}, "aux": [], "review": [["덧셈", "초3-1"], ["뺄셈", "초3-1"], ["곱셈", "초3-1"], ["나눗셈", "초3-1"], ["유리수", 11], ["분수", "초3-1"]]}, {"no": 15, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "1. 문자의 사용과 식의 값", "std": "[9수02-01]", "name": "문자의 사용과 식의 값", "type": "개념 중심", "perf": "구하다", "new": ["대입", "식의 값"], "elemNew": {}, "aux": [], "review": [["식", "초3-1"]]}, {"no": 16, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "2. 일차식과 수의 곱셈, 나눗셈", "std": "[9수02-02]", "name": "항과 계수", "type": "개념 중심", "perf": "말하다", "new": ["항", "계수", "상수항"], "elemNew": {}, "aux": [], "review": [["식", "초3-1"]]}, {"no": 17, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "2. 일차식과 수의 곱셈, 나눗셈", "std": "[9수02-02]", "name": "다항식과 일차식", "type": "개념 중심", "perf": "고르다", "new": ["다항식", "차수", "일차식"], "elemNew": {}, "aux": ["단항식", "다항식의 차수"], "review": [["항", 16], ["계수", 16]]}, {"no": 18, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "3. 일차식의 덧셈과 뺄셈", "std": "[9수02-02]", "name": "동류항", "type": "개념 + 수행", "perf": "간단히 하다, 정리하다", "new": ["동류항"], "elemNew": {}, "aux": [], "review": [["항", 16], ["계수", 16], ["일차식", 17], ["분배법칙", 13], ["괄호", "초5-1"]]}, {"no": 19, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "4. 방정식과 그 해", "std": "[9수02-03]", "name": "등식과 등식의 성질", "type": "개념 중심", "perf": "", "new": ["등식", "양변", "등식의 성질"], "elemNew": {}, "aux": ["좌변", "우변"], "review": [["등호", "초4-1"]]}, {"no": 20, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "4. 방정식과 그 해", "std": "[9수02-03]", "name": "방정식과 그 해", "type": "개념 중심", "perf": "풀다", "new": ["방정식", "미지수", "해(또는 근)"], "elemNew": {}, "aux": ["항등식"], "review": [["등식", 19], ["대입", 15]]}, {"no": 21, "grade": "중1", "unit": "Ⅱ. 문자와 식", "sub": "5. 일차방정식", "std": "[9수02-04]", "name": "일차방정식", "type": "개념 + 수행", "perf": "풀다", "new": ["이항", "일차방정식"], "elemNew": {}, "aux": ["방정식을 푼다"], "review": [["방정식", 20], ["등식의 성질", 19], ["항", 16], ["해(또는 근)", 20]]}, {"no": 22, "grade": "중1", "unit": "Ⅲ. 좌표평면과 그래프", "sub": "1. 순서쌍과 좌표", "std": "[9수02-05]", "name": "순서쌍과 좌표", "type": "개념 중심", "perf": "나타내다", "new": ["순서쌍", "좌표평면", "사분면"], "elemNew": {}, "aux": ["좌표", "x축", "y축", "좌표축", "x좌표", "y좌표", "제1사분면", "제2사분면", "제3사분면", "제4사분면"], "review": [["수직선", "초3-1"], ["원점", 12]]}, {"no": 23, "grade": "중1", "unit": "Ⅲ. 좌표평면과 그래프", "sub": "2. 그래프와 그 해석", "std": "[9수02-06]", "name": "그래프와 그 해석", "type": "개념 + 수행", "perf": "해석하다, 나타내다", "new": ["변수"], "elemNew": {}, "aux": [], "review": [["그래프", "초4-1"], ["표", "초3-2"], ["좌표평면", 22], ["순서쌍", 22]]}, {"no": 24, "grade": "중1", "unit": "Ⅲ. 좌표평면과 그래프", "sub": "3. 정비례 · 4. 반비례", "std": "[9수02-07]", "name": "정비례와 반비례", "type": "개념 중심", "perf": "식으로 나타내다", "new": ["정비례", "반비례"], "elemNew": {}, "aux": [], "review": [["변수", 23], ["그래프", "초4-1"], ["대응 관계", "초5-1"]]}, {"no": 25, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "1. 점, 선, 면", "std": "[9수03-01]", "name": "직선, 반직선, 선분", "type": "개념 중심", "perf": "나타내다", "new": ["직선", "반직선", "선분"], "elemNew": {"직선": "초3-1", "반직선": "초3-1", "선분": "초3-1"}, "aux": [], "review": [["점", "초3-1"], ["선", "초3-1"]]}, {"no": 26, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "1. 점, 선, 면", "std": "[9수03-01]", "name": "교점과 중점", "type": "개념 중심", "perf": "", "new": ["교점", "교선", "중점"], "elemNew": {}, "aux": ["두 점 사이의 거리"], "review": [["직선", 25], ["선분", 25], ["면", "초5-2"]]}, {"no": 27, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "2. 각", "std": "[9수03-01]", "name": "각과 맞꼭지각", "type": "개념 중심", "perf": "", "new": ["각", "교각", "맞꼭지각"], "elemNew": {"각": "초3-1"}, "aux": ["평각"], "review": [["직각", "초3-1"], ["예각", "초4-1"], ["둔각", "초4-1"], ["교점", 26], ["반직선", 25]]}, {"no": 28, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "2. 각", "std": "[9수03-01]", "name": "수직과 수선", "type": "개념 중심", "perf": "", "new": ["직교", "수선의 발", "수직이등분선"], "elemNew": {}, "aux": ["점과 직선 사이의 거리"], "review": [["수직", "초4-2"], ["수선", "초4-2"], ["직각", "초3-1"], ["중점", 26], ["선분", 25]]}, {"no": 29, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "3. 점, 직선, 평면의 위치 관계", "std": "[9수03-01]", "name": "위치 관계", "type": "개념 중심", "perf": "", "new": ["평행", "꼬인 위치"], "elemNew": {"평행": "초4-2"}, "aux": [], "review": [["교점", 26], ["교선", 26], ["직선", 25], ["평면", "초5-2"]]}, {"no": 30, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "4. 평행선의 성질", "std": "[9수03-02]", "name": "평행선의 성질", "type": "개념 중심", "perf": "구하다, 설명하다", "new": ["동위각", "엇각"], "elemNew": {}, "aux": [], "review": [["평행", 29], ["평행선", "초4-2"], ["교각", 27], ["맞꼭지각", 27]]}, {"no": 31, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "5. 삼각형의 작도", "std": "[9수03-03]", "name": "삼각형의 작도", "type": "개념 + 수행", "perf": "작도하다", "new": ["작도", "대변", "대각"], "elemNew": {}, "aux": [], "review": [["선분", 25], ["각", 27]]}, {"no": 32, "grade": "중1", "unit": "Ⅳ. 도형의 기초", "sub": "6. 삼각형의 합동", "std": "[9수03-04]", "name": "삼각형의 합동", "type": "개념 중심", "perf": "", "new": ["합동", "끼인각", "삼각형의 합동 조건"], "elemNew": {"합동": "초5-2"}, "aux": [], "review": [["대응점", "초5-2"], ["대응변", "초5-2"], ["대응각", "초5-2"], ["대변", 31], ["대각", 31]]}, {"no": 33, "grade": "중1", "unit": "Ⅴ. 도형의 성질", "sub": "1. 다각형 · 2. 다각형의 내각과 외각의 크기", "std": "[9수03-05]", "name": "다각형의 내각과 외각", "type": "개념 중심", "perf": "", "new": ["내각", "외각"], "elemNew": {}, "aux": [], "review": [["다각형", "초4-2"], ["대각선", "초4-2"], ["정다각형", "초4-2"], ["꼭짓점", "초3-1"]]}, {"no": 34, "grade": "중1", "unit": "Ⅴ. 도형의 성질", "sub": "3. 원과 부채꼴", "std": "[9수03-06]", "name": "원과 부채꼴", "type": "개념 중심", "perf": "", "new": ["호", "현", "부채꼴"], "elemNew": {}, "aux": ["중심각", "할선", "활꼴"], "review": [["원", "초3-2"], ["원의 중심", "초3-2"], ["반지름", "초3-2"], ["지름", "초3-2"], ["원주율(π)", "초6-2"]]}, {"no": 35, "grade": "중1", "unit": "Ⅴ. 도형의 성질", "sub": "4. 다면체와 회전체", "std": "[9수03-07]", "name": "다면체", "type": "개념 중심", "perf": "", "new": ["다면체", "각뿔대", "정다면체"], "elemNew": {}, "aux": [], "review": [["면", "초5-2"], ["모서리", "초5-2"], ["꼭짓점", "초3-1"], ["기둥", "초6-1"], ["뿔", "초6-1"]]}, {"no": 36, "grade": "중1", "unit": "Ⅴ. 도형의 성질", "sub": "4. 다면체와 회전체", "std": "[9수03-07]", "name": "회전체", "type": "개념 중심", "perf": "", "new": ["회전체", "회전축", "원뿔대"], "elemNew": {}, "aux": [], "review": [["모선", "초6-2"], ["구", "초6-2"], ["원기둥", "초6-2"], ["원뿔", "초6-1"]]}, {"no": 37, "grade": "중1", "unit": "Ⅴ. 도형의 성질", "sub": "5~7. 기둥·뿔·구의 겉넓이와 부피", "std": "[9수03-08]", "name": "겉넓이와 부피", "type": "개념 중심", "perf": "구하다", "new": ["밑넓이", "옆넓이"], "elemNew": {}, "aux": [], "review": [["겉넓이", "초6-1"], ["부피", "초6-1"], ["밑면", "초5-2"], ["옆면", "초5-2"], ["전개도", "초5-2"], ["넓이", "초5-1"]]}, {"no": 38, "grade": "중1", "unit": "Ⅵ. 통계", "sub": "1. 대푯값", "std": "[9수04-01]", "name": "변량과 대푯값", "type": "개념 중심", "perf": "", "new": ["변량", "대푯값"], "elemNew": {}, "aux": [], "review": [["평균", "초5-2"], ["자료", "초3-2"]]}, {"no": 39, "grade": "중1", "unit": "Ⅵ. 통계", "sub": "1. 대푯값", "std": "[9수04-01]", "name": "중앙값과 최빈값", "type": "개념 중심", "perf": "구하다", "new": ["중앙값", "최빈값"], "elemNew": {}, "aux": [], "review": [["변량", 38], ["대푯값", 38], ["평균", "초5-2"]]}, {"no": 40, "grade": "중1", "unit": "Ⅵ. 통계", "sub": "2. 줄기와 잎 그림, 도수분포표", "std": "[9수04-02]", "name": "도수분포표", "type": "개념 중심", "perf": "", "new": ["계급", "도수", "도수분포표"], "elemNew": {}, "aux": ["줄기와 잎 그림", "계급의 크기", "계급값"], "review": [["변량", 38], ["표", "초3-2"]]}, {"no": 41, "grade": "중1", "unit": "Ⅵ. 통계", "sub": "3. 히스토그램과 도수분포다각형 · 4. 상대도수", "std": "[9수04-02]", "name": "히스토그램과 상대도수", "type": "개념 중심", "perf": "해석하다", "new": ["히스토그램", "도수분포다각형", "상대도수"], "elemNew": {}, "aux": ["자료의 분포"], "review": [["계급", 40], ["도수", 40], ["도수분포표", 40], ["그래프", "초4-1"], ["막대그래프", "초4-1"], ["비율", "초6-1"]]}, {"no": 42, "grade": "중2", "unit": "Ⅰ. 수와 식", "sub": "1. 유리수의 소수 표현", "std": "[9수01-06]", "name": "유한소수와 무한소수", "type": "개념 중심", "perf": "구분하다", "new": ["유한소수", "무한소수"], "elemNew": {}, "aux": [], "review": [["소수점", "초4-2"], ["유리수", 11], ["분수", "초3-1"]]}, {"no": 43, "grade": "중2", "unit": "Ⅰ. 수와 식", "sub": "1. 유리수의 소수 표현 · 2. 순환소수의 분수 표현", "std": "[9수01-06]", "name": "순환소수", "type": "개념 중심", "perf": "나타내다", "new": ["순환소수", "순환마디"], "elemNew": {}, "aux": [], "review": [["기약분수", "초5-1"], ["무한소수", 42], ["분모", "초3-1"], ["소인수", 8], ["소인수분해", 8]]}, {"no": 44, "grade": "중2", "unit": "Ⅰ. 수와 식", "sub": "3. 지수법칙 ~ 6. 다항식의 곱셈과 나눗셈", "std": "[9수02-08], [9수02-09], [9수02-10]", "name": "지수법칙과 식의 계산", "type": "개념 중심", "perf": "간단히 하다", "new": ["지수법칙", "이차식", "전개"], "elemNew": {}, "aux": [], "review": [["거듭제곱", 6], ["밑", 7], ["지수", 7], ["단항식", 17], ["다항식", 17], ["분배법칙", 13], ["동류항", 18]]}, {"no": 45, "grade": "중2", "unit": "Ⅱ. 부등식과 연립방정식", "sub": "1. 부등식과 그 해 ~ 3. 일차부등식의 풀이", "std": "[9수02-11], [9수02-12]", "name": "부등식", "type": "개념 중심", "perf": "풀다", "new": ["부등식", "부등식의 성질", "일차부등식"], "elemNew": {}, "aux": [], "review": [["부등호", 12], ["등식의 성질", 19], ["이항", 21], ["해(또는 근)", 20], ["일차방정식", 21]]}, {"no": 46, "grade": "중2", "unit": "Ⅱ. 부등식과 연립방정식", "sub": "4. 연립일차방정식과 그 해", "std": "[9수02-13]", "name": "연립일차방정식", "type": "개념 중심", "perf": "", "new": ["연립(일차)방정식"], "elemNew": {}, "aux": [], "review": [["미지수", 20], ["해(또는 근)", 20], ["일차방정식", 21], ["순서쌍", 22]]}, {"no": 47, "grade": "중2", "unit": "Ⅱ. 부등식과 연립방정식", "sub": "5. 연립일차방정식의 풀이", "std": "[9수02-13]", "name": "연립방정식의 풀이", "type": "개념 중심", "perf": "풀다", "new": ["대입법", "가감법", "소거"], "elemNew": {}, "aux": [], "review": [["대입", 15], ["연립(일차)방정식", 46], ["등식의 성질", 19]]}, {"no": 48, "grade": "중2", "unit": "Ⅲ. 일차함수", "sub": "1. 함수", "std": "[9수02-14]", "name": "함수", "type": "개념 중심", "perf": "", "new": ["함수", "함숫값"], "elemNew": {}, "aux": [], "review": [["대응 관계", "초5-1"], ["변수", 23], ["정비례", 24], ["반비례", 24]]}, {"no": 49, "grade": "중2", "unit": "Ⅲ. 일차함수", "sub": "2. 일차함수의 뜻과 그래프", "std": "[9수02-15]", "name": "일차함수와 그래프", "type": "개념 중심", "perf": "그리다", "new": ["일차함수", "평행이동"], "elemNew": {}, "aux": [], "review": [["함수", 48], ["일차식", 17], ["그래프", "초4-1"], ["좌표평면", 22]]}, {"no": 50, "grade": "중2", "unit": "Ⅲ. 일차함수", "sub": "3. 절편과 기울기 · 4. 그래프의 성질", "std": "[9수02-16]", "name": "절편과 기울기", "type": "개념 중심", "perf": "", "new": ["x절편", "y절편", "기울기"], "elemNew": {}, "aux": [], "review": [["일차함수", 49], ["x축", 22], ["y축", 22], ["좌표", 22]]}, {"no": 51, "grade": "중2", "unit": "Ⅲ. 일차함수", "sub": "5. 식 구하기 ~ 7. 그래프와 연립일차방정식", "std": "[9수02-17], [9수02-18]", "name": "직선의 방정식", "type": "개념 중심", "perf": "구하다", "new": ["직선의 방정식"], "elemNew": {}, "aux": [], "review": [["일차방정식", 21], ["일차함수", 49], ["교점", 26], ["연립(일차)방정식", 46], ["해(또는 근)", 20]]}, {"no": 52, "grade": "중2", "unit": "Ⅳ. 삼각형과 사각형의 성질", "sub": "1. 이등변삼각형과 직각삼각형", "std": "[9수03-09]", "name": "이등변삼각형", "type": "개념 중심", "perf": "", "new": ["꼭지각", "밑각"], "elemNew": {}, "aux": [], "review": [["이등변삼각형", "초4-2"], ["밑변", "초5-1"], ["정삼각형", "초4-2"], ["합동", 32]]}, {"no": 53, "grade": "중2", "unit": "Ⅳ. 삼각형과 사각형의 성질", "sub": "1. 이등변삼각형과 직각삼각형", "std": "[9수03-09]", "name": "직각삼각형과 증명", "type": "개념 + 수행", "perf": "증명하다", "new": ["증명", "빗변", "직각삼각형의 합동 조건"], "elemNew": {}, "aux": [], "review": [["직각삼각형", "초3-1"], ["삼각형의 합동 조건", 32]]}, {"no": 54, "grade": "중2", "unit": "Ⅳ. 삼각형과 사각형의 성질", "sub": "2. 삼각형의 외심", "std": "[9수03-10]", "name": "삼각형의 외심", "type": "개념 중심", "perf": "", "new": ["외접원", "외심"], "elemNew": {}, "aux": ["외접"], "review": [["수직이등분선", 28], ["예각삼각형", "초4-2"], ["둔각삼각형", "초4-2"]]}, {"no": 55, "grade": "중2", "unit": "Ⅳ. 삼각형과 사각형의 성질", "sub": "3. 삼각형의 내심", "std": "[9수03-10]", "name": "삼각형의 내심", "type": "개념 중심", "perf": "", "new": ["내접원", "내심", "접선"], "elemNew": {}, "aux": ["내접", "접점", "접한다", "각의 이등분선"], "review": []}, {"no": 56, "grade": "중2", "unit": "Ⅳ. 삼각형과 사각형의 성질", "sub": "4. 평행사변형의 성질 ~ 6. 여러 가지 사각형의 성질", "std": "[9수03-11]", "name": "여러 가지 사각형", "type": "개념 중심", "perf": "", "new": ["평행사변형", "등변사다리꼴"], "elemNew": {"평행사변형": "초4-2"}, "aux": [], "review": [["평행", 29], ["마름모", "초4-2"], ["사다리꼴", "초4-2"], ["직사각형", "초3-1"], ["정사각형", "초3-1"], ["대변", 31], ["대각", 31], ["대각선", "초4-2"]]}, {"no": 57, "grade": "중2", "unit": "Ⅴ. 도형의 닮음과 피타고라스 정리", "sub": "1. 도형의 닮음 · 2. 삼각형의 닮음 조건", "std": "[9수03-12], [9수03-13]", "name": "도형의 닮음", "type": "개념 중심", "perf": "", "new": ["닮음", "닮음비", "삼각형의 닮음 조건"], "elemNew": {}, "aux": ["닮은 도형"], "review": [["합동", 32], ["비례식", "초6-2"], ["대응변", "초5-2"]]}, {"no": 58, "grade": "중2", "unit": "Ⅴ. 도형의 닮음과 피타고라스 정리", "sub": "3. 평행선 사이의 선분의 길이의 비 · 4. 삼각형의 무게중심", "std": "[9수03-14]", "name": "중선과 무게중심", "type": "개념 중심", "perf": "", "new": ["중선", "삼각형의 무게중심"], "elemNew": {}, "aux": [], "review": [["중점", 26], ["평행선", "초4-2"]]}, {"no": 59, "grade": "중2", "unit": "Ⅴ. 도형의 닮음과 피타고라스 정리", "sub": "5. 피타고라스 정리", "std": "[9수03-15]", "name": "피타고라스 정리", "type": "개념 중심", "perf": "", "new": ["피타고라스 정리"], "elemNew": {}, "aux": [], "review": [["직각삼각형", "초3-1"], ["빗변", 53]]}, {"no": 60, "grade": "중2", "unit": "Ⅵ. 경우의 수와 확률", "sub": "1. 경우의 수 ~ 4. 확률의 계산", "std": "[9수04-05], [9수04-06]", "name": "경우의 수와 확률", "type": "개념 중심", "perf": "구하다", "new": ["사건", "경우의 수", "확률"], "elemNew": {}, "aux": [], "review": [["가능성", "초5-2"]]}], "ess": ["x절편", "y절편", "가감법", "각", "경우의 수", "계수", "기울기", "다항식", "닮음", "대입법", "대푯값", "도수", "동류항", "동위각", "등식의 성질", "미지수", "반비례", "방정식", "변량", "변수", "부등식", "부등식의 성질", "사칙계산", "삼각형의 닮음 조건", "삼각형의 합동 조건", "상대도수", "선분", "소수", "소인수분해", "순서쌍", "순환소수", "엇각", "역수", "연립(일차)방정식", "유리수", "절댓값", "정비례", "정수", "좌표평면", "지수법칙", "직선", "직선의 방정식", "차수", "최대공약수", "최소공배수", "평행", "평행사변형", "피타고라스 정리", "함수", "합동", "합성수", "항", "해(또는 근)", "확률"], "built": {"소인수분해": "A01-9su01-01", "평행선의 성질": "C03-9su03-02"}};
+const L=D.lessons,ESS=new Set(D.ess),BUILT=D.built||{},byNo={};L.forEach(d=>byNo[d.no]=d);
+const home={},uses={},elem={},pre={},post={};
+L.forEach(d=>d.new.concat(d.aux).forEach(w=>home[w]=d.no));
+L.forEach(d=>{pre[d.no]=new Set();d.review.forEach(r=>{(uses[r[0]]=uses[r[0]]||[]).push(d.no);if(typeof r[1]==='number')pre[d.no].add(r[1]);else elem[r[0]]=r[1]})});
+L.forEach(d=>pre[d.no].forEach(a=>(post[a]=post[a]||new Set()).add(d.no)));
+function anc(n,acc){acc=acc||new Set();pre[n].forEach(a=>{if(!acc.has(a)){acc.add(a);anc(a,acc)}});return acc}
+const ukey=d=>d.grade==='공통'?d.unit:d.grade+' '+d.unit;
+const PAL=['#6b7280','#2f6fe4','#0d9488','#7c3aed','#db2777','#ea580c','#65a30d','#0891b2','#b45309','#4f46e5','#be123c','#15803d','#9333ea'];
+const U=[];L.forEach(d=>{const k=ukey(d);let u=U[U.length-1];if(!u||u.k!==k){u={k,ls:[],col:PAL[U.length%PAL.length]};U.push(u)}u.ls.push(d);d.u=u});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const star=w=>esc(w)+(ESS.has(w)?'★':'');
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
+
+/* ───── 마인드맵 ───── */
+const mm=document.getElementById('mm'),R1=135,R2=325,R3=545,GAP=1.6;
+const P=(a,r)=>[r*Math.cos(a),r*Math.sin(a)];
+let slots=0;L.forEach(d=>{d.leaves=d.new.map(w=>[w,'new']).concat(d.aux.map(w=>[w,'aux']));slots+=Math.max(1,d.leaves.length)});slots+=U.length*GAP;
+let cur=0;const step=2*Math.PI/slots,A0=-Math.PI/2;
+U.forEach(u=>{u.ls.forEach(d=>{const n=Math.max(1,d.leaves.length);d.la=d.leaves.map((_,i)=>A0+(cur+i+.5)*step);d.a=A0+(cur+n/2)*step;cur+=n});u.a=(u.ls[0].a+u.ls[u.ls.length-1].a)/2;cur+=GAP});
+function link(a1,r1,a2,r2,col,g){const m=(r1+r2)/2,p1=P(a1,r1),c1=P(a1,m),c2=P(a2,m),p2=P(a2,r2);return el('path',{class:'tl',stroke:col,d:`M${p1}C${c1} ${c2} ${p2}`},g)}
+function node(a,r,cls,label,col,g,rad,attrs){const deg=a*180/Math.PI,dn=((deg%360)+360)%360,flip=dn>90&&dn<270;
+  const n=el('g',Object.assign({class:cls,transform:`rotate(${deg}) translate(${r},0)`},attrs||{}),g);
+  el('circle',{r:rad,fill:col,stroke:'#fff','stroke-width':1.5},n);
+  el('text',flip?{transform:'rotate(180)',x:-(rad+4),'text-anchor':'end',dy:'.34em'}:{x:rad+4,dy:'.34em'},n,label);return n}
+const gL=el('g',{},mm),gN=el('g',{},mm),gO=el('g',{},mm);
+U.forEach(u=>{link(u.a,0,u.a,R1,u.col,gL).dataset.u=u.k;
+  node(u.a,R1,'u',u.k,u.col,gN,7);
+  u.ls.forEach(d=>{link(u.a,R1,d.a,R2,u.col,gL);
+    node(d.a,R2,'l',d.no+' '+d.name,u.col,gN,5.5,{'data-l':d.no});
+    d.leaves.forEach((lf,i)=>{link(d.a,R2,d.la[i],R3,u.col,gL);
+      node(d.la[i],R3,'w '+lf[1],lf[0]+(ESS.has(lf[0])?'★':''),lf[1]==='new'?'#19b394':'#c9a24a',gN,3.2,{'data-w':lf[0],'data-pl':d.no})})})});
+const rt=el('g',{class:'root'},gN);el('circle',{r:46,fill:'#2a1a00'},rt);el('text',{dy:'-.2em',style:'fill:#fff'},rt,'수학 한국어');el('text',{dy:'1em',style:'fill:#fff'},rt,'어휘 60차시');
+const VB0=[-740,-740,1480,1480];let vb=VB0.slice();const setVB=()=>mm.setAttribute('viewBox',vb.join(' '));
+function zoom(f,cx,cy){if(!f){vb=VB0.slice();return setVB()}const w=vb[2]/f,h=vb[3]/f;if(w<200||w>4000)return;cx=cx==null?vb[0]+vb[2]/2:cx;cy=cy==null?vb[1]+vb[3]/2:cy;vb=[cx-(cx-vb[0])/f,cy-(cy-vb[1])/f,w,h];setVB()}
+function svgPt(e){const r=mm.getBoundingClientRect(),s=Math.max(vb[2]/r.width,vb[3]/r.height);return[vb[0]+vb[2]/2+(e.clientX-r.left-r.width/2)*s,vb[1]+vb[3]/2+(e.clientY-r.top-r.height/2)*s,s]}
+mm.addEventListener('wheel',e=>{e.preventDefault();const p=svgPt(e);zoom(e.deltaY<0?1.15:1/1.15,p[0],p[1])},{passive:false});
+let drag=null,moved=false;
+mm.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,vx:vb[0],vy:vb[1],s:svgPt(e)[2]};moved=false});
+window.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>5){moved=true;mm.classList.add('drag')}if(moved){vb[0]=drag.vx-dx*drag.s;vb[1]=drag.vy-dy*drag.s;setVB()}});
+window.addEventListener('pointerup',()=>{drag=null;mm.classList.remove('drag')});
+document.querySelectorAll('.zoom button').forEach(b=>b.onclick=()=>zoom(+b.dataset.z));
+
+/* ───── 위계 흐름 ───── */
+const rows=document.getElementById('rows'),arcs=document.getElementById('arcs'),AW=innerWidth<820?120:300;
+rows.style.marginLeft=AW+'px';let y=0;const Y={};let html='';
+U.forEach(u=>{html+=`<div class="uh" style="background:${u.col}">${esc(u.k)}</div>`;y+=32;
+  u.ls.forEach(d=>{Y[d.no]=y+19;y+=38;
+    html+=`<div class="row" data-l="${d.no}"><span class="no">${d.no}</span><span class="nm">${esc(d.name)}</span><span class="sb">${esc(d.sub)}</span>`+
+      d.new.map(w=>`<span class="c" data-w="${esc(w)}">${star(w)}</span>`).join('')+d.aux.map(w=>`<span class="c x" data-w="${esc(w)}">${esc(w)}</span>`).join('')+'</div>'})});
+rows.innerHTML=html;arcs.setAttribute('width',AW);arcs.setAttribute('height',y);
+const E=[];L.forEach(d=>pre[d.no].forEach(a=>{const dx=Math.min(AW-14,16+(d.no-a)*(AW-30)/40);E.push({a,b:d.no,p:el('path',{d:`M${AW},${Y[a]}C${AW-dx},${Y[a]} ${AW-dx},${Y[d.no]} ${AW},${Y[d.no]}`},arcs)})}));
+
+/* ───── 선택 ───── */
+let sel=null;const panel=document.getElementById('panel');
+const lref=n=>`<span class="lk" data-l="${n}">${n}차시 ${esc(byNo[n].name)}</span>`;
+function chips(ws,cls){return '<div class="chips">'+ws.map(w=>`<span class="c ${cls}" data-w="${esc(w)}">${star(w)}</span>`).join('')+'</div>'}
+function intro(){panel.innerHTML=`<div class="tip"><b>보는 법</b><br>차시나 낱말을 누르면, 그것을 익히기 전에 <b style="color:var(--pre)">먼저 알아야 하는 차시·낱말</b>과 <b style="color:var(--post)">그 낱말을 다시 쓰는 뒤 차시</b>가 표시됩니다.<br>마인드맵은 끌어서 옮기고 휠로 확대합니다.</div>
+<h3>구성</h3>전체 ${L.length}차시 · 새 어휘 ${L.reduce((s,d)=>s+d.new.length,0)}개 · 함께 보는 말 ${L.reduce((s,d)=>s+d.aux.length,0)}개
+<h3>단원</h3><ul>${U.map(u=>`<li><b style="color:${u.col}">●</b> ${esc(u.k)} <span class="meta">${u.ls[0].no}~${u.ls[u.ls.length-1].no}차시</span></li>`).join('')}</ul>
+<h3>어휘의 세 가지</h3><ul><li><span class="c">새 어휘</span> 그 소단원에서 처음 나오는 말. 이 차시에서 익힘</li><li><span class="c r">앞에서 배운 말</span> 뜻만 확인. 모르면 그 낱말을 익히는 차시로</li><li><span class="c e">초등에서 배운 말</span> 차시 안에서 배경지식으로 안내</li></ul>`}
+function showLesson(n){const d=byNo[n],pr=d.review.filter(r=>typeof r[1]==='number'),el_=d.review.filter(r=>typeof r[1]!=='number'),ps=[...(post[n]||[])].sort((a,b)=>a-b),an=[...anc(n)].sort((a,b)=>a-b);
+  const b=BUILT[d.name];
+  panel.innerHTML=`<div class="meta">${esc(ukey(d))} · ${esc(d.type)}</div><h2>${d.no}차시 ${esc(d.name)}</h2>
+<div class="meta">먼저 보고 배우는 소단원: <b>${esc(d.sub)}</b> ${esc(d.std)}</div>
+<a class="btn g" href="./#L${d.no}">목차 카드</a>${b?`<a class="btn" href="${b}/">시안 열기 ▶</a>`:''}
+<h3>새 어휘 — 이 차시에서 익힘</h3>${chips(d.new,'')}${Object.keys(d.elemNew||{}).length?`<div class="meta">${Object.keys(d.elemNew).map(w=>esc(w)+'('+esc(d.elemNew[w])+')').join(', ')}: 초등에서 배운 말을 다시 익힘</div>`:''}
+${d.aux.length?'<h3>함께 처음 보는 말</h3>'+chips(d.aux,'x'):''}
+${pr.length?'<h3>앞에서 배운 말 — 모르면 이 차시를 먼저</h3><ul>'+pr.map(r=>`<li><span class="c r" data-w="${esc(r[0])}">${star(r[0])}</span> ← ${lref(r[1])}</li>`).join('')+'</ul>':''}
+${el_.length?'<h3>초등에서 배운 말 — 이 차시 안에서 안내</h3><div class="chips">'+el_.map(r=>`<span class="c e" data-w="${esc(r[0])}">${esc(r[0])} <small>${esc(r[1])}</small></span>`).join('')+'</div>':''}
+${ps.length?'<h3>이 차시의 낱말을 다시 쓰는 차시</h3><ul>'+ps.map(m=>`<li>${lref(m)} <span class="meta">${byNo[m].review.filter(r=>r[1]===n).map(r=>esc(r[0])).join(', ')}</span></li>`).join('')+'</ul>':''}
+${an.length?'<h3>거슬러 올라간 선행 차시 전체</h3><ul>'+an.map(m=>`<li>${lref(m)}</li>`).join('')+'</ul>':'<h3>선행 차시</h3>없음 (초등에서 배운 말과 배경지식에서 시작)'}`}
+function showWord(w){const h=home[w],us=uses[w]||[];
+  panel.innerHTML=`<div class="meta">낱말</div><h2>${star(w)}</h2>${ESS.has(w)?'<div class="meta">충남대 핵심어</div>':''}
+<h3>익히는 곳</h3>${h?lref(h)+` <span class="meta">${byNo[h].new.includes(w)?'새 어휘':'함께 보는 말'} · ${esc(byNo[h].sub)}</span>`:(elem[w]?`초등학교 ${esc(elem[w])}에서 배운 말 <div class="meta">앞 차시로 보내지 않고, 쓰이는 차시 안에서 배경지식으로 안내합니다.</div>`:'-')}
+<h3>${h?'앞에서 배운 말로 다시 쓰이는 차시':'쓰이는 차시'}</h3>${us.length?'<ul>'+us.map(m=>`<li>${lref(m)}</li>`).join('')+'</ul>':'없음'}`}
+function apply(scroll){
+  document.querySelectorAll('.s-self,.s-pre,.s-post,.s-w').forEach(e=>e.classList.remove('s-self','s-pre','s-post','s-w'));
+  E.forEach(e=>e.p.setAttribute('class',''));gO.innerHTML='';document.body.classList.toggle('has-sel',!!sel);
+  if(!sel)return intro();
+  const role={},wr={},hot=[];
+  if(sel.l){const n=sel.l,an=anc(n);an.forEach(a=>role[a]='pre');(post[n]||[]).forEach(m=>role[m]='post');role[n]='self';
+    byNo[n].review.forEach(r=>{if(typeof r[1]==='number')wr[r[0]]='pre'});byNo[n].leaves.forEach(lf=>wr[lf[0]]='self');
+    E.forEach(e=>{if((e.b===n||an.has(e.b))&&(an.has(e.a)))hot.push([e,'pre']);else if(e.a===n)hot.push([e,'post'])});showLesson(n)}
+  else{const w=sel.w,h=home[w];wr[w]='self';if(h)role[h]='self';(uses[w]||[]).forEach(m=>role[m]='post');
+    if(h)E.forEach(e=>{if(e.a===h&&(uses[w]||[]).includes(e.b))hot.push([e,'post'])});showWord(w)}
+  document.querySelectorAll('[data-l]').forEach(e=>{if(e.closest('aside'))return;const r=role[e.dataset.l];if(r)e.classList.add('s-'+r)});
+  document.querySelectorAll('#mm [data-w]').forEach(e=>{const r=wr[e.dataset.w];if(r&&(r!=='pre'||home[e.dataset.w]==e.dataset.pl))e.classList.add('s-'+r)});
+  if(sel.w)document.querySelectorAll('.row [data-w]').forEach(e=>{if(e.dataset.w===sel.w)e.classList.add('s-w')});
+  hot.forEach(([e,c])=>{e.p.setAttribute('class',c);const a=byNo[e.a],b=byNo[e.b],p1=P(a.a,R2),p2=P(b.a,R2);el('path',{class:'ov '+c,d:`M${p1}Q0,0 ${p2}`},gO)});
+  if(scroll&&document.body.classList.contains('v-flow')){const n=sel.l||home[sel.w];const r=n&&rows.querySelector(`.row[data-l="${n}"]`);if(r)r.scrollIntoView({block:'center',behavior:'smooth'})}
+}
+document.addEventListener('click',e=>{if(moved){moved=false;return}const t=e.target.closest('[data-w],[data-l]');if(!t)return;
+  sel=t.dataset.w!=null?{w:t.dataset.w}:{l:+t.dataset.l};apply(!!t.closest('aside'))});
+document.getElementById('clear').onclick=()=>{sel=null;apply()};
+function view(v){document.body.classList.toggle('v-flow',v==='flow');document.getElementById('t-mm').classList.toggle('on',v!=='flow');document.getElementById('t-flow').classList.toggle('on',v==='flow');try{history.replaceState(null,'','#'+v)}catch(e){}if(sel)apply(true)}
+document.getElementById('t-mm').onclick=()=>view('mm');document.getElementById('t-flow').onclick=()=>view('flow');
+const allW=[...new Set(Object.keys(home).concat(Object.keys(elem)))].sort((a,b)=>a.localeCompare(b,'ko'));
+document.getElementById('q').addEventListener('input',e=>{const q=e.target.value.trim();if(!q){apply();return}
+  const hit=allW.filter(w=>w.includes(q)),ls=L.filter(d=>d.name.includes(q)||d.sub.includes(q));
+  panel.innerHTML=`<h2>‘${esc(q)}’ 찾기</h2><h3>낱말 ${hit.length}개</h3><ul>${hit.slice(0,60).map(w=>`<li><span class="c ${home[w]?(byNo[home[w]].new.includes(w)?'':'x'):'e'}" data-w="${esc(w)}">${star(w)}</span> <span class="meta">${home[w]?home[w]+'차시 '+esc(byNo[home[w]].name):'초등 '+esc(elem[w])}</span></li>`).join('')}</ul>${ls.length?'<h3>차시</h3><ul>'+ls.map(d=>`<li>${lref(d.no)}</li>`).join('')+'</ul>':''}`});
+const H0=location.hash,m=H0.match(/^#(F?)L(\d+)$/);
+view(H0==='#flow'||(m&&m[1])?'flow':'mm');intro();
+if(m&&byNo[+m[2]]){sel={l:+m[2]};apply(true)}
+</script>
+</body></html>
