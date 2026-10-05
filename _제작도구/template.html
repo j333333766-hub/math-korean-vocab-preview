@@ -124,7 +124,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .ck{width:100%;display:flex;flex-direction:column;gap:.45em}
 .ck .row{display:flex;align-items:center;gap:.6em;border:.12em solid #111;border-radius:.8em;padding:.35em .8em;background:#fff}
 .ck .tm{font-weight:900;font-size:1.15em;min-width:4.6em}.ck .ex{flex:1;font-size:.86em;font-weight:600;line-height:1.4}
-.ck .btn{font-size:.8em;padding:.25em .8em}.ck .go{font-size:.9em;color:#d23a3a;font-weight:800}
+.ck .btn{font-size:.8em;padding:.25em .8em}.ck .go{font-size:.9em;color:#d23a3a;font-weight:800}.ck .go a{color:#1e4fb3;text-decoration:underline}
 .lmw{font-size:2.2em;font-weight:900;color:#0c7d66}
 .lm{display:grid;grid-template-columns:repeat(3,1fr);gap:.4em;width:100%}
 .lm div{border:.1em solid #111;border-radius:.6em;padding:.25em .4em;text-align:center;font-weight:800;font-size:.82em;background:#fff}
@@ -359,7 +359,7 @@ R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el(
   const state=sc.items.map(()=>null);
   sc.items.forEach((it,i)=>{ const row=el('div','row'); const go=el('div','go');
     const y=el('button','btn sub','알아요'), n=el('button','btn sub','잘 몰라요');
-    const upd=()=>{ y.style.background=state[i]===true?'#c9f2df':'#fff'; n.style.background=state[i]===false?'#fbd0d0':'#fff'; go.innerHTML=state[i]===false?rich(it.go||''):'';
+    const upd=()=>{ y.style.background=state[i]===true?'#c9f2df':'#fff'; n.style.background=state[i]===false?'#fbd0d0':'#fff'; go.innerHTML=state[i]===false?(it.href?'<a href="'+it.href+'" target="_blank" rel="noopener">'+rich(it.go||'')+'</a>':rich(it.go||'')):'';
       if(state.every(v=>v!==null)){ const k=state.filter(v=>v).length; sum.className='fb ok'; sum.textContent=k===state.length?'모두 아는 말이에요. 바로 시작해요!':'표시한 낱말의 차시를 먼저 봐도 좋아요.'; } };
     y.onclick=()=>{state[i]=true;upd();}; n.onclick=()=>{state[i]=false;upd();};
     const mid=el('div','ex'); mid.append(el('div','',rich(it.ex)),go);

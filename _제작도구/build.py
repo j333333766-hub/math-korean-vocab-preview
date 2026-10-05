@@ -159,10 +159,12 @@ def build_home(root):
     print(f'홈 화면: 전체 {len(lst["lessons"])}차시 중 시안 완료 {done}차시')
 
 if __name__ == '__main__':
+    import home
     root = os.path.dirname(HERE)
     if sys.argv[1] == '--all':
-        for it in json.load(io.open(os.path.join(root, 'lessons.json'), encoding='utf-8'))['lessons']:
-            if os.path.exists(os.path.join(root, it['folder'], 'lesson.json')): main(os.path.join(root, it['folder']))
+        cfg = json.load(io.open(os.path.join(root, 'lessons.json'), encoding='utf-8'))
+        for b in cfg.get('built', {}).values():
+            if os.path.exists(os.path.join(root, b['folder'], 'lesson.json')): main(os.path.join(root, b['folder']))
     elif sys.argv[1] != '--home':
         main(sys.argv[1])
-    build_home(root)
+    home.build_home(root)

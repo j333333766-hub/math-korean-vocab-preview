@@ -10,16 +10,13 @@
             "data_load_stroge_name": "",
             "data_guide": "false",
             "data_guide_points": "",
-            "question": "오늘 배운 낱말을 정리해요.",
+            "question": "오늘 새로 익힌 낱말을 정리해요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "소수: 2, 3, 5, 7, …"
-                },
-                {
-                    "txt": "지수: 2³의 3"
+                    "txt": "소인수: 12의 소인수: 2, 3"
                 },
                 {
                     "txt": "소인수분해: 12 = 2² × 3"
@@ -41,19 +38,19 @@
             "data_load_stroge_name": "",
             "data_guide": "false",
             "data_guide_points": "",
-            "question": "이 낱말은 여기에서 다시 만나요.",
+            "question": "이제 학교 수업에서 만나요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "오늘 배운 낱말: 소수, 지수, 소인수분해"
+                    "txt": "오늘 익힌 낱말: 소인수, 소인수분해"
                 },
                 {
-                    "txt": "바로 이어지는 단원: 최대공약수, 최소공배수"
+                    "txt": "학교 수업: 소인수분해 단원"
                 },
                 {
-                    "txt": "나중에 만나는 단원: 지수법칙"
+                    "txt": "그다음에 볼 콘텐츠: 최대공약수와 최소공배수"
                 }
             ],
             "basket_name": "",
