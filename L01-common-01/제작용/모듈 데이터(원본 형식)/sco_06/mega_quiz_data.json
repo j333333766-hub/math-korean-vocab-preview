@@ -1,0 +1,67 @@
+{
+    "quiz": [
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "오늘 새로 익힌 낱말을 정리해요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "구하다: 구하시오"
+                },
+                {
+                    "txt": "계산하다: 계산하시오"
+                },
+                {
+                    "txt": "풀다: 푸시오"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation"
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "이제 학교 수업에서 만나요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "오늘 익힌 낱말: 구하다, 계산하다, 풀다"
+                },
+                {
+                    "txt": "학교 수업: 모든 단원의 문제"
+                },
+                {
+                    "txt": "그다음에 볼 콘텐츠: 문제에서 쓰는 말 ② 나타내기"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation",
+            "outro": "true"
+        }
+    ]
+}

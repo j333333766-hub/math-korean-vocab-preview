@@ -1,0 +1,145 @@
+{
+    "quiz": [
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "x = 2일 때, x + 6의 값을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "8"
+                },
+                {
+                    "txt": "26"
+                },
+                {
+                    "txt": "12"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "‘x에 3을 대입한다’의 뜻을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "x 자리에 3을 넣는다."
+                },
+                {
+                    "txt": "x에 3을 더한다."
+                },
+                {
+                    "txt": "x를 3번 쓴다."
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "OX",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
+            "sub_question": "10은 식 2x의 값이다.",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "linetoline",
+            "data_jung_dap": "1@b,2@c,3@a",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말과 뜻을 알맞게 연결해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "대입"
+                },
+                {
+                    "txt": "식의 값"
+                },
+                {
+                    "txt": "생략"
+                },
+                {
+                    "txt": "쓰지 않는 것"
+                },
+                {
+                    "txt": "문자 대신 수를 넣는 것"
+                },
+                {
+                    "txt": "대입하여 계산한 결과"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "horizontal"
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "x에 2를 대입하면 식의 값은 7입니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "다음을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
+        }
+    ]
+}

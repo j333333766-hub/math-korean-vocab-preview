@@ -184,7 +184,7 @@ function speak(t,cb){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesis
 /* ---------- 그림: 두 직선과 한 직선 ---------- */
 const COL={A:'#ff8fb0',B:'#7db7ff',C:'#8fe0b0',D:'#ffd66b'};
 function fig(o){
-  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='power') return figPower(o); const W=420,H=320, rad=d=>d*Math.PI/180;
+  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='power') return figPower(o); if(o.kind==='num') return figNum(o); const W=420,H=320, rad=d=>d*Math.PI/180;
   const t=o.t||60, a1=0, a2=(o.par===false)?(o.tilt||-13):0;
   const P1={x:240,y:95}, Q={x:195,y:225};
   // 아래 직선과 가로지르는 직선의 교점
@@ -251,6 +251,14 @@ function figPower(o){
     g+=`<line x1="${x0+bw+58}" y1="96" x2="${x0+bw+110}" y2="96" stroke="#d81e5b" stroke-width="2.5"/><text x="${x0+bw+120}" y="106" font-size="30" font-weight="800" fill="#d81e5b">지수</text>`;
   }
   if(o.eq) g+=`<text x="210" y="306" text-anchor="middle" font-size="24" font-weight="800">${o.eq}</text>`;
+  return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
+}
+function figNum(o){
+  const a=o.min, b=o.max, y=o.y||175, X=v=>34+(v-a)*(352/(b-a)); let g=`<line x1="12" y1="${y}" x2="408" y2="${y}" stroke="#1b1b1b" stroke-width="3"/><path d="M410 ${y} l-11 -6 v12z M10 ${y} l11 -6 v12z"/>`;
+  for(let v=a;v<=b;v++){ const red=(o.red||[]).includes(v); g+=`<line x1="${X(v)}" y1="${y-8}" x2="${X(v)}" y2="${y+8}" stroke="#1b1b1b" stroke-width="2.5"/><text x="${X(v)}" y="${y+34}" text-anchor="middle" font-size="${b-a>8?16:19}" font-weight="800" fill="${red?'#d81e5b':'#1b1b1b'}">${v<0?'−'+(-v):(o.sign&&v>0?'+':'')+v}</text>`; }
+  (o.spans||[]).forEach(s=>{ const x1=X(s.a), x2=X(s.b), yy=y-(s.up||34), c=s.c||'#2f6fe4'; g+=`<path d="M${x1} ${yy+10} V${yy} H${x2} V${yy+10}" fill="none" stroke="${c}" stroke-width="3"/><text x="${(x1+x2)/2}" y="${yy-10}" text-anchor="middle" font-size="21" font-weight="800" fill="${c}">${s.t||''}</text>`; });
+  (o.pts||[]).forEach(p=>{ const c=p.c||'#d81e5b'; g+=`<circle cx="${X(p.v)}" cy="${y}" r="8" fill="${c}" stroke="#1b1b1b" stroke-width="2"/>`+(p.t?`<text x="${X(p.v)}" y="${y-22}" text-anchor="middle" font-size="22" font-weight="800" fill="${c}">${p.t}</text>`:''); });
+  if(o.eq) g+=`<text x="210" y="${y+92}" text-anchor="middle" font-size="21" font-weight="800">${o.eq}</text>`;
   return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
 }
 function avatar(i){ const hair=['#3a2a1a','#111'][i], top=['#e9c46a','#b23a48'][i];

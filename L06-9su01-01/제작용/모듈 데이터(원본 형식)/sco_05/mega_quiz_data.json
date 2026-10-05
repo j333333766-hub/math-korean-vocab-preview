@@ -1,0 +1,148 @@
+{
+    "quiz": [
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "5 × 5 × 5 × 5를 거듭제곱으로 나타낸 것을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "5⁴"
+                },
+                {
+                    "txt": "4⁵"
+                },
+                {
+                    "txt": "5 × 4"
+                },
+                {
+                    "txt": "20"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "‘4의 세제곱’을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "4²"
+                },
+                {
+                    "txt": "4³"
+                },
+                {
+                    "txt": "3⁴"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "OX",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
+            "sub_question": "2의 거듭제곱이다.",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "linetoline",
+            "data_jung_dap": "1@c,2@a,3@b",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "수와 읽는 말을 알맞게 연결해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "6²"
+                },
+                {
+                    "txt": "6³"
+                },
+                {
+                    "txt": "6⁴"
+                },
+                {
+                    "txt": "6의 세제곱"
+                },
+                {
+                    "txt": "6의 네제곱"
+                },
+                {
+                    "txt": "6의 제곱"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "horizontal"
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "3의 제곱은 9입니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "다음을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
+        }
+    ]
+}

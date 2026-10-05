@@ -1,0 +1,114 @@
+{
+    "quiz": [
+        {
+            "data_type": "vod",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "대입",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "x = 2를 3x + 1에 대입  →  3 × 2 + 1"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "식의 값",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "x = 2일 때, 3x + 1의 값은 7"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "대입, 식의 값",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "내가 아는 말과 연결해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "English: substitution / value of an expression"
+                },
+                {
+                    "txt": "中文: 代入 / 式子的值"
+                },
+                {
+                    "txt": "日本語: 代入 / 式の値"
+                },
+                {
+                    "txt": "Tiếng Việt: thay vào / giá trị của biểu thức"
+                },
+                {
+                    "txt": "Русский: подстановка / значение выражения"
+                },
+                {
+                    "txt": "العربية: التعويض / قيمة العبارة"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "lang_match"
+        }
+    ]
+}

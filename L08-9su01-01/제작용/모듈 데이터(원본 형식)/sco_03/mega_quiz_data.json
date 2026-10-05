@@ -1,0 +1,114 @@
+{
+    "quiz": [
+        {
+            "data_type": "vod",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "소인수",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "12 = 2² × 3  →  12의 소인수는 2와 3"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "소인수분해",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "card(그림)"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": ""
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "소인수, 소인수분해",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "내가 아는 말과 연결해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "English: prime factor / prime factorization"
+                },
+                {
+                    "txt": "中文: 质因数 / 分解质因数"
+                },
+                {
+                    "txt": "日本語: 素因数 / 素因数分解"
+                },
+                {
+                    "txt": "Tiếng Việt: thừa số nguyên tố / phân tích ra thừa số nguyên tố"
+                },
+                {
+                    "txt": "Русский: простой множитель / разложение на простые множители"
+                },
+                {
+                    "txt": "العربية: عامل أولي / التحليل إلى العوامل الأولية"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "lang_match"
+        }
+    ]
+}

@@ -1,0 +1,91 @@
+{
+    "quiz": [
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "학교에서 ‘소인수분해’를 배우기 전에 봐요 ③",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "이미 아는 말: 거듭제곱, 곱"
+                },
+                {
+                    "txt": "오늘 새로 익힐 말: 밑, 지수"
+                },
+                {
+                    "txt": "학교 수업: 1. 소인수분해"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation",
+            "intro": "true"
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "확인 ① 2 × 2 × 2를 거듭제곱으로 나타낸 것을 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "2³"
+                },
+                {
+                    "txt": "3²"
+                },
+                {
+                    "txt": "6"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "이 말을 알고 있나요? 잘 모르면 먼저 배우고 와요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "거듭제곱 — 같은 수를 여러 번 곱한 것. 2 × 2 × 2 = 2³"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "checklist"
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "quiz": [
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "오늘 새로 익힌 낱말을 정리해요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "절댓값: |−3| = 3"
+                },
+                {
+                    "txt": "대소 관계: −2 < +3"
+                },
+                {
+                    "txt": "부등호: <, >, ≤, ≥"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation"
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "이제 학교 수업에서 만나요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "오늘 익힌 낱말: 절댓값, 대소 관계, 부등호"
+                },
+                {
+                    "txt": "학교 수업: 3. 정수와 유리수의 뜻과 대소 관계"
+                },
+                {
+                    "txt": "그다음에 볼 콘텐츠: 계산 법칙"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation",
+            "outro": "true"
+        }
+    ]
+}

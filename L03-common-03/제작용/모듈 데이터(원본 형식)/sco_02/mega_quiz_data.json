@@ -1,0 +1,63 @@
+{
+    "quiz": [
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "오늘 만날 낱말이에요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "오늘 새로 익힐 말: 고르다, 찾다, 모두"
+                },
+                {
+                    "txt": "함께 보는 말: 보기, 옳은 것, 옳지 않은 것, 차례대로"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation"
+        },
+        {
+            "data_type": "listen",
+            "data_jung_dap": "고르다 → 고르시오",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "다음 낱말을 듣고 2번 따라 읽어 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "고르다 → 고르시오"
+                },
+                {
+                    "txt": "찾다 → 찾으시오"
+                },
+                {
+                    "txt": "모두"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "double": "true"
+        }
+    ]
+}
