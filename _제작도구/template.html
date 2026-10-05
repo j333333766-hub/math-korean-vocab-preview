@@ -124,11 +124,11 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 <body>
 <div class="app">
   <aside class="side">
-    <span class="badge">차시명</span>
+    <span class="badge notranslate">차시명</span>
     <h1 id="lessonTitle" class="notranslate"></h1>
     <div class="meta" id="lessonMeta"></div>
     <div class="toc" id="toc"></div>
-    <div class="note notranslate">이 화면은 제작팀 전달용 <b>시안</b>입니다.<br>· 영상 자리는 장면을 한 컷씩 넘겨 보는 <b>영상 대본</b>으로 대신했습니다.<br>· 인물은 임시 그림입니다. 실제 캐릭터로 바꿉니다.<br>· 말하기 녹음, 손글씨 인식, 점수는 화면만 있고 채점하지 않습니다.<br>· 오른쪽 위 <b>제작 메모</b>를 켜면 화면마다 원본 유형과 메모가 보입니다.<br>· 위쪽 <b>🌐 번역</b>에서 언어를 고르면 화면이 그 언어로 바뀝니다(인터넷 필요, 기계 번역). 오늘의 낱말은 한국어로 남습니다.</div>
+    <div class="note notranslate">이 화면은 제작팀 전달용 <b>시안</b>입니다.<br>· 영상 자리는 장면을 한 컷씩 넘겨 보는 <b>영상 대본</b>으로 대신했습니다.<br>· 인물은 임시 그림입니다. 실제 캐릭터로 바꿉니다.<br>· 말하기 녹음, 손글씨 인식, 점수는 화면만 있고 채점하지 않습니다.<br>· 오른쪽 위 <b>제작 메모</b>를 켜면 화면마다 원본 유형과 메모가 보입니다.<br>· 위쪽 <b>🌐 번역</b>에서 언어를 고르면 지시문, 대사, 자막, 도움말이 그 언어로 바뀝니다(인터넷 필요, 기계 번역). 오늘의 낱말과 한국어로 푸는 문장·보기는 한국어로 남습니다.</div>
   </aside>
   <section class="main">
     <div class="top">
@@ -307,6 +307,7 @@ function render(){
   [...$('#toc').children].forEach((b,i)=>b.classList.toggle('on',i===mi));
   const self=(R[sc.type]||(()=>{frame('준비 중인 유형: '+sc.type);}))(sc);
   if(!self){ chrome(sc); showMemo(sc); }
+  document.querySelectorAll('#stage .sent, #stage .chips, #stage .opts, #stage .ox, #stage .lt, #stage .say, #stage .card, #stage .motion, #stage .nav, #stage input').forEach(e=>{e.classList.add('notranslate'); e.setAttribute('translate','no');});
   const st=$('#stage'); st.style.fontSize=(st.clientWidth/46)+'px';
   history.replaceState(null,'','#'+(mi+1)+'-'+(si+1));
 }
