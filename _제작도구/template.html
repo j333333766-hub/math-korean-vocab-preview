@@ -330,7 +330,7 @@ R.ocr=sc=>{ const pad=frame(sc.q||'연필을 클릭해 낱말을 써 보세요.'
   const r=el('div','btnrow'); const z=el('button','btn sub','지우기'); z.onclick=()=>cv.getContext('2d').clearRect(0,0,cv.width,cv.height); r.append(z); pad.append(r); };
 
 R.curation=sc=>{ const pad=frame(sc.q); const c=el('div','cur');
-  sc.cols.forEach((col,i)=>{ if(i) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));
+  sc.cols.forEach((col,i)=>{ if(i&&!sc.noArrow) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));
     col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; d.append(el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':''))); }); c.append(d); });
   pad.append(c); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
 R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el('div','fb');

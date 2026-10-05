@@ -88,7 +88,11 @@ def main(folder):
             s.append('')
     io.open(os.path.join(out, '영상 대본.md'), 'w', encoding='utf-8').write('\n'.join(s))
     # 화면 목록
-    s = [f"# 화면 목록 — {L['title']}", '', f"모듈 {len(L['modules'])}개, 화면 {n_screens}개, 영상 {nv}개", '',
+    s = [f"# 화면 목록 — {L['title']}", '', f"모듈 {len(L['modules'])}개, 화면 {n_screens}개, 영상 {nv}개", '']
+    if L.get('lessonType'): s += [f"차시 유형: {L['lessonType']}", '']
+    if L.get('vocab'):
+        s += ['## 이 차시의 어휘', '', '| 부류 | 낱말 |', '|---|---|'] + [f"| {k} | {', '.join(v)} |" for k, v in L['vocab'].items()] + ['', '## 화면', '']
+    s += [
          '| 모듈 | 화면 | 원본 유형 | 지시문 | 정답 | 메모 |', '|---|---:|---|---|---|---|']
     for mi, m in enumerate(L['modules'], 1):
         for si, sc in enumerate(m['screens'], 1):

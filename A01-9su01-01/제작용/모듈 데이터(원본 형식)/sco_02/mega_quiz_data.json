@@ -1,6 +1,37 @@
 {
     "quiz": [
         {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "오늘 만날 낱말이에요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "오늘의 낱말: 소인수분해"
+                },
+                {
+                    "txt": "함께 보는 낱말: 소수, 인수 · 소인수, 거듭제곱"
+                },
+                {
+                    "txt": "문제에서 쓰는 말: 나타내시오, 구하시오, 이용하여"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation"
+        },
+        {
             "data_type": "vod",
             "data_jung_dap": "",
             "data_audsrc": "",
