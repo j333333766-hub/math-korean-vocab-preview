@@ -104,7 +104,7 @@ body.has-sel #mm .s-on{opacity:1}body.has-sel .row.s-on,body.has-sel .lc.s-on{op
 </style></head>
 <body>
 <header>
-<a class="home" href="./">🏠 목차</a><h1>60차시 학습 어휘 지도</h1>
+<a class="home" href="./">🏠 홈</a><h1>60차시 학습 어휘 지도</h1>
 <div class="tabs"><button id="t-mm" class="on">마인드맵</button><button id="t-flow">위계 흐름</button><button id="t-std">성취기준별</button><button id="t-sec">교과서 소단원별</button></div>
 <input id="q" placeholder="낱말 찾기 (예: 지수)" autocomplete="off">
 <span class="zoom"><button data-z="1.25">＋</button> <button data-z="0.8">－</button> <button data-z="0">맞춤</button></span>
@@ -218,7 +218,7 @@ function showCat(c){if(KIND[c])return showKind(c);let body='';
 function showLesson(n){const d=byNo[n],pr=d.review.filter(r=>typeof r[1]==='number'),el_=d.review.filter(r=>typeof r[1]!=='number'),ps=[...(post[n]||[])].sort((a,b)=>a-b),an=[...anc(n)].sort((a,b)=>a-b),b=BUILT[d.name],en=d.elemNew||{},pc=isC(d)?'p':'';
   panel.innerHTML=`<div class="meta">${esc(ukey(d))} · ${tyb(d)} ${esc(d.type)} 차시</div><h2>${d.no}차시 ${esc(d.name)}</h2>
 <div class="meta">먼저 보고 배우는 소단원: <b>${esc(d.sub)}</b> ${esc(d.std)}</div>
-<a class="btn g" href="./#L${d.no}">목차 카드</a>${b?`<a class="btn" href="${b}/">시안 열기 ▶</a>`:''}
+<a class="btn g" href="lessons.html#L${d.no}">차시 설명</a>${b?`<a class="btn" href="${b}/">시안 열기 ▶</a>`:''}
 <h3>${pc?'수행 도구어':'핵심 개념어'} · 새 어휘 — 이 차시에서 익힘</h3>${d.new.map(w=>wblock(w,pc,en[w]?`<span class="meta">${esc(en[w])}에 배운 말을 다시 익힘</span>`:'')).join('')}
 ${d.aux.length?'<h3>'+(pc?'수행 도구어':'보조·배경 개념어')+' · 함께 처음 보는 말</h3>'+d.aux.map(w=>wblock(w,pc||'x')).join(''):''}
 ${pr.length?'<h3>보조·배경 개념어 · 앞에서 배운 말 — 뜻 확인, 모르면 그 차시를 먼저</h3>'+pr.map(r=>wblock(r[0],'r',`← ${lref(r[1])} <span class="meta">${esc(byNo[r[1]].grade)} ${esc(byNo[r[1]].sub)}</span>`)).join(''):''}

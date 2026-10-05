@@ -33,6 +33,25 @@ a.r:hover{background:#2f6fe4;color:#fff}a.r small,.e small,.w small{opacity:.75;
 footer{margin-top:30px;font-size:13px;color:#6b7280;line-height:1.7}
 """
 
+HOME_CSS = """
+body{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;background:#eef5fb;color:#1d2433;margin:0;padding:30px 16px 70px}
+main{max-width:1040px;margin:0 auto}h1{font-size:26px;margin:0 0 6px}p.lead{color:#4b5563;margin:0 0 16px;font-size:15px;line-height:1.6}
+nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:8px}
+nav a{background:#fff;border:2px solid #1b1b1b;border-radius:14px;padding:11px 14px;text-decoration:none;color:#1d2433;font-weight:800;font-size:15.5px}
+nav a:hover{background:#2f6fe4;color:#fff}nav small{display:block;font-weight:600;font-size:12px;opacity:.7;margin-top:2px}
+h2{font-size:15.5px;margin:24px 0 8px;color:#374151;border-left:5px solid #2a1a00;padding-left:9px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:7px}
+.t{display:flex;gap:5px}
+.open{flex:1;display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #1b1b1b;border-radius:11px;padding:8px 11px;text-decoration:none;color:#1d2433;min-width:0}
+a.open:hover{background:#e3f8f1}.open.off{border-color:#cbd5e1;color:#9aa3b2;background:#f8fafc}
+.n{flex:0 0 28px;text-align:center;background:#2f6fe4;color:#fff;border-radius:7px;font-weight:800;font-size:13px;padding:1px 0}.off .n{background:#cbd5e1}
+.nm{flex:1;font-weight:800;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.go{font-size:12px;font-weight:800;color:#0c7d66;white-space:nowrap}.off .go{color:#9aa3b2;font-weight:600}
+.info{display:flex;align-items:center;border:1.5px solid #cbd5e1;border-radius:11px;padding:0 9px;font-size:12px;font-weight:700;color:#4b5563;text-decoration:none;background:#fff}
+.info:hover{border-color:#2f6fe4;color:#2f6fe4}
+footer{margin-top:30px;font-size:13px;color:#6b7280}
+"""
+
 def build_home(root):
     syl = json.load(io.open(os.path.join(root, 'syllabus.json'), encoding='utf-8'))
     cfg = json.load(io.open(os.path.join(root, 'lessons.json'), encoding='utf-8'))
@@ -67,9 +86,10 @@ def build_home(root):
     out.append('</div>')
     page = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(cfg['title'])}</title><style>{CSS}</style></head>
+<title>차시 설명 · 60차시 어휘 위계</title><style>{CSS}</style></head>
 <body><main>
-<h1>{e(cfg['title'])}</h1>
+<a class="stat" href="./" style="text-decoration:none;color:inherit">🏠 홈</a><a class="stat" href="vocab-map.html" style="text-decoration:none;color:inherit">🗺 어휘 지도</a>
+<h1 style="margin-top:12px">차시 설명 · 60차시 어휘 위계</h1>
 <p class="lead">{e(cfg['lead'])}</p>
 <div class="legend"><b>보는 법</b>
 <span><span class="w">새 어휘</span> 이 차시에서 처음 익히는 낱말 (★ 충남대 핵심어)</span>
@@ -77,14 +97,38 @@ def build_home(root):
 <span><span class="x">함께 보는 말</span> 새 어휘와 같이 처음 나오는 낱말</span>
 <span><a class="r" href="#">앞에서 배운 말 <small>← n차시</small></a> 뜻만 확인. 모르면 그 낱말을 익히는 차시로 안내 (누르면 이동)</span>
 <span><span class="e">초등에서 배운 말 <small>초5-1</small></span> 앞 차시로 보내지 않고 이 차시 안에서 배경지식으로 안내</span></div>
-<a class="stat map" href="vocab-map.html">🗺 학습 어휘 지도 (마인드맵 · 위계 흐름) ▶</a><a class="stat map" href="vocab-map.html#std">📋 성취기준별 차시 ▶</a><a class="stat map" href="vocab-map.html#sec">📖 교과서 소단원별 차시 ▶</a><br>
 <span class="stat">전체 {len(L)}차시</span><span class="stat">시안 {done}차시</span><span class="stat">새 어휘 {sum(len(d['new']) for d in L if d['grade'] != '공통')}개</span>
 {''.join(out)}
 <footer>{e(cfg.get('foot', ''))}</footer>
 </main></body></html>
 """
-    io.open(os.path.join(root, 'index.html'), 'w', encoding='utf-8').write(page)
-    print(f'홈 화면(위계도): {len(L)}차시, 시안 {done}차시')
+    io.open(os.path.join(root, 'lessons.html'), 'w', encoding='utf-8').write(page)
+    print(f'차시 설명(lessons.html): {len(L)}차시, 시안 {done}차시')
+    # 홈: 간단한 차시 목록
+    tiles = []; prev = None
+    for d in L:
+        unit = d['unit'] if d['grade'] == '공통' else d['grade'] + ' ' + d['unit']
+        if unit != prev:
+            if prev is not None: tiles.append('</div>')
+            tiles.append(f'<h2>{e(unit)}</h2><div class="tiles">'); prev = unit
+        b = built.get(d['name']); ok = b and os.path.exists(os.path.join(root, b['folder'], 'index.html'))
+        name = f'<span class="n">{d["no"]}</span><span class="nm">{e(d["name"])}</span>'
+        main_ = f'<a class="open" href="{b["folder"]}/">{name}<span class="go">{"옛 형식" if b.get("old") else "열기"} ▶</span></a>' if ok else f'<div class="open off">{name}<span class="go">준비 중</span></div>'
+        tiles.append(f'<div class="t">{main_}<a class="info" href="lessons.html#L{d["no"]}" title="차시 설명">설명</a></div>')
+    tiles.append('</div>')
+    home = f"""<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>중학교 수학 한국어 어휘 콘텐츠</title><style>{HOME_CSS}</style></head>
+<body><main>
+<h1>중학교 수학 한국어 어휘 콘텐츠</h1>
+<p class="lead">학교에서 각 단원을 배우기 전에 먼저 보는 수학 한국어 어휘 콘텐츠 시안입니다. 차시를 누르면 열립니다. <b>시안 {done}차시</b> / 전체 {len(L)}차시</p>
+<nav><a href="lessons.html">📘 차시 설명<small>차시별 새 어휘와 어휘 위계</small></a><a href="vocab-map.html">🗺 어휘 지도<small>마인드맵 · 위계 흐름</small></a><a href="vocab-map.html#std">📋 성취기준별<small>성취기준 순으로 보기</small></a><a href="vocab-map.html#sec">📖 교과서 소단원별<small>천재(김화경) 차례 순</small></a></nav>
+{''.join(tiles)}
+<footer>초안이며 내용은 바뀔 수 있습니다. 시안 화면의 영상 자리는 컷별 영상 대본으로 대신했습니다.</footer>
+</main></body></html>
+"""
+    io.open(os.path.join(root, 'index.html'), 'w', encoding='utf-8').write(home)
+    print('홈 화면(index.html): 간단한 차시 목록')
     # 어휘 지도(마인드맵·위계 흐름)
     gp = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'glossary.json')
     data = dict(gloss=json.load(io.open(gp, encoding='utf-8')) if os.path.exists(gp) else {}, lessons=L, ess=syl['ess'], toc=syl['toc'], stds=syl['stds'], built={k: v['folder'] for k, v in built.items() if os.path.exists(os.path.join(root, v['folder'], 'index.html'))})
