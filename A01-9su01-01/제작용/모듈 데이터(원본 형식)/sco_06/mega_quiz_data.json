@@ -1,8 +1,8 @@
 {
     "quiz": [
         {
-            "data_type": "card_flip",
-            "data_jung_dap": "소인수분해",
+            "data_type": "click",
+            "data_jung_dap": "",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -10,20 +10,26 @@
             "data_load_stroge_name": "",
             "data_guide": "false",
             "data_guide_points": "",
-            "question": "그림을 클릭해 낱말을 확인해 보세요.",
+            "question": "오늘 배운 낱말을 정리해요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "자연수를 소수들의 곱으로 나타내는 것"
+                    "txt": "소수: 2, 3, 5, 7, …"
+                },
+                {
+                    "txt": "합성수: 4, 6, 8, 9, …"
+                },
+                {
+                    "txt": "소인수분해: 12 = 2² × 3"
                 }
             ],
             "basket_name": "",
             "drop": "",
             "character": "false",
             "commentary": "",
-            "custom": "i_t"
+            "custom": "curation"
         },
         {
             "data_type": "click",
@@ -41,7 +47,7 @@
             "img": "",
             "object": [
                 {
-                    "txt": "오늘 배운 낱말: 소인수분해, 소인수"
+                    "txt": "오늘 배운 낱말: 소수, 합성수, 소인수분해"
                 },
                 {
                     "txt": "바로 이어지는 단원: 최대공약수, 최소공배수"

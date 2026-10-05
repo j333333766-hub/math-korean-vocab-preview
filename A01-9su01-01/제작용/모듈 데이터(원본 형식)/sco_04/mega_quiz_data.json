@@ -22,7 +22,7 @@
         },
         {
             "data_type": "listen",
-            "data_jung_dap": "12를 소인수분해하면 2² × 3입니다.",
+            "data_jung_dap": "7은 소수이고, 9는 합성수입니다.",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -36,6 +36,9 @@
             "img": "",
             "object": [
                 {
+                    "txt": "7은 소수이고, 9는 합성수입니다."
+                },
+                {
                     "txt": "12를 소인수분해하면 2² × 3입니다."
                 }
             ],
@@ -47,7 +50,7 @@
         },
         {
             "data_type": "drag_drop",
-            "data_jung_dap": "2",
+            "data_jung_dap": "3,1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -61,17 +64,47 @@
             "img": "",
             "object": [
                 {
-                    "txt": "반올림"
+                    "txt": "합성수"
                 },
                 {
                     "txt": "소인수분해"
                 },
                 {
-                    "txt": "약분"
+                    "txt": "소수"
                 }
             ],
             "basket_name": "",
-            "drop": "18을 ,drop,하면 2 × 3²입니다.",
+            "drop": "2, 3, 5, 7은 ,drop,이고, 4, 6, 8, 9는 ,drop,입니다.",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "문제에서 무엇을 하라고 하나요?",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "30을 소수들의 곱으로 나타낸다."
+                },
+                {
+                    "txt": "30의 약수를 모두 더한다."
+                },
+                {
+                    "txt": "30을 3으로 나눈 나머지를 구한다."
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
             "character": "false",
             "commentary": ""
         }

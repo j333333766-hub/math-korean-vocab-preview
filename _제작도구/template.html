@@ -129,6 +129,11 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .lm{display:grid;grid-template-columns:repeat(3,1fr);gap:.4em;width:100%}
 .lm div{border:.1em solid #111;border-radius:.6em;padding:.25em .4em;text-align:center;font-weight:800;font-size:.82em;background:#fff}
 .lm small{display:block;color:#2f6fe4;font-weight:800;font-size:.78em}
+.lmwrap{width:100%}.lmt{width:100%;border-collapse:collapse;font-size:.84em}
+.lmt th{background:#19b394;color:#fff;font-size:1.2em;padding:.25em;border:.1em solid #111}
+.lmt th.lg{background:#fff;border:0}
+.lmt td{border:.1em solid #111;padding:.22em .4em;text-align:center;font-weight:700;background:#fff}
+.lmt td.lg{color:#2f6fe4;font-weight:800;white-space:nowrap;background:#f1f6ff}
 /* 제작 메모 */
 .memo{width:300px;align-self:stretch;background:#fffdf3;border:1px solid #e6dca8;border-radius:12px;padding:12px;overflow:auto;font-size:13px;line-height:1.55;display:none}
 .memo.on{display:block}
@@ -290,9 +295,11 @@ R.card_flip=sc=>{ const pad=frame(sc.q); const c=el('div','card'); const side=s=
   if(sc.front.fig){ $('.f',c).style.cssText='background:#eafaf5;border:.08em solid var(--teal);font-size:1em;color:inherit'; }
   if(!sc.back.fig){ $('.b',c).style.cssText+='font-size:2.2em;font-weight:900;color:#0c7d66'; $('.b .cap',c)&&($('.b .cap',c).style.cssText='font-size:.42em;color:#1d2433;font-weight:700;margin-top:.5em;padding:0 1em'); }
   c.onclick=()=>c.classList.toggle('flip'); pad.append(c); };
-R.listen=sc=>{ const pad=frame(sc.q||'다음 낱말을 듣고 2번 따라 읽어 보세요.'); let n=0; const box=el('div','say'); const tx=el('span','',rich(sc.text)); const b=el('button','round','🔊'); const dots=el('div','dots','<i></i><i></i>');
-  b.onclick=()=>{ speak(sc.say||sc.text,()=>{ n=Math.min(2,n+1); [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<n)); }); };
-  box.append(tx,b,dots); pad.append(box); pad.append(el('div','', '<span style="font-size:.8em;color:#6b7280">🔊를 누르고 따라 읽으면 동그라미가 채워져요.</span>')); };
+R.listen=sc=>{ const pad=frame(sc.q||'다음 낱말을 듣고 2번 따라 읽어 보세요.'); const items=sc.items||[{text:sc.text,say:sc.say}];
+  items.forEach(it=>{ let n=0; const box=el('div','say'); if(items.length>1) box.style.fontSize='1.08em'; const b=el('button','round','🔊'); const dots=el('div','dots','<i></i><i></i>');
+    b.onclick=()=>{ speak(it.say||it.text,()=>{ n=Math.min(2,n+1); [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<n)); }); };
+    box.append(el('span','',rich(it.text)),b,dots); pad.append(box); });
+  pad.append(el('div','', '<span style="font-size:.8em;color:#6b7280">🔊를 누르고 따라 읽으면 동그라미가 채워져요.</span>')); };
 R.drag_drop=sc=>{ const pad=frame(sc.q||'보기에서 알맞은 낱말을 골라 빈칸에 넣어 보세요.'); const host=withFig(pad,sc);
   const fill=[]; const sent=el('div','sent'); sent.innerHTML=rich(sc.sentence).replace(/\{(\d)\}/g,(m,i)=>`<span class="blank" data-i="${i}"></span>`);
   const chips=el('div','chips'); const fbk=feedback(host);
@@ -343,9 +350,10 @@ R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el(
     const mid=el('div','ex'); mid.append(el('div','',rich(it.ex)),go);
     row.append(el('div','tm notranslate',it.t),mid,y,n); box.append(row); });
   pad.append(box,sum); };
-R.lang_match=sc=>{ const pad=frame(sc.q); pad.append(el('div','lmw notranslate',sc.word));
-  const g=el('div','lm notranslate'); sc.items.forEach(it=>g.append(el('div','','<small>'+it.lang+'</small>'+it.term))); pad.append(g);
-  if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
+R.lang_match=sc=>{ const pad=frame(sc.q); const words=sc.words||[sc.word];
+  let h='<table class="lmt notranslate"><tr><th class="lg"></th>'+words.map(w=>'<th>'+w+'</th>').join('')+'</tr>';
+  sc.items.forEach(it=>{ const ts=it.terms||[it.term]; h+='<tr><td class="lg">'+it.lang+'</td>'+ts.map(t=>'<td>'+t+'</td>').join('')+'</tr>'; });
+  pad.append(el('div','lmwrap',h+'</table>')); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
 
 function showMemo(sc,cut){
   const m=$('#memo'); let h=`<h3>제작 메모</h3><dl><dt>위치</dt><dd>${mi+1}. ${LESSON.modules[mi].name} · 화면 ${si+1}</dd><dt>원본 유형</dt><dd><code>${sc.type}</code> ${TYPE_KO[sc.type]||''}</dd>`;

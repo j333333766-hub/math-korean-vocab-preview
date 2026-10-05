@@ -2,6 +2,56 @@
     "quiz": [
         {
             "data_type": "card_flip",
+            "data_jung_dap": "소수",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "약수가 1과 자기 자신뿐인 수 (1보다 큰 자연수)"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "합성수",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "1보다 큰 자연수 중에서 소수가 아닌 수"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "card_flip",
             "data_jung_dap": "소인수분해",
             "data_audsrc": "",
             "data_is_auto_play": "true",
@@ -47,7 +97,7 @@
         },
         {
             "data_type": "click",
-            "data_jung_dap": "소인수분해",
+            "data_jung_dap": "소수, 합성수, 소인수분해",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -61,31 +111,22 @@
             "img": "",
             "object": [
                 {
-                    "txt": "English: prime factorization"
+                    "txt": "English: prime number / composite number / prime factorization"
                 },
                 {
-                    "txt": "中文: 分解质因数"
+                    "txt": "中文: 质数 (素数) / 合数 / 分解质因数"
                 },
                 {
-                    "txt": "Tiếng Việt: phân tích ra thừa số nguyên tố"
+                    "txt": "日本語: 素数 / 合成数 / 素因数分解"
                 },
                 {
-                    "txt": "Русский: разложение на простые множители"
+                    "txt": "Tiếng Việt: số nguyên tố / hợp số / phân tích ra thừa số nguyên tố"
                 },
                 {
-                    "txt": "日本語: 素因数分解"
+                    "txt": "Русский: простое число / составное число / разложение на простые множители"
                 },
                 {
-                    "txt": "العربية: التحليل إلى العوامل الأولية"
-                },
-                {
-                    "txt": "Монгол: анхны тоон үржигдэхүүнд задлах"
-                },
-                {
-                    "txt": "Қазақша: жай көбейткіштерге жіктеу"
-                },
-                {
-                    "txt": "ភាសាខ្មែរ: ការបំបែកជាកត្តាបឋម"
+                    "txt": "العربية: عدد أولي / عدد مركب / التحليل إلى العوامل الأولية"
                 }
             ],
             "basket_name": "",
@@ -93,31 +134,6 @@
             "character": "false",
             "commentary": "",
             "custom": "lang_match"
-        },
-        {
-            "data_type": "card_flip",
-            "data_jung_dap": "소인수",
-            "data_audsrc": "",
-            "data_is_auto_play": "true",
-            "data_trynum": "",
-            "data_point": "",
-            "data_load_stroge_name": "",
-            "data_guide": "false",
-            "data_guide_points": "",
-            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
-            "sub_question": "",
-            "selection": "",
-            "img": "",
-            "object": [
-                {
-                    "txt": "12 = 2² × 3 → 12의 소인수는 2와 3"
-                }
-            ],
-            "basket_name": "",
-            "drop": "",
-            "character": "false",
-            "commentary": "",
-            "custom": "t_t"
         }
     ]
 }

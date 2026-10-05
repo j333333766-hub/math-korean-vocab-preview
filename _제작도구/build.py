@@ -21,7 +21,7 @@ def answer_text(sc):
     if t == 'OX': return sc['answer']
     if t == 'linetoline': return ' / '.join(f"{plain(l)} → {plain(sc['right'][a])}" for l, a in zip(sc['left'], sc['answer']))
     if t == 'input': return ' 또는 '.join(sc['answer'])
-    if t in ('listen',): return sc['text']
+    if t in ('listen',): return ' / '.join(i['text'] for i in sc['items']) if sc.get('items') else sc['text']
     if t == 'step_recorde': return plain(sc['sentence'])
     return ''
 
@@ -37,7 +37,9 @@ def to_origin(sc):
         back = sc['back']
         base['object'] = [{"txt": plain(back.get('caption') or back.get('text')) if not back.get('fig') else "card(그림)"}]
         base['custom'] = 'i_t' if sc['front'].get('fig') else ('t_t' if not back.get('fig') else '')
-    elif t == 'listen': base.update(data_jung_dap=sc['text'], object=[{"txt": sc['text']}], data_guide='true', double='true')
+    elif t == 'listen':
+        its = [i['text'] for i in sc['items']] if sc.get('items') else [sc['text']]
+        base.update(data_jung_dap=its[0], object=[{"txt": x} for x in its], data_guide='true', double='true')
     elif t == 'drag_drop':
         base['data_jung_dap'] = ','.join(str(i + 1) for i in sc['answer']); base['object'] = [{"txt": o} for o in sc['options']]
         base['drop'] = re.sub(r'\{\d\}', ',drop,', plain(sc['sentence'])).strip(','); base['data_guide'] = 'true'
@@ -52,7 +54,7 @@ def to_origin(sc):
     elif t == 'ocr': base['data_jung_dap'] = sc['word']; base['object'] = [{"txt": "<type=blank>"}]
     elif t == 'curation': base['data_type'] = 'click'; base['custom'] = 'curation'; base['object'] = [{"txt": plain(col['label']) + ': ' + ', '.join(plain(i if isinstance(i, str) else i['t']) for i in col['items'])} for col in sc['cols']]
     elif t == 'checklist': base['data_type'] = 'click'; base['custom'] = 'checklist'; base['object'] = [{"txt": i['t'] + ' — ' + plain(i['ex'])} for i in sc['items']]
-    elif t == 'lang_match': base['data_type'] = 'click'; base['custom'] = 'lang_match'; base['data_jung_dap'] = sc['word']; base['object'] = [{"txt": i['lang'] + ': ' + i['term']} for i in sc['items']]
+    elif t == 'lang_match': base['data_type'] = 'click'; base['custom'] = 'lang_match'; base['data_jung_dap'] = ', '.join(sc.get('words') or [sc['word']]); base['object'] = [{"txt": i['lang'] + ': ' + ' / '.join(i.get('terms') or [i['term']])} for i in sc['items']]
     return base
 
 def main(folder):
