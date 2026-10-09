@@ -56,7 +56,7 @@ def build(p, names):
     s = []
     cols = []
     if pre or elem:
-        cols.append({'label': '이미 아는 말', 'items': [{'t': w, 's': f'{n}차시에서 배운 말'} for w, n, _ in pre] + [{'t': w, 's': '초등학교에서 배운 말'} for w, _ in elem[:max(1, 3 - len(pre))]]})
+        cols.append({'label': '미리 확인할 말' if pre else '이미 아는 말', 'items': [{'t': w, 's': f'{n}차시에서 배운 말'} for w, n, _ in pre] + [{'t': w, 's': '초등학교에서 배운 말'} for w, _ in elem[:max(1, 3 - len(pre))]]})
     else:
         cols.append({'label': '수학 문제의 끝말', 'items': [{'t': '~하시오', 's': '무엇을 하라는 말일까요?'}]})
     cols.append({'label': '오늘 새로 익힐 말', 'hl': True, 'items': new})
@@ -64,11 +64,11 @@ def build(p, names):
     s.append({'type': 'curation', 'q': p['intro_q'], 'cols': cols, 'note': p['intro_note'],
               'memo': '도입(큐레이션). 이 콘텐츠는 학교에서 해당 단원을 배우기 전에 보는 것임을 먼저 알린다. 이미 아는 말 → 새로 익힐 말 → 학교 수업의 흐름을 한 화면에 보여 준다.'})
     for c in p.get('checks', []):
-        c.setdefault('memo', '앞에서 배운 말의 뜻 확인. 새로 가르치지 않는다. 틀리면 그 낱말을 익히는 차시로 안내한다.'); s.append(c)
+        c.setdefault('memo', '미리 확인할 말의 뜻 확인. 새로 가르치지 않는다. 틀리면 그 낱말을 익히는 차시로 안내한다.'); s.append(c)
     if pre:
         s.append({'type': 'checklist', 'q': '이 말을 알고 있나요? 잘 모르면 먼저 배우고 와요.',
                   'items': [{'t': w, 'ex': ex, 'go': f'→ {n}차시 ‘{names[n]}’ 먼저 보고 오기', 'href': f'../{FOLD[n]}/'} for w, n, ex in pre],
-                  'memo': '앞에서 배운 말 확인의 마무리. ‘잘 몰라요’를 누르면 그 낱말을 익히는 차시로 가는 연결이 나온다. 초등에서 배운 말은 여기에 넣지 않고 다음 화면에서 바로 안내한다.'})
+                  'memo': '미리 확인할 말(이 차시에 필요하지만 앞 차시에서 이미 익힌 말) 확인의 마무리. 학습 어휘로 다시 가르치지 않는다. ‘잘 몰라요’를 누르면 그 낱말을 익히는 차시로 가는 연결이 나온다. 초등에서 배운 말은 여기에 넣지 않고 다음 화면에서 바로 안내한다.'})
     for w, back in p.get('elem_cards', []):
         s.append({'type': 'card_flip', 'q': '초등학교에서 배운 말이에요. 한국어로 확인해 보세요.', 'front': {'text': w}, 'back': back, 'answerText': w,
                   'memo': '초등에서 배운 말은 앞 차시로 보내지 않는다. 학생이 이미 아는 개념을 식이나 그림으로 보여 주고 한국어 낱말과 잇는다. 번역 기능으로 모국어 낱말도 함께 볼 수 있다.'})
@@ -118,13 +118,13 @@ def build(p, names):
     M.append({'name': '마무리', 'screens': s})
     vocab = {f'새 어휘 = {kind_new} (이 차시에서 익힘)': [w + (' (충남대 핵심어)' if w in p.get('ess', []) else '') for w in new]}
     if aux: vocab['함께 처음 보는 말' + (' (수행 도구어)' if common else ' (보조·배경 개념어)')] = aux
-    if pre: vocab['앞에서 배운 말 (뜻 확인 → 모르면 그 차시로 안내)'] = [f'{w} → {n}차시 ‘{names[n]}’' for w, n, _ in pre]
+    if pre: vocab['미리 확인할 말 (차시 처음에 아는지 확인 → 모르면 익힌 차시로 안내)'] = [f'{w} → {n}차시 ‘{names[n]}’' for w, n, _ in pre]
     if elem: vocab['초등에서 배운 말 (이 차시 안에서 배경지식으로 안내)'] = [f'{w} ({sem})' for w, sem in elem]
     if perf: vocab['수행 도구어 (문제에서 쓰는 말)'] = [f'{v} → {n}차시' if n else f'{v} (익히는 차시 없음)' for v, n in perf]
     if p.get('colloc'): vocab['공기관계어'] = p['colloc']
     keep = sorted({w for w in new + aux + [x[0] for x in pre] + [x[0] for x in elem] + p.get('keep', []) if len(w) >= 2 or w in new}, key=len, reverse=True)
     return {'code': f'L{no:02d}', 'no': no, 'title': names[no], 'grade': '중학교 1학년' if not common else '중학교 1~2학년 공통', 'standard': p['std'], 'unit': p['unit'],
-            'lessonType': f'{"수행" if p.get("type") == "수행" else "개념"} 중심 차시 (10분 안팎) · 새 어휘 {len(new)}개' + (f', 앞에서 배운 말 확인 {len(pre)}개' if pre else '') + (f', 초등에서 배운 말 안내 {len(elem)}개' if elem else ''),
+            'lessonType': f'{"수행" if p.get("type") == "수행" else "개념"} 중심 차시 (10분 안팎) · 새 어휘 {len(new)}개' + (f', 미리 확인할 말 {len(pre)}개' if pre else '') + (f', 초등에서 배운 말 안내 {len(elem)}개' if elem else ''),
             'words': new, 'keep': keep, 'cast': ['아미르', '유나'], 'vocab': vocab, 'modules': M}
 
 def write(root, L):
