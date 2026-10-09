@@ -185,7 +185,7 @@ function speak(t,cb){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesis
 /* ---------- 그림: 두 직선과 한 직선 ---------- */
 const COL={A:'#ff8fb0',B:'#7db7ff',C:'#8fe0b0',D:'#ffd66b'};
 function fig(o){
-  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='power') return figPower(o); if(o.kind==='num') return figNum(o); const W=420,H=320, rad=d=>d*Math.PI/180;
+  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='word') return figWord(o); if(o.kind==='power') return figPower(o); if(o.kind==='num') return figNum(o); const W=420,H=320, rad=d=>d*Math.PI/180;
   const t=o.t||60, a1=0, a2=(o.par===false)?(o.tilt||-13):0;
   const P1={x:240,y:95}, Q={x:195,y:225};
   // 아래 직선과 가로지르는 직선의 교점
@@ -242,6 +242,18 @@ function figEq(o){
   const row=(t,i)=>{ let h=''; String(t).split('**').forEach((q,k)=>{ h+= k%2 ? `<tspan fill="#d81e5b">${q}</tspan>` : q; });
     return `<text x="210" y="${y0+i*gap+fs*0.35}" text-anchor="middle" font-size="${fs}" font-weight="800">${h}</text>`; };
   return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${L.map(row).join('')}</svg>`;
+}
+/* 낱말 짜임: 조각 낱말 + 조각 낱말 → 합쳐진 낱말. rows:[{parts:[…], result:'…'}] */
+function figWord(o){
+  const R=o.rows, fs=o.size||24, cw=fs*1.08, pad=22, bh=fs*2, gap=bh+34, y0=160-gap*(R.length-1)/2;
+  const bw=t=>String(t).length*cw+pad;
+  const box=(x,y,t,hl)=>`<rect x="${x}" y="${y-bh/2}" width="${bw(t)}" height="${bh}" rx="12" fill="${hl?'#ffe0ea':'#fff'}" stroke="${hl?'#d81e5b':'#1b1b1b'}" stroke-width="2.5"/><text x="${x+bw(t)/2}" y="${y+fs*0.36}" text-anchor="middle" font-size="${fs}" font-weight="800" fill="${hl?'#d81e5b':'#1b1b1b'}">${t}</text>`;
+  const sign=(x,y,t)=>`<text x="${x}" y="${y+fs*0.36}" text-anchor="middle" font-size="${fs}" font-weight="800" fill="#f08a24">${t}</text>`;
+  let g='';
+  R.forEach((r,i)=>{ const y=y0+i*gap, sw=30, aw=38; let w=bw(r.result)+aw+r.parts.reduce((s,p)=>s+bw(p),0)+sw*(r.parts.length-1), x=210-w/2;
+    r.parts.forEach((p,k)=>{ if(k){ g+=sign(x+sw/2,y,'+'); x+=sw; } g+=box(x,y,p,false); x+=bw(p); });
+    g+=sign(x+aw/2,y,'→'); x+=aw; g+=box(x,y,r.result,true); });
+  return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
 }
 function figPower(o){
   const b=String(o.base), e=String(o.exp), bw=b.length*62, x0=150-bw/2;

@@ -14,6 +14,7 @@ def eq(*lines, size=None):
     d = {'kind': 'eq', 'lines': list(lines)}
     if size: d['size'] = size
     return d
+def word(*rows): return {'kind': 'word', 'rows': [{'parts': list(r[:-1]), 'result': r[-1]} for r in rows]}   # 낱말 짜임: word(('소수', '인수', '소인수'), …)
 def num(a, b, **k): return dict(kind='num', min=a, max=b, **k)
 def pw(base, exp, labels=True, eqs=None):
     d = {'kind': 'power', 'base': base, 'exp': exp, 'labels': labels}
