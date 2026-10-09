@@ -2,7 +2,7 @@
     "quiz": [
         {
             "data_type": "choice",
-            "data_jung_dap": "3",
+            "data_jung_dap": "1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -10,22 +10,19 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "12를 소인수분해한 것을 골라 보세요.",
+            "question": "그림처럼 나타내는 것을 무엇이라고 하나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "12 = 2 × 6"
+                    "txt": "소인수분해"
                 },
                 {
-                    "txt": "12 = 3 × 4"
+                    "txt": "거듭제곱"
                 },
                 {
-                    "txt": "12 = 2² × 3"
-                },
-                {
-                    "txt": "12 = 1 × 12"
+                    "txt": "약수"
                 }
             ],
             "basket_name": "",
@@ -35,7 +32,7 @@
         },
         {
             "data_type": "choice",
-            "data_jung_dap": "1,2",
+            "data_jung_dap": "1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -43,22 +40,49 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "18의 소인수를 모두 골라 보세요.",
+            "question": "색이 들어간 수 2와 3을 12의 무엇이라고 하나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "2"
+                    "txt": "소인수"
                 },
                 {
-                    "txt": "3"
+                    "txt": "거듭제곱"
                 },
                 {
-                    "txt": "9"
+                    "txt": "합성수"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "2",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "2³처럼 나타낸 것을 무엇이라고 하나요?",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "소인수"
                 },
                 {
-                    "txt": "18"
+                    "txt": "거듭제곱"
+                },
+                {
+                    "txt": "소인수분해"
                 }
             ],
             "basket_name": "",
@@ -77,7 +101,7 @@
             "data_guide": "false",
             "data_guide_points": "",
             "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
-            "sub_question": "20을 소인수분해한 것이다.",
+            "sub_question": "2와 3을 12의 ‘거듭제곱’이라고 한다.",
             "selection": "",
             "img": "",
             "object": [],
