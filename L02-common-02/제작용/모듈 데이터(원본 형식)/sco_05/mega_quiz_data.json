@@ -50,19 +50,19 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "알맞은 답을 골라 보세요.",
+            "question": "이렇게 말을 식으로 바꾸어 쓰는 것을 무엇이라고 하나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "5 × 2"
+                    "txt": "나타내다"
                 },
                 {
-                    "txt": "10"
+                    "txt": "써넣다"
                 },
                 {
-                    "txt": "오 곱하기 이"
+                    "txt": "그리다"
                 }
             ],
             "basket_name": "",
@@ -92,7 +92,7 @@
         },
         {
             "data_type": "choice",
-            "data_jung_dap": "1,2,4",
+            "data_jung_dap": "1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -100,22 +100,19 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "다음 중 기호를 모두 골라 보세요.",
+            "question": "이런 표시를 무엇이라고 하나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "＋"
+                    "txt": "기호"
                 },
                 {
-                    "txt": "＝"
+                    "txt": "빈칸"
                 },
                 {
-                    "txt": "더하기"
-                },
-                {
-                    "txt": "＜"
+                    "txt": "그래프"
                 }
             ],
             "basket_name": "",

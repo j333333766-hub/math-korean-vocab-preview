@@ -81,7 +81,7 @@
             "data_guide": "false",
             "data_guide_points": "",
             "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
-            "sub_question": "7은 3 + 4의 값이다.",
+            "sub_question": "7을 이 식의 ‘값’이라고 한다.",
             "selection": "",
             "img": "",
             "object": [],

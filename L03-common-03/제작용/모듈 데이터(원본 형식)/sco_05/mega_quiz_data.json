@@ -2,7 +2,7 @@
     "quiz": [
         {
             "data_type": "choice",
-            "data_jung_dap": "1,3",
+            "data_jung_dap": "1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -10,22 +10,19 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "다음 중 옳은 것을 모두 고르시오.",
+            "question": "이 문제의 답은 몇 개일 수 있나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "2 + 3 = 5"
+                    "txt": "여러 개일 수 있다"
                 },
                 {
-                    "txt": "4 × 2 = 6"
+                    "txt": "꼭 한 개이다"
                 },
                 {
-                    "txt": "10 − 3 = 7"
-                },
-                {
-                    "txt": "6 ÷ 2 = 4"
+                    "txt": "답이 없다"
                 }
             ],
             "basket_name": "",
@@ -35,7 +32,7 @@
         },
         {
             "data_type": "choice",
-            "data_jung_dap": "3",
+            "data_jung_dap": "1",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -43,19 +40,19 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "다음 중 옳지 않은 것은?",
+            "question": "순서에 맞게 하나씩 쓰는 것을 무엇이라고 하나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "1 + 1 = 2"
+                    "txt": "차례대로"
                 },
                 {
-                    "txt": "3 × 3 = 9"
+                    "txt": "모두"
                 },
                 {
-                    "txt": "8 − 5 = 4"
+                    "txt": "보기"
                 }
             ],
             "basket_name": "",
@@ -120,7 +117,7 @@
             "data_guide": "false",
             "data_guide_points": "",
             "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
-            "sub_question": "‘모두 고르시오’에서는 답이 여러 개일 수 있다.",
+            "sub_question": "ㄱ, ㄴ, ㄷ처럼 고를 수 있게 준 것을 ‘보기’라고 한다.",
             "selection": "",
             "img": "",
             "object": [],
