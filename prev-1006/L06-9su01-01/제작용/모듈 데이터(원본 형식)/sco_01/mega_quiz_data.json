@@ -1,0 +1,61 @@
+{
+    "quiz": [
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "학교에서 ‘소인수분해’를 배우기 전에 봐요 ②",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "이미 아는 말: 곱, 자연수"
+                },
+                {
+                    "txt": "오늘 새로 익힐 말: 거듭제곱"
+                },
+                {
+                    "txt": "학교 수업: 1. 소인수분해"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "curation",
+            "intro": "true"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "곱",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "초등학교에서 배운 말이에요. 한국어로 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "card(그림)"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": ""
+        }
+    ]
+}

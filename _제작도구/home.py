@@ -124,7 +124,7 @@ def build_home(root):
 <p class="lead">학교에서 각 단원을 배우기 전에 먼저 보는 수학 한국어 어휘 콘텐츠 시안입니다. 차시를 누르면 열립니다. <b>시안 {done}차시</b> / 전체 {len(L)}차시</p>
 <nav><a href="lessons.html">📘 차시 설명<small>차시별 새 어휘와 어휘 위계</small></a><a href="vocab-map.html">🗺 어휘 지도<small>마인드맵 · 위계 흐름</small></a><a href="vocab-map.html#std">📋 성취기준별<small>성취기준 순으로 보기</small></a><a href="vocab-map.html#sec">📖 교과서 소단원별<small>천재(김화경) 차례 순</small></a></nav>
 {''.join(tiles)}
-<footer>초안이며 내용은 바뀔 수 있습니다. 시안 화면의 영상 자리는 컷별 영상 대본으로 대신했습니다.</footer>
+<footer>60차시 추천안(2026-10-09) 기준이며 확정 전입니다. 시안 화면의 영상 자리는 컷별 영상 대본으로 대신했습니다. · <a href="prev-1006/">옛 목차(10-06) 기준 5~15차시 시안 보기</a></footer>
 </main></body></html>
 """
     io.open(os.path.join(root, 'index.html'), 'w', encoding='utf-8').write(home)

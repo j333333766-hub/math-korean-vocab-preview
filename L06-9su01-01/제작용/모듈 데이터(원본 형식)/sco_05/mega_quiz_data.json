@@ -2,7 +2,7 @@
     "quiz": [
         {
             "data_type": "choice",
-            "data_jung_dap": "1",
+            "data_jung_dap": "3",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -10,22 +10,22 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "5 × 5 × 5 × 5를 거듭제곱으로 나타낸 것을 골라 보세요.",
+            "question": "12를 소인수분해한 것을 골라 보세요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "5⁴"
+                    "txt": "12 = 2 × 6"
                 },
                 {
-                    "txt": "4⁵"
+                    "txt": "12 = 3 × 4"
                 },
                 {
-                    "txt": "5 × 4"
+                    "txt": "12 = 2² × 3"
                 },
                 {
-                    "txt": "20"
+                    "txt": "12 = 1 × 12"
                 }
             ],
             "basket_name": "",
@@ -35,7 +35,7 @@
         },
         {
             "data_type": "choice",
-            "data_jung_dap": "2",
+            "data_jung_dap": "1,2",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -43,19 +43,22 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "‘4의 세제곱’을 골라 보세요.",
+            "question": "18의 소인수를 모두 골라 보세요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "4²"
+                    "txt": "2"
                 },
                 {
-                    "txt": "4³"
+                    "txt": "3"
                 },
                 {
-                    "txt": "3⁴"
+                    "txt": "9"
+                },
+                {
+                    "txt": "18"
                 }
             ],
             "basket_name": "",
@@ -74,7 +77,7 @@
             "data_guide": "false",
             "data_guide_points": "",
             "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
-            "sub_question": "2의 거듭제곱이다.",
+            "sub_question": "20을 소인수분해한 것이다.",
             "selection": "",
             "img": "",
             "object": [],
@@ -93,28 +96,28 @@
             "data_load_stroge_name": "",
             "data_guide": "false",
             "data_guide_points": "",
-            "question": "수와 읽는 말을 알맞게 연결해 보세요.",
+            "question": "낱말과 뜻을 알맞게 연결해 보세요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "6²"
+                    "txt": "소인수"
                 },
                 {
-                    "txt": "6³"
+                    "txt": "소인수분해"
                 },
                 {
-                    "txt": "6⁴"
+                    "txt": "거듭제곱"
                 },
                 {
-                    "txt": "6의 세제곱"
+                    "txt": "자연수를 소인수들만의 곱으로 나타내는 것"
                 },
                 {
-                    "txt": "6의 네제곱"
+                    "txt": "같은 수를 여러 번 곱한 것"
                 },
                 {
-                    "txt": "6의 제곱"
+                    "txt": "소수인 인수"
                 }
             ],
             "basket_name": "",
@@ -125,7 +128,7 @@
         },
         {
             "data_type": "step_recorde",
-            "data_jung_dap": "3의 제곱은 9입니다.",
+            "data_jung_dap": "12를 소인수분해하면 2² × 3입니다.",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",

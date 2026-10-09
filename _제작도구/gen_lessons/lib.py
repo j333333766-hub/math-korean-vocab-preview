@@ -7,8 +7,8 @@
 import io, json, os, re
 
 LANGS = ['English', '中文', '日本語', 'Tiếng Việt', 'Русский', 'العربية']
-FOLD = {1: 'L01-common-01', 2: 'L02-common-02', 3: 'L03-common-03', 4: 'L04-common-04', 5: 'L05-9su01-01', 6: 'L06-9su01-01', 7: 'L07-9su01-01',
-        8: 'L08-9su01-01', 9: 'L09-9su01-02', 10: 'L10-9su01-03', 11: 'L11-9su01-03', 12: 'L12-9su01-04', 13: 'L13-9su01-05', 14: 'L14-9su01-05', 15: 'L15-9su02-01'}
+# 60차시 추천안(2026-10-09) 기준. 옛 목차(10-06)의 5~15차시 시안은 prev-1006/ 폴더로 옮겼다.
+FOLD = {1: 'L01-common-01', 2: 'L02-common-02', 3: 'L03-common-03', 4: 'L04-common-04', 5: 'L05-9su01-01', 6: 'L06-9su01-01'}
 
 def eq(*lines, size=None):
     d = {'kind': 'eq', 'lines': list(lines)}

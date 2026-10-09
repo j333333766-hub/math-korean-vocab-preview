@@ -22,6 +22,31 @@
         },
         {
             "data_type": "card_flip",
+            "data_jung_dap": "약수",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "6의 약수: 1, 2, 3, 6"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "card_flip",
             "data_jung_dap": "소수",
             "data_audsrc": "",
             "data_is_auto_play": "true",
@@ -72,7 +97,7 @@
         },
         {
             "data_type": "click",
-            "data_jung_dap": "소수, 합성수",
+            "data_jung_dap": "소수, 합성수, 약수",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -86,22 +111,22 @@
             "img": "",
             "object": [
                 {
-                    "txt": "English: prime number / composite number"
+                    "txt": "English: prime number / composite number / divisor (factor)"
                 },
                 {
-                    "txt": "中文: 质数(素数) / 合数"
+                    "txt": "中文: 质数(素数) / 合数 / 约数(因数)"
                 },
                 {
-                    "txt": "日本語: 素数 / 合成数"
+                    "txt": "日本語: 素数 / 合成数 / 約数"
                 },
                 {
-                    "txt": "Tiếng Việt: số nguyên tố / hợp số"
+                    "txt": "Tiếng Việt: số nguyên tố / hợp số / ước số"
                 },
                 {
-                    "txt": "Русский: простое число / составное число"
+                    "txt": "Русский: простое число / составное число / делитель"
                 },
                 {
-                    "txt": "العربية: عدد أولي / عدد مؤلَّف"
+                    "txt": "العربية: عدد أولي / عدد مؤلَّف / قاسم"
                 }
             ],
             "basket_name": "",

@@ -16,10 +16,10 @@
             "img": "",
             "object": [
                 {
-                    "txt": "이미 아는 말: 곱, 자연수"
+                    "txt": "이미 아는 말: 소수"
                 },
                 {
-                    "txt": "오늘 새로 익힐 말: 거듭제곱"
+                    "txt": "오늘 새로 익힐 말: 소인수분해, 소인수, 거듭제곱"
                 },
                 {
                     "txt": "학교 수업: 1. 소인수분해"
@@ -33,8 +33,41 @@
             "intro": "true"
         },
         {
-            "data_type": "card_flip",
-            "data_jung_dap": "곱",
+            "data_type": "choice",
+            "data_jung_dap": "1,3",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "확인 ① 소수를 모두 골라 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "2"
+                },
+                {
+                    "txt": "9"
+                },
+                {
+                    "txt": "11"
+                },
+                {
+                    "txt": "15"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -42,20 +75,20 @@
             "data_load_stroge_name": "",
             "data_guide": "false",
             "data_guide_points": "",
-            "question": "초등학교에서 배운 말이에요. 한국어로 확인해 보세요.",
+            "question": "이 말을 알고 있나요? 잘 모르면 먼저 배우고 와요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "card(그림)"
+                    "txt": "소수 — 약수가 1과 자기 자신뿐인 수. 예: 2, 3, 5, 7"
                 }
             ],
             "basket_name": "",
             "drop": "",
             "character": "false",
             "commentary": "",
-            "custom": ""
+            "custom": "checklist"
         }
     ]
 }

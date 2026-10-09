@@ -16,13 +16,13 @@
             "img": "",
             "object": [
                 {
-                    "txt": "오늘 새로 익힐 말: 거듭제곱"
+                    "txt": "오늘 새로 익힐 말: 소인수분해, 소인수, 거듭제곱"
                 },
                 {
-                    "txt": "함께 보는 말: 제곱, 세제곱"
+                    "txt": "함께 보는 말: 인수"
                 },
                 {
-                    "txt": "문제에서 쓰는 말: 나타내다"
+                    "txt": "문제에서 쓰는 말: 나타내다, 구하다"
                 }
             ],
             "basket_name": "",
@@ -53,7 +53,7 @@
         },
         {
             "data_type": "listen",
-            "data_jung_dap": "거듭제곱",
+            "data_jung_dap": "소인수분해",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -67,13 +67,16 @@
             "img": "",
             "object": [
                 {
+                    "txt": "소인수분해"
+                },
+                {
+                    "txt": "소인수"
+                },
+                {
                     "txt": "거듭제곱"
                 },
                 {
-                    "txt": "제곱"
-                },
-                {
-                    "txt": "세제곱"
+                    "txt": "인수"
                 }
             ],
             "basket_name": "",

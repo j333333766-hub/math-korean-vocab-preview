@@ -1,0 +1,139 @@
+{
+    "quiz": [
+        {
+            "data_type": "vod",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "거듭제곱",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "card(그림)"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": ""
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "제곱",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "5² = 5 × 5  →  5의 제곱"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "card_flip",
+            "data_jung_dap": "세제곱",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 클릭해 뜻을 확인해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "5³ = 5 × 5 × 5  →  5의 세제곱"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "t_t"
+        },
+        {
+            "data_type": "click",
+            "data_jung_dap": "거듭제곱, 제곱, 세제곱",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "내가 아는 말과 연결해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "English: power / square / cube"
+                },
+                {
+                    "txt": "中文: 乘方 / 平方 / 立方"
+                },
+                {
+                    "txt": "日本語: 累乗 / 2乗 / 3乗"
+                },
+                {
+                    "txt": "Tiếng Việt: lũy thừa / bình phương / lập phương"
+                },
+                {
+                    "txt": "Русский: степень / квадрат / куб"
+                },
+                {
+                    "txt": "العربية: القوة / مربع / مكعب"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "lang_match"
+        }
+    ]
+}
