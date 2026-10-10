@@ -122,6 +122,15 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .cur .it{background:#fff;border:.1em solid #111;border-radius:.6em;padding:.3em .5em;font-weight:800;font-size:.98em;width:100%;text-align:center}
 .cur .it small{display:block;font-weight:600;font-size:.7em;color:#6b7280}.cur .arr{align-self:center;font-size:1.5em;color:#f58a1f}
 .cur .col.wide{flex:1.5}.cur .desc{font-size:.74em;font-weight:700;line-height:1.5;color:#374151;text-align:left;padding:0 .2em}
+.cur .it.tap{cursor:pointer;position:relative;transition:.15s}.cur .it.tap:hover{transform:translateY(-.08em);box-shadow:0 .18em 0 #111}
+.cur .it.tap::after{content:'🔍';position:absolute;right:.45em;top:50%;transform:translateY(-50%);font-size:.62em;opacity:.75}
+.pvback{position:absolute;inset:0;background:#1119;display:flex;align-items:center;justify-content:center;z-index:30;border-radius:inherit}
+.pvbox{background:#fff;border:.16em solid #111;border-radius:1em;padding:1em 1.4em .9em;width:62%;max-height:84%;overflow:auto;display:flex;flex-direction:column;gap:.55em;box-shadow:0 .4em 0 #1115}
+.pvw{font-size:1.5em;font-weight:900;color:#e8457a;text-align:center}
+.pvrow{display:flex;gap:.7em;align-items:flex-start;font-size:.95em;font-weight:700;line-height:1.45}
+.pvrow .k{flex:none;min-width:3em;text-align:center;background:#2f6fe4;color:#fff;border-radius:99px;padding:.05em .6em;font-size:.82em;font-weight:800;margin-top:.12em}
+.pvtip{font-size:.74em;font-weight:600;color:#6b7280;text-align:center}
+.pvx{align-self:center;background:#f58a1f;color:#fff;border:.14em solid #111;border-radius:99px;padding:.2em 1.4em;font-weight:800;font-size:.85em;cursor:pointer;font-family:inherit}
 .curnote{font-size:.88em;font-weight:700;text-align:center;color:#374151;line-height:1.5}
 .ck{width:100%;display:flex;flex-direction:column;gap:.45em}
 .ck .row{display:flex;align-items:center;gap:.6em;border:.12em solid #111;border-radius:.8em;padding:.35em .8em;background:#fff}
@@ -373,9 +382,14 @@ R.ocr=sc=>{ const pad=frame(sc.q||'연필을 클릭해 낱말을 써 보세요.'
   cv.onpointerdown=e=>{on=true; const c=ctx(); c.beginPath(); c.moveTo(...pos(e));}; cv.onpointermove=e=>{ if(!on) return; const c=ctx(); c.lineTo(...pos(e)); c.stroke(); c.beginPath(); c.moveTo(...pos(e)); }; window.addEventListener('pointerup',()=>on=false);
   const r=el('div','btnrow'); const z=el('button','btn sub','지우기'); z.onclick=()=>cv.getContext('2d').clearRect(0,0,cv.width,cv.height); r.append(z); pad.append(r); };
 
+// 낱말 미리 보기: 어휘 제시 화면에서 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 먼저 보여 준다.
+function preview(w,pv){ const st=$('#stage'); const old=st.querySelector('.pvback'); if(old) old.remove();
+  const back=el('div','pvback'), box=el('div','pvbox'); const row=(k,v,cls)=>v?'<div class="pvrow"><span class="k">'+k+'</span><span class="v'+(cls?' '+cls:'')+'">'+rich(v)+'</span></div>':'';
+  box.innerHTML='<div class="pvw notranslate" translate="no">'+rich(w)+'</div>'+row('뜻',pv.def)+row('예',pv.eg,'notranslate')+row('문장',pv.sent,'notranslate')+'<div class="pvtip">뒤에서 더 자세히 배워요.</div>';
+  const x=el('button','pvx','닫기'); x.onclick=()=>back.remove(); box.append(x); back.onclick=e=>{ if(e.target===back) back.remove(); }; back.append(box); st.append(back); }
 R.curation=sc=>{ const pad=frame(sc.q); const c=el('div','cur');
   sc.cols.forEach((col,i)=>{ if(i&&!sc.noArrow) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));
-    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; d.append(el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':''))); });
+    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; const e=el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':'')); if(t.pv){ e.classList.add('tap'); e.title='눌러서 뜻과 예 미리 보기'; e.onclick=()=>preview(t.t,t.pv); } d.append(e); });
     if(col.desc){ d.classList.add('wide'); d.append(el('div','desc',rich(col.desc))); } c.append(d); });
   pad.append(c); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
 R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el('div','fb');

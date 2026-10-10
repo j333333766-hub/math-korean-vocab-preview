@@ -80,13 +80,24 @@ def build(p, names):
     M.append({'name': '도입', 'screens': s})
     # ── 어휘 제시
     s = []
-    cols = [{'label': '오늘 새로 익힐 말', 'hl': True, 'items': new}]
-    if aux: cols.append({'label': '함께 보는 말', 'items': [{'t': w} for w in aux]})
+    # 낱말 미리 보기: 낱말을 누르면 뜻·예·교과서 문장이 작은 창으로 나온다. 정리 화면(summary)과 용례(usage)에서 가져오고, p['preview'] 로 고치거나 더한다.
+    def pv(w):
+        d = {}
+        for t, eg, df in p.get('summary', []):
+            if t == w: d = {'def': df, 'eg': eg}
+        sents = [' '.join(t.split()) for t, _ in p.get('usage', []) if isinstance(t, str)]
+        hit = [t for t in sents if '**' + w in t] or [t for t in sents if w in t.replace('*', '')]
+        if d and hit: d['sent'] = hit[0]
+        d.update(p.get('preview', {}).get(w, {}))
+        return {'t': w, 'pv': d} if d else {'t': w}
+    cols = [{'label': '오늘 새로 익힐 말', 'hl': True, 'items': [pv(w) for w in new]}]
+    if aux: cols.append({'label': '함께 보는 말', 'items': [pv(w) for w in aux]})
+    can_tap = any('pv' in it for c in cols for it in c['items'])
     known = [{'t': w, 's': f'{n}차시'} for w, n, _ in pre] + [{'t': w, 's': '초등'} for w, _ in elem]
     if known and not (aux and perf): cols.append({'label': '이미 아는 말', 'items': known[:4]})
     if perf: cols.append({'label': '문제에서 쓰는 말', 'items': [{'t': v, 's': f'{n}차시' if n else ''} for v, n in perf]})
-    s.append({'type': 'curation', 'noArrow': True, 'q': '오늘 만날 낱말이에요.', 'cols': cols, 'note': p.get('present_note', '이미 아는 말을 가지고 새 낱말의 뜻을 알아봐요.'),
-              'memo': f'새 어휘({kind_new}), 함께 보는 말·이미 아는 말(보조·배경 개념어), 문제에서 쓰는 말(수행 도구어)을 나누어 보여 준다.'})
+    s.append({'type': 'curation', 'noArrow': True, 'q': '오늘 만날 낱말이에요.', 'cols': cols, 'note': p.get('present_note', '이미 아는 말을 가지고 새 낱말의 뜻을 알아봐요.') + (chr(10) + '궁금한 낱말을 누르면 뜻과 예를 미리 볼 수 있어요.' if can_tap else ''),
+              'memo': f'새 어휘({kind_new}), 함께 보는 말·이미 아는 말(보조·배경 개념어), 문제에서 쓰는 말(수행 도구어)을 나누어 보여 준다.' + (' 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 미리 볼 수 있다(선택 활동, 보지 않아도 뒤에서 모두 배운다).' if can_tap else '')})
     if not common:
         s.append({'type': 'vod', 'title': '수업 장면: 교과서에서 만난 낱말', 'cuts': p['scene'], 'memo': '새 낱말을 수업 장면 속에서 처음 보여 준다. 이미 아는 말과 이미 아는 개념에서 출발한다는 점을 대사로 짚는다.'})
     s.append({'type': 'listen', 'q': '다음 낱말을 듣고 2번 따라 읽어 보세요.', 'items': [{'text': t, 'say': sy} if sy else {'text': t} for t, sy in p['listen']]})
