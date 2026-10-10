@@ -10,7 +10,7 @@
 body{word-break:keep-all;overflow-wrap:break-word}
 html,body{margin:0;height:100%;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:#f3f5f8}
 button{font:inherit;cursor:pointer}
-.app{display:grid;grid-template-columns:270px 1fr;height:100vh}
+.app{display:grid;grid-template-columns:270px 1fr;grid-template-rows:100%;height:100vh;height:100dvh}
 .side{background:#fff;border-right:1px solid #e3e7ee;padding:14px 12px;overflow:auto}
 .side .badge{display:inline-block;font-size:12px;border:1px solid var(--blue);color:var(--blue);border-radius:99px;padding:1px 9px}
 .side h1{font-size:17px;margin:6px 0 2px;color:#1e56b8}
@@ -19,14 +19,14 @@ button{font:inherit;cursor:pointer}
 .toc button.on{background:var(--teal);color:#fff;font-weight:700}
 .toc small{float:right;opacity:.7;font-weight:400}
 .note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px;border-top:1px dashed #d5dae3;padding-top:10px}
-.main{display:flex;flex-direction:column;min-width:0}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
 .top{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#e9ecf1}
 .top .ttl{flex:1;text-align:center;background:#fff;border-radius:99px;padding:5px 14px;font-weight:700;max-width:480px;margin:0 auto}
 .top button{border:0;border-radius:99px;padding:6px 14px;background:var(--yellow);color:#fff;font-weight:700}
 .top button.ghost{background:#fff;color:var(--ink);border:1px solid #cfd5df}
 .top button.ghost.on{background:var(--ink);color:#fff}
 .wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:10px;min-height:0;gap:10px}
-.stage{position:relative;aspect-ratio:16/9;height:100%;max-width:100%;background:linear-gradient(#cfe8fb,#eef7fd);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.stage{position:relative;flex:none;width:100%;aspect-ratio:16/9;background:linear-gradient(#cfe8fb,#eef7fd);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.12)}
 .qbar{position:absolute;left:9%;right:9%;top:3.2%;min-height:9.5%;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--blue);color:#fff;border:.18em solid #111;border-radius:1.2em;padding:.25em 1em;font-weight:700;font-size:1.02em;line-height:1.3}
 .qbar.hide{display:none}
 .tools{position:absolute;left:2%;top:3.5%;display:flex;gap:.4em}
@@ -194,6 +194,55 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .memo h3{margin:0 0 6px;font-size:14px}.memo dt{font-weight:700;margin-top:8px;color:#7a5b00}.memo dd{margin:0}
 .memo code{background:#f1ecd0;padding:0 4px;border-radius:4px}
 @media(max-width:900px){.app{grid-template-columns:1fr}.side{display:none}.memo{display:none!important}}
+.top button,.homebtn{white-space:nowrap}
+@media(max-width:1200px){.top .ttl{display:none}.lang{flex:1;min-width:0}#langSel{flex:1;min-width:0;max-width:none}}
+/* ── 반응형: 좁은 화면(휴대폰)에서는 위쪽 줄을 줄이고, 세로로 긴 화면에서는 무대를 세로형(.port)으로 바꿔 내용을 위아래로 쌓는다 ── */
+@media(max-width:900px),(max-height:500px){
+  .top{flex-wrap:wrap;gap:6px;padding:6px 8px}.top .ttl,#memoBtn{display:none}
+  .homebtn{padding:5px 10px;font-size:13px}.top button{padding:5px 10px;font-size:13px}
+  .lang{flex:1;min-width:0;padding:2px 8px}#langSel{max-width:none;flex:1;min-width:0;width:100%}#langReset{padding:3px 8px;font-size:12px}
+  .wrap{padding:6px}
+}
+@media(max-width:700px){
+  #chatBtn{right:10px;bottom:10px;padding:8px 14px;font-size:14px}
+  #chat{left:8px;right:8px;bottom:8px;width:auto;max-width:none;height:min(72dvh,480px)}
+}
+@media(max-width:900px) and (orientation:portrait){.wrap{align-items:flex-start;padding-bottom:58px}}
+@media(max-height:500px){.top{padding:3px 8px}.wrap{padding:3px 6px}#chatBtn{padding:6px 10px;font-size:13px;opacity:.92}#chat{left:auto;right:6px;top:6px;bottom:6px;width:min(340px,58vw);height:auto;max-height:none;font-size:13.5px}#chat .qs{display:none}#chat .ft{display:none}}
+.stage.port{aspect-ratio:auto}
+.stage.port .qbar{left:15%;right:3%;top:1.2%;min-height:8%;font-size:1em;padding:.2em .7em;border-radius:1em}
+.stage.port .tools{left:3%;top:2.2%}
+.stage.port .pad{left:3%;right:3%;top:11%;bottom:9%;border-bottom:.16em solid #111;border-radius:1.2em;padding:1em .7em .6em}
+.stage.port .pad.full{top:1.5%}
+.stage.port .pad:before{left:4%}.stage.port .pad:after{right:4%}
+.stage.port .nav{top:auto;bottom:.6%;height:2.2em;font-size:1.7em}.stage.port .nav.prev{left:27%}.stage.port .nav.next{right:27%}
+.stage.port .count{bottom:1.8%}.stage.port .type{bottom:1.8%;max-width:26%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage.port.isvod .nav{bottom:auto;top:.3%;height:1.6em;font-size:1.5em}.stage.port.isvod .nav.prev{left:30%}.stage.port.isvod .nav.next{right:30%}
+.stage.port .two{flex-direction:column;gap:.6em}.stage.port .two>.l{flex:none;width:100%;height:36%}.stage.port .two>.r{flex:1;width:100%;min-height:0}
+.stage.port .cur{flex-direction:column;gap:.25em}.stage.port .cur .arr{transform:rotate(90deg);font-size:1.1em;line-height:.8}
+.stage.port .cur .col{flex:none;padding:.4em .5em;gap:.3em}.stage.port .cur .col.wide{flex:none}
+.stage.port .cur .lab{font-size:.78em}.stage.port .cur .it{font-size:.95em;padding:.22em .5em}.stage.port .curnote{font-size:.8em}
+.stage.port .cur.flat .col{flex-direction:row;flex-wrap:wrap;justify-content:center}.stage.port .cur.flat .lab{width:100%}.stage.port .cur.flat .it{width:auto;flex:1;min-width:42%}
+.stage.port .card{width:92%;height:62%}.stage.port .card .f{font-size:2.2em}
+.stage.port .say{width:100%;font-size:1.05em;padding:.5em .7em;gap:.5em}
+.stage.port .sent{font-size:1.1em;line-height:1.9}.stage.port .chip{font-size:.95em;padding:.3em .7em}
+.stage.port .opt{font-size:.95em;padding:.45em .5em}.stage.port .ox .opt{font-size:1.8em}
+.stage.port .lt{width:100%;gap:12%}.stage.port .lt .opt{font-size:.82em;padding:.4em .3em}
+.stage.port .lmt{font-size:.68em}.stage.port .lmt td{padding:.3em .15em;word-break:break-word;overflow-wrap:anywhere}.stage.port .lmw{font-size:1.6em}
+.stage.port .ck .row{flex-wrap:wrap;gap:.3em .5em;padding:.4em .6em}.stage.port .ck .ex{flex:1 1 100%;order:3}
+.stage.port .vod .scene{padding:2.6em 3% 0;align-items:flex-start}
+.stage.port .vod .board{width:100%;height:auto;aspect-ratio:1;max-height:78%}
+.stage.port .who{width:4.6em;font-size:.75em;bottom:.2em}.stage.port .who.w0{left:4%}.stage.port .who.w1{right:4%}
+.stage.port .bub{max-width:46%;font-size:.85em}.stage.port .bub.b0,.stage.port .bub.b1{top:auto;bottom:6.2em}.stage.port .bub.b0.low,.stage.port .bub.b1.low{top:auto;bottom:6.2em}
+.stage.port .capt{margin:.3em 3% .3em;font-size:.95em;padding:.35em .6em}
+.stage.port .ctrl{padding:.4em .6em;gap:.4em;font-size:.85em}
+.stage.port .tag{top:.5%;font-size:.62em}.stage.port.isvod .count{top:.6%;left:2%;bottom:auto}
+.stage.port .title .t1{font-size:2.6em}
+.stage.port .op{padding-top:14%;gap:.5em}.stage.port .op .track{left:9%;right:9%;top:4%}.stage.port .op .st{font-size:.56em}
+.stage.port .op .ic{font-size:4.4em}.stage.port .op .nm{font-size:3em}.stage.port .op .sub{font-size:1.1em;text-align:center;padding:0 6%}
+.stage.port .op .chips{flex-wrap:wrap;justify-content:center;padding:0 4%;gap:.45em}.stage.port .op .chips div{font-size:1em}
+.stage.port .pvbox{width:92%;padding:.9em .9em .8em}.stage.port .pvrow{font-size:.9em}
+.stage.port canvas.wr{width:94%;height:42%}
 </style>
 </head>
 <body>
@@ -499,14 +548,22 @@ function showMemo(sc,cut){
   if(sc.memo) h+=`<dt>메모</dt><dd>${sc.memo}</dd>`;
   m.innerHTML=h+'</dl>';
 }
+// 무대를 화면에 맞춘다. 가로로 넓으면 16:9 가로형, 세로로 길고 좁으면 세로형(.port)으로 바꾸고 글자 크기의 기준(em)을 다시 잡는다.
+function fit(){ const st=$('#stage'); st.style.width=st.style.height='0px'; const w=st.parentElement, cs=getComputedStyle(w), memo=$('#memo');
+  let W=w.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight), H=w.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+  if(memo&&memo.offsetWidth) W-=memo.offsetWidth+10;
+  const port=W<900&&H>W*1.15; let cw,ch,fs;
+  if(port){ cw=Math.min(W,600); ch=Math.min(H,cw*1.8); fs=cw/23; } else { cw=Math.max(120,Math.min(W,H*16/9)); ch=cw*9/16; fs=cw/46; }
+  const was=st.classList.contains('port'); st.classList.toggle('port',port);
+  st.style.width=cw+'px'; st.style.height=ch+'px'; st.style.fontSize=fs+'px'; return was!==port; }
 function render(){
+  fit();
   if(R._cleanup){ R._cleanup(); R._cleanup=null; } try{speechSynthesis.cancel();}catch(e){}
   const mod=LESSON.modules[mi], sc=mod.screens[si];
   [...$('#toc').children].forEach((b,i)=>b.classList.toggle('on',i===mi));
   const self=(R[sc.type]||(()=>{frame('준비 중인 유형: '+sc.type);}))(sc);
   if(!self){ chrome(sc); showMemo(sc); }
   document.querySelectorAll('#stage .sent, #stage .chips, #stage .opts, #stage .ox, #stage .lt, #stage .say, #stage .card, #stage .motion, #stage .nav, #stage input, #stage .cur .it').forEach(e=>{e.classList.add('notranslate'); e.setAttribute('translate','no');});
-  const st=$('#stage'); st.style.fontSize=(st.clientWidth/46)+'px';
   history.replaceState(null,'','#'+(mi+1)+'-'+(si+1)); if(window._chat) window._chat.where();
 }
 function go(d){ const mod=LESSON.modules[mi]; if(d>0){ if(si<mod.screens.length-1) si++; else if(mi<LESSON.modules.length-1){mi++;si=0;} } else { if(si>0) si--; else if(mi>0){mi--;si=LESSON.modules[mi].screens.length-1;} } render(); }
@@ -518,7 +575,7 @@ function init(){
   $('#memoBtn').onclick=()=>{ memoOn=!memoOn; $('#memo').classList.toggle('on',memoOn); $('#memoBtn').classList.toggle('on',memoOn); render(); };
   const hc=location.hash.match(/#\d+-\d+-(\d+)/); if(hc) window.__cut=hc[1]-1;
   const h=location.hash.match(/#(\d+)-(\d+)(?:-\d+)?(m?)/); if(h){ mi=Math.min(LESSON.modules.length-1,h[1]-1); si=Math.min(LESSON.modules[mi].screens.length-1,h[2]-1); if(h[3]){memoOn=true;$('#memo').classList.add('on');$('#memoBtn').classList.add('on');} }
-  window.addEventListener('resize',()=>{const st=$('#stage'); st.style.fontSize=(st.clientWidth/46)+'px';});
+  let rz; window.addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(fit()) render(); },120); });
   document.addEventListener('keydown',e=>{ if(e.target.tagName==='INPUT') return; if(e.key==='ArrowRight') go(1); if(e.key==='ArrowLeft') go(-1); });
   render();
 }
