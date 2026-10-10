@@ -90,7 +90,8 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .vod{position:absolute;inset:0;background:#6f9f9a;display:flex;flex-direction:column}
 .vod .scene{flex:1;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:1.2em 12% 0}
 .vod .board{background:#fff;border-radius:1em;border:.14em solid #111;height:92%;aspect-ratio:1.55;display:flex;align-items:center;justify-content:center;padding:.4em}
-.who{position:absolute;bottom:.4em;width:5.2em;text-align:center;font-size:.8em;font-weight:800;color:#fff}
+.stage.isvod .nav{top:39%}
+.who{position:absolute;bottom:.3em;width:5.8em;text-align:center;font-size:.8em;font-weight:800;color:#fff}
 .who svg{width:100%}.who.w0{left:2.5%}.who.w1{right:2.5%}
 .bub{position:absolute;max-width:30%;background:#fff;border:.14em solid #111;border-radius:.8em;padding:.4em .7em;font-weight:800;font-size:.9em;line-height:1.35}
 .bub.b0{left:2%;top:8%}.bub.b1{right:2%;top:8%}
@@ -232,8 +233,8 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .stage.port .ck .row{flex-wrap:wrap;gap:.3em .5em;padding:.4em .6em}.stage.port .ck .ex{flex:1 1 100%;order:3}
 .stage.port .vod .scene{padding:2.6em 3% 0;align-items:flex-start}
 .stage.port .vod .board{width:100%;height:auto;aspect-ratio:1;max-height:78%}
-.stage.port .who{width:4.6em;font-size:.75em;bottom:.2em}.stage.port .who.w0{left:4%}.stage.port .who.w1{right:4%}
-.stage.port .bub{max-width:46%;font-size:.85em}.stage.port .bub.b0,.stage.port .bub.b1{top:auto;bottom:6.2em}.stage.port .bub.b0.low,.stage.port .bub.b1.low{top:auto;bottom:6.2em}
+.stage.port .who{width:5.4em;font-size:.75em;bottom:.2em}.stage.port .who.w0{left:4%}.stage.port .who.w1{right:4%}
+.stage.port .bub{max-width:46%;font-size:.85em}.stage.port .bub.b0,.stage.port .bub.b1{top:auto;bottom:7.9em}.stage.port .bub.b0.low,.stage.port .bub.b1.low{top:auto;bottom:7.9em}
 .stage.port .capt{margin:.3em 3% .3em;font-size:.95em;padding:.35em .6em}
 .stage.port .ctrl{padding:.4em .6em;gap:.4em;font-size:.85em}
 .stage.port .tag{top:.5%;font-size:.62em}.stage.port.isvod .count{top:.6%;left:2%;bottom:auto}
@@ -372,8 +373,32 @@ function figNum(o){
   if(o.eq) g+=`<text x="210" y="${y+92}" text-anchor="middle" font-size="21" font-weight="800">${o.eq}</text>`;
   return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
 }
-function avatar(i){ const hair=['#3a2a1a','#111'][i], top=['#e9c46a','#b23a48'][i];
-  return `<svg viewBox="0 0 80 96"><ellipse cx="40" cy="92" rx="30" ry="6" fill="#0002"/><path d="M14 96 q26 -44 52 0z" fill="${top}" stroke="#111" stroke-width="2"/><circle cx="40" cy="36" r="24" fill="#ffe0c2" stroke="#111" stroke-width="2"/><path d="M16 34 q4 -30 24 -26 q22 -4 24 26 q-12 -16 -48 0z" fill="${hair}"/><circle cx="32" cy="38" r="3"/><circle cx="48" cy="38" r="3"/><path d="M33 47 q7 6 14 0" fill="none" stroke="#111" stroke-width="2"/></svg>`; }
+// 인물 그림(임시). 0 = 아미르(중앙아시아계 남학생), 1 = 유나(동남아시아계 여학생). 교복 차림의 상반신, 피부색·머리 모양·눈썹을 다르게 그린다.
+function avatar(i){ const C=[
+    {skin:'#c98d5f',shade:'#a56f43',hair:'#1d1512',line:'#2b1d16',top:'#2f4f9e',top2:'#243f82',tie:'#e0a526',blush:'#d9735a'},
+    {skin:'#eebd92',shade:'#d39a6c',hair:'#33201a',line:'#2b1d16',top:'#a8324a',top2:'#8a263b',tie:'#2f6fe4',blush:'#f08a8a'}][i], L=C.line;
+  const back=i? `<path d="M22 60 Q16 12 60 12 Q104 12 98 60 L102 112 Q90 122 84 104 L84 58 L36 58 L36 104 Q30 122 18 112 Z" fill="${C.hair}" stroke="${L}" stroke-width="2" stroke-linejoin="round"/>` : '';
+  const body=`<path d="M18 142 Q18 108 44 102 L60 110 L76 102 Q102 108 102 142 Z" fill="${C.top}" stroke="${L}" stroke-width="2.4" stroke-linejoin="round"/>
+    <path d="M44 102 L60 124 L76 102 L68 99 L52 99 Z" fill="#fff" stroke="${L}" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M44 102 L52 118 L60 110 Z M76 102 L68 118 L60 110 Z" fill="#fff" stroke="${L}" stroke-width="2" stroke-linejoin="round"/>`+
+    (i? `<path d="M60 112 L49 106 L49 119 Z M60 112 L71 106 L71 119 Z" fill="${C.tie}" stroke="${L}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="60" cy="112.5" r="3.2" fill="${C.tie}" stroke="${L}" stroke-width="1.8"/>`
+       : `<path d="M57 111 L63 111 L65.5 132 L60 138 L54.5 132 Z" fill="${C.tie}" stroke="${L}" stroke-width="1.8" stroke-linejoin="round"/><path d="M56 110 L64 110 L62.5 116 L57.5 116 Z" fill="${C.tie}" stroke="${L}" stroke-width="1.8" stroke-linejoin="round"/>`)+
+    `<path d="M30 142 Q30 124 34 116 M90 142 Q90 124 86 116" fill="none" stroke="${C.top2}" stroke-width="2.4" stroke-linecap="round"/>`;
+  const head=`<path d="M52 84 L52 102 Q60 108 68 102 L68 84 Z" fill="${C.shade}" stroke="${L}" stroke-width="2"/>
+    <ellipse cx="27" cy="60" rx="6.5" ry="8" fill="${C.skin}" stroke="${L}" stroke-width="2"/><ellipse cx="93" cy="60" rx="6.5" ry="8" fill="${C.skin}" stroke="${L}" stroke-width="2"/>
+    <path d="M27 54 Q27 22 60 22 Q93 22 93 54 Q93 78 78 88 Q60 98 42 88 Q27 78 27 54 Z" fill="${C.skin}" stroke="${L}" stroke-width="2.4"/>`;
+  const hair=i? `<path d="M25 58 Q22 16 60 15 Q98 16 95 58 Q90 44 80 40 Q70 50 54 40 Q46 50 34 44 Q28 48 25 58 Z" fill="${C.hair}" stroke="${L}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M44 22 Q48 34 54 40 M72 21 Q74 32 80 40" fill="none" stroke="#5a3a2e" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+      <g transform="translate(88 40)"><circle r="6.4" fill="#ffd84d" stroke="${L}" stroke-width="1.6"/><circle r="2.2" fill="#ff8fa3"/></g>`
+    : `<path d="M25 56 Q20 30 34 22 Q34 12 46 14 Q52 6 62 11 Q74 5 80 15 Q92 14 92 26 Q100 34 95 56 Q92 44 84 40 Q80 32 70 36 Q62 28 54 36 Q44 30 38 40 Q28 44 25 56 Z" fill="${C.hair}" stroke="${L}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M42 24 q5 -5 10 0 M62 19 q5 -5 10 0 M78 27 q4 -3 8 1" fill="none" stroke="#4a362c" stroke-width="1.8" stroke-linecap="round" opacity=".8"/>`;
+  const brow=i? `<path d="M40 50 Q46 46.5 52 49 M68 49 Q74 46.5 80 50" fill="none" stroke="${C.hair}" stroke-width="2.2" stroke-linecap="round"/>`
+              : `<path d="M38.5 50 Q46 44.5 53 48.5 M67 48.5 Q74 44.5 81.5 50" fill="none" stroke="${C.hair}" stroke-width="3.4" stroke-linecap="round"/>`;
+  const eye=x=>`<ellipse cx="${x}" cy="61" rx="5" ry="6.4" fill="#2a1a14"/><circle cx="${x+1.7}" cy="58.6" r="1.9" fill="#fff"/><circle cx="${x-1.6}" cy="63.4" r="1" fill="#fff" opacity=".8"/>`+(i?`<path d="M${x-5.5} 57 q-3 -1.5 -4 -4" fill="none" stroke="${L}" stroke-width="1.6" stroke-linecap="round" transform="${x>60?`translate(${2*x} 0) scale(-1 1)`:''}"/>`:'');
+  const face=brow+eye(46)+eye(74)+`<ellipse cx="37" cy="72" rx="6" ry="3.6" fill="${C.blush}" opacity=".45"/><ellipse cx="83" cy="72" rx="6" ry="3.6" fill="${C.blush}" opacity=".45"/>
+    <path d="M58.5 68 q1.5 2.4 3.4 0" fill="none" stroke="${C.shade}" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M51 75 Q60 86 69 75 Q60 78.5 51 75 Z" fill="#8f2f3a" stroke="${L}" stroke-width="2" stroke-linejoin="round"/><path d="M55.5 80 Q60 83.5 64.5 80 Q60 78.6 55.5 80 Z" fill="#ff9aa8"/>`;
+  return `<svg viewBox="0 0 120 148"><ellipse cx="60" cy="143" rx="42" ry="5" fill="#0002"/>${back}${body}${head}${hair}${face}</svg>`; }
 
 /* ---------- 화면 그리기 ---------- */
 function frame(q,noBar){
