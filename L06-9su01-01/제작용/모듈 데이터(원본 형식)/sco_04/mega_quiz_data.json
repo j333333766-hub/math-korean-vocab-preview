@@ -42,7 +42,7 @@
         },
         {
             "data_type": "listen",
-            "data_jung_dap": "12의 소인수는 2와 3입니다.",
+            "data_jung_dap": "12의 {0}는 2와 3입니다.",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -50,16 +50,16 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "다음 문장을 듣고 2번 따라 읽어 보세요.",
+            "question": "문장을 듣고, 빈칸에 들어갈 낱말을 써 보세요.",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
-                    "txt": "12의 소인수는 2와 3입니다."
+                    "txt": "12의 {0}는 2와 3입니다."
                 },
                 {
-                    "txt": "12를 소인수분해하면 2² × 3입니다."
+                    "txt": "12를 {0}하면 2² × 3입니다."
                 }
             ],
             "basket_name": "",

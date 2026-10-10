@@ -61,6 +61,11 @@ svg.fig{width:100%;height:100%;max-height:100%;max-width:100%}
 /* 듣기 · 말하기 */
 .say{width:92%;border:.14em solid #111;border-radius:.8em;padding:.6em 1em;display:flex;align-items:center;gap:.8em;font-size:1.25em;font-weight:800}
 .say span{flex:1}
+.say.tp .tx{flex:1;line-height:1.9}.say.tp .round{flex:none}
+.tpin{font:inherit;font-weight:800;font-size:max(1em,16px);border:.12em solid #111;border-radius:.5em;padding:.1em .3em;text-align:center;background:#fffbe8;max-width:100%;margin:0 .2em;color:#c22a5f}
+.tpin.ok{background:#c9f2df;border-color:#0a8f5b;color:#0a6b45}
+.say .mk{flex:none;width:1.2em;color:#0a8f5b;font-weight:900;visibility:hidden}.say .mk.on{visibility:visible}
+.stage.port .say.tp{flex-wrap:wrap}.stage.port .say.tp .tx{min-width:40%}
 .round{width:2.2em;height:2.2em;border-radius:50%;border:.12em solid #111;background:#2a9bd8;color:#fff;font-size:.8em}
 .round.rec{background:#e24b4b}
 .dots{display:flex;gap:.4em}.dots i{width:.8em;height:.8em;border-radius:50%;border:.12em solid #111;background:#fff}.dots i.on{background:var(--yellow)}
@@ -414,7 +419,7 @@ function chrome(sc){
   p.disabled=(mi===0&&si===0); n.disabled=(mi===LESSON.modules.length-1&&si===mod.screens.length-1);
   p.onclick=()=>go(-1); n.onclick=()=>go(1); st.append(p,n);
   st.append(el('div','count notranslate',`${si+1}/${mod.screens.length}`));
-  st.append(el('div','type',TYPE_KO[sc.type]||sc.type));
+  st.append(el('div','type',sc.mode==='type'?'듣고 쓰기':(TYPE_KO[sc.type]||sc.type)));
 }
 function feedback(pad){ const f=el('div','fb'); pad.append(f); return (ok,msg)=>{f.className='fb '+(ok?'ok':'no'); f.textContent=msg||(ok?'정답입니다! 잘했어요.':'다시 생각해 보세요.');}; }
 function checkRow(pad,onCheck,onReset){ const r=el('div','btnrow'); const c=el('button','btn','확인'), z=el('button','btn sub','다시'); c.onclick=onCheck; z.onclick=onReset; r.append(c,z); pad.append(r); }
@@ -455,6 +460,17 @@ R.card_flip=sc=>{ const pad=frame(sc.q); const c=el('div','card'); const side=s=
   if(!sc.back.fig){ $('.b',c).style.cssText+='font-size:2.2em;font-weight:900;color:#0c7d66'; $('.b .cap',c)&&($('.b .cap',c).style.cssText='font-size:.42em;color:#1d2433;font-weight:700;margin-top:.5em;padding:0 1em'); }
   c.onclick=()=>c.classList.toggle('flip'); pad.append(c); };
 R.listen=sc=>{ const pad=frame(sc.q||'다음 낱말을 듣고 2번 따라 읽어 보세요.'); const items=sc.items||[{text:sc.text,say:sc.say}];
+  if(sc.mode==='type'){ // 듣고 쓰기: ▶로 발음을 듣고 낱말을 직접 쳐 넣는다. 맞게 쓰면 ✓가 생긴다(틀려도 표시하지 않는다).
+    const norm=v=>String(v).replace(/\s/g,'');
+    items.forEach(it=>{ const box=el('div','say tp'); if(items.length>1) box.style.fontSize='1.05em'; const b=el('button','round','▶'); b.title='듣기'; b.onclick=()=>speak(it.say||plain(it.text).replace(' ',it.answer));
+      const inp=el('input','tpin'); inp.setAttribute('aria-label','낱말 쓰기'); inp.autocomplete='off'; inp.autocapitalize='off'; inp.spellcheck=false; inp.style.width=Math.max(4,it.answer.length*1.25+1.6)+'em';
+      const mk=el('span','mk','✓'); const chk=()=>{ const ok=norm(inp.value)===norm(it.answer); inp.classList.toggle('ok',ok); mk.classList.toggle('on',ok); };
+      inp.oninput=chk; inp.addEventListener('compositionend',chk);
+      const tx=el('span','tx'); const parts=String(it.text).split('{0}');
+      if(parts.length>1){ tx.innerHTML=rich(parts[0]); tx.append(inp); tx.insertAdjacentHTML('beforeend',rich(parts[1])); box.append(b,tx,mk); }
+      else { tx.innerHTML=rich(it.text); box.append(b,tx,inp,mk); }
+      pad.append(box); });
+    pad.append(el('div','', '<span style="font-size:.8em;color:#6b7280">▶를 눌러 듣고, 빈칸에 낱말을 써 보세요. 맞게 쓰면 ✓가 생겨요.</span>')); return; }
   items.forEach(it=>{ let n=0; const box=el('div','say'); if(items.length>1) box.style.fontSize='1.08em'; const b=el('button','round','🔊'); const dots=el('div','dots','<i></i><i></i>');
     b.onclick=()=>{ speak(it.say||it.text,()=>{ n=Math.min(2,n+1); [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<n)); }); };
     box.append(el('span','',rich(it.text)),b,dots); pad.append(box); });
