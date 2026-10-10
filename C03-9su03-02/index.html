@@ -121,6 +121,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .cur .col.hl{background:#fff1b8}.cur .lab{font-size:.8em;font-weight:800;color:#2f6fe4;text-align:center}
 .cur .it{background:#fff;border:.1em solid #111;border-radius:.6em;padding:.3em .5em;font-weight:800;font-size:.98em;width:100%;text-align:center}
 .cur .it small{display:block;font-weight:600;font-size:.7em;color:#6b7280}.cur .arr{align-self:center;font-size:1.5em;color:#f58a1f}
+.cur .col.wide{flex:1.5}.cur .desc{font-size:.74em;font-weight:700;line-height:1.5;color:#374151;text-align:left;padding:0 .2em}
 .curnote{font-size:.88em;font-weight:700;text-align:center;color:#374151;line-height:1.5}
 .ck{width:100%;display:flex;flex-direction:column;gap:.45em}
 .ck .row{display:flex;align-items:center;gap:.6em;border:.12em solid #111;border-radius:.8em;padding:.35em .8em;background:#fff}
@@ -374,7 +375,8 @@ R.ocr=sc=>{ const pad=frame(sc.q||'연필을 클릭해 낱말을 써 보세요.'
 
 R.curation=sc=>{ const pad=frame(sc.q); const c=el('div','cur');
   sc.cols.forEach((col,i)=>{ if(i&&!sc.noArrow) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));
-    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; d.append(el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':''))); }); c.append(d); });
+    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; d.append(el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':''))); });
+    if(col.desc){ d.classList.add('wide'); d.append(el('div','desc',rich(col.desc))); } c.append(d); });
   pad.append(c); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
 R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el('div','fb');
   const state=sc.items.map(()=>null);
