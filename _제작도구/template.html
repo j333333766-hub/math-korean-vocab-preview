@@ -416,7 +416,7 @@ R.opener=sc=>{ frame('',true); const st=$('#stage'), o=el('div','op'), names=LES
 // 낱말 미리 보기: 어휘 제시 화면에서 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 먼저 보여 준다.
 function preview(w,pv){ const st=$('#stage'); const old=st.querySelector('.pvback'); if(old) old.remove();
   const back=el('div','pvback'), box=el('div','pvbox'); const row=(k,v,cls)=>v?'<div class="pvrow"><span class="k">'+k+'</span><span class="v'+(cls?' '+cls:'')+'">'+rich(v)+'</span></div>':'';
-  box.innerHTML='<div class="pvw notranslate" translate="no">'+rich(w)+'</div>'+row('뜻',pv.def)+row('예',pv.eg,'notranslate')+row('문장',pv.sent,'notranslate')+'<div class="pvtip">뒤에서 더 자세히 배워요.</div>';
+  box.innerHTML='<div class="pvw notranslate" translate="no">'+rich(w)+'</div>'+row('뜻',pv.def)+row('예',pv.eg,'notranslate')+row('문장',pv.sent,'notranslate')+row('안내',pv.info)+(pv.tip===''?'':'<div class="pvtip">'+rich(pv.tip||'뒤에서 더 자세히 배워요.')+'</div>');
   const x=el('button','pvx','닫기'); x.onclick=()=>back.remove(); box.append(x); back.onclick=e=>{ if(e.target===back) back.remove(); }; back.append(box); st.append(back); }
 R.curation=sc=>{ const pad=frame(sc.q); const c=el('div','cur');
   sc.cols.forEach((col,i)=>{ if(i&&!sc.noArrow) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));

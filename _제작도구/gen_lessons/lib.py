@@ -56,19 +56,37 @@ def build(p, names):
     new, aux, pre, elem, perf = p['new'], p.get('aux', []), p.get('pre', []), p.get('elem', []), p.get('perf', [])
     kind_new = '수행 도구어' if common else '핵심 개념어'
     M = []
+    # 낱말 미리 보기: 낱말을 누르면 뜻·예·교과서 문장이 작은 창으로 나온다. 정리 화면(summary)과 용례(usage)에서 가져오고, p['preview'] 로 고치거나 더한다.
+    def pv(w):
+        d = {}
+        for t, eg, df in p.get('summary', []):
+            if t == w: d = {'def': df, 'eg': eg}
+        sents = [' '.join(t.split()) for t, _ in p.get('usage', []) if isinstance(t, str)]
+        hit = [t for t in sents if '**' + w in t] or [t for t in sents if w in t.replace('*', '')]
+        if d and hit: d['sent'] = hit[0]
+        d.update(p.get('preview', {}).get(w, {}))
+        return {'t': w, 'pv': d} if d else {'t': w}
+    def pv_pre(w, n, ex):   # 미리 확인할 말: 앞 차시에서 익힌 뜻을 그대로 보여 준다
+        df, _, eg = ex.partition(' 예: ')
+        d = {'def': df.rstrip('.'), 'tip': f'{n}차시에서 익힌 말이에요.'}
+        if eg: d['eg'] = eg
+        d.update(p.get('preview', {}).get(w, {}))
+        return {'t': w, 's': f'{n}차시에서 배운 말', 'pv': d}
+    tap = p.get('intro_preview')   # 도입 화면에서도 낱말·단원 이름을 눌러 미리 보기
     # ── 도입
     s = []
     cols = []
     if pre or elem:
-        cols.append({'label': '미리 확인할 말' if pre else '이미 아는 말', 'items': [{'t': w, 's': f'{n}차시에서 배운 말'} for w, n, _ in pre] + [{'t': w, 's': '초등학교에서 배운 말'} for w, _ in elem[:max(1, 3 - len(pre))]]})
+        cols.append({'label': '미리 확인할 말' if pre else '이미 아는 말', 'items': [pv_pre(w, n, ex) if tap else {'t': w, 's': f'{n}차시에서 배운 말'} for w, n, ex in pre] + [{'t': w, 's': '초등학교에서 배운 말'} for w, _ in elem[:max(1, 3 - len(pre))]]})
     else:
         cols.append({'label': '수학 문제의 끝말', 'items': [{'t': '~하시오', 's': '무엇을 하라는 말일까요?'}]})
-    cols.append({'label': '오늘 새로 익힐 말', 'hl': True, 'items': new})
+    cols.append({'label': '오늘 새로 익힐 말', 'hl': True, 'items': [pv(w) for w in new] if tap else new})
     school = {'label': '학교 수업', 'items': [{'t': p['school'], 's': p['school_s']}]}
-    if p.get('school_goal'): school['desc'] = p['school_goal']   # 이 단원에서 무엇을 하고 오늘 낱말이 어디에 쓰이는지 한두 문장(낱말 쪽에서 말한다)
+    if p.get('school_goal') and tap: school['items'][0]['pv'] = {'info': p['school_goal'], 'tip': ''}   # 눌러야 보인다
+    elif p.get('school_goal'): school['desc'] = p['school_goal']   # 이 단원에서 무엇을 하고 오늘 낱말이 어디에 쓰이는지 한두 문장(낱말 쪽에서 말한다)
     cols.append(school)
-    s.append({'type': 'curation', 'q': p['intro_q'], 'cols': cols, 'note': p['intro_note'],
-              'memo': '도입(큐레이션). 이 콘텐츠는 학교에서 해당 단원을 배우기 전에 보는 것임을 먼저 알린다. 이미 아는 말 → 새로 익힐 말 → 학교 수업의 흐름을 한 화면에 보여 준다. 학교 수업 칸에는 그 단원에서 무엇을 하는지, 오늘 낱말이 어디에서 쓰이는지를 한두 문장으로 알린다(교과 내용을 설명하지 않고 낱말 쪽에서 말한다).'})
+    s.append({'type': 'curation', 'q': p['intro_q'], 'cols': cols, 'note': p['intro_note'] + (chr(10) + '낱말이나 단원 이름을 누르면 미리 볼 수 있어요.' if tap else ''),
+              'memo': '도입(큐레이션). 이 콘텐츠는 학교에서 해당 단원을 배우기 전에 보는 것임을 먼저 알린다. 이미 아는 말 → 새로 익힐 말 → 학교 수업의 흐름을 한 화면에 보여 준다. 학교 수업 칸에는 그 단원에서 무엇을 하는지, 오늘 낱말이 어디에서 쓰이는지를 한두 문장으로 알린다(교과 내용을 설명하지 않고 낱말 쪽에서 말한다). 낱말과 단원 이름은 눌렀을 때만 뜻·예·안내가 작은 창으로 나온다(선택 활동).'})
     for c in p.get('checks', []):
         c.setdefault('memo', '미리 확인할 말의 뜻 확인. 새로 가르치지 않는다. 틀리면 그 낱말을 익히는 차시로 안내한다.'); s.append(c)
     if pre:
@@ -83,16 +101,6 @@ def build(p, names):
     M.append({'name': '도입', 'screens': s})
     # ── 어휘 제시
     s = []
-    # 낱말 미리 보기: 낱말을 누르면 뜻·예·교과서 문장이 작은 창으로 나온다. 정리 화면(summary)과 용례(usage)에서 가져오고, p['preview'] 로 고치거나 더한다.
-    def pv(w):
-        d = {}
-        for t, eg, df in p.get('summary', []):
-            if t == w: d = {'def': df, 'eg': eg}
-        sents = [' '.join(t.split()) for t, _ in p.get('usage', []) if isinstance(t, str)]
-        hit = [t for t in sents if '**' + w in t] or [t for t in sents if w in t.replace('*', '')]
-        if d and hit: d['sent'] = hit[0]
-        d.update(p.get('preview', {}).get(w, {}))
-        return {'t': w, 'pv': d} if d else {'t': w}
     cols = [{'label': '오늘 새로 익힐 말', 'hl': True, 'items': [pv(w) for w in new]}]
     if aux: cols.append({'label': '함께 보는 말', 'items': [pv(w) for w in aux]})
     can_tap = any('pv' in it for c in cols for it in c['items'])
