@@ -23,13 +23,22 @@ def pw(base, exp, labels=True, eqs=None):
     return d
 def tree(n, eqs=None): return {'kind': 'tree', 'n': n, 'eq': eqs} if eqs else {'kind': 'tree', 'n': n}
 plain = lambda t: re.sub(r'[*‘’]', '', t)
-def cut(cap=None, fig=None, text=None, dir='', b=None, narr=None):
+def ask(q, options=None, answer=0, ok=None, fig=None, text=None, replies=None, hint=None):
+    """영상 컷 안의 참여 활동. 자막이 나오기 전에 멈추고 묻는다. options 가 없으면 O·X, answer=None 이면 정답 없이 고르기만 한다(replies 로 대답).
+    fig·text 는 답하기 전에 보여 줄 그림·글(답이 보이지 않게 가린 것). 답하면 컷의 원래 그림·자막이 나온다."""
+    d = {'q': q, 'options': options or ['O', 'X'], 'answer': answer}
+    if not options: d['ox'] = True
+    for k, v in (('ok', ok), ('fig', fig), ('text', text), ('replies', replies), ('hint', hint)):
+        if v is not None: d[k] = v
+    return d
+def cut(cap=None, fig=None, text=None, dir='', b=None, narr=None, ask=None):
     c = {}
     if fig is not None: c['fig'] = fig
     if text is not None: c['text'] = text
     if cap: c['caption'] = cap; c['narr'] = narr or plain(cap)
     if dir: c['dir'] = dir
-    if b: c['bubbles'] = [{'who': w, 'text': t} for w, t in b]
+    if b: c['bubbles'] = [dict({'who': x[0], 'text': x[1]}, **({'after': True} if len(x) > 2 else {})) for x in b]   # (누구, 말) 또는 (누구, 말, True): 참여 활동에 답한 뒤에 나오는 말
+    if ask: c['ask'] = ask
     return c
 def ch(q, options, answer, fig=None, cols=None, hint=None, memo=None):
     d = {'type': 'choice', 'q': q, 'options': options, 'answer': answer if isinstance(answer, list) else [answer]}
@@ -122,8 +131,8 @@ def build(p, names):
     s = [{'type': 'vod', 'title': p['define_title'], 'cuts': p['define'], 'memo': p.get('define_memo', '개념을 새로 가르치지 않는다. 이미 아는 말과 아는 개념을 차례로 써서 새 낱말에 이른다. 낱말에 들어 있는 한자말의 뜻(예: 최대 = 가장 큰)을 풀어 주어 한국어 낱말로 받아들이게 한다.')}]
     for front, back in p['cards']:
         s.append({'type': 'card_flip', 'q': '낱말을 클릭해 뜻을 확인해 보세요.', 'front': {'text': front}, 'back': back, 'answerText': front})
-    s.append({'type': 'lang_match', 'q': '내가 아는 말과 연결해 보세요.', 'words': p['lang_words'], 'items': [{'lang': l, 'terms': t} for l, t in zip(LANGS, p['lang'])],
-              'note': '나라마다 부르는 말은 달라도 뜻은 같아요.',
+    s.append({'type': 'lang_match', 'q': '내 나라 말을 고르고, 뜻이 같은 말끼리 연결해 보세요.' if p.get('active') else '내가 아는 말과 연결해 보세요.', 'words': p['lang_words'], 'items': [{'lang': l, 'terms': t} for l, t in zip(LANGS, p['lang'])],
+              'note': '나라마다 부르는 말은 달라도 뜻은 같아요.', **({'pick': True} if p.get('active') else {}),
               'memo': '이미 아는 개념과 한국어 낱말을 대응시키는 화면. ★ 각 언어의 용어는 원어민 검수를 받아야 한다. 다른 언어는 검수자가 채운다. 원본 플랫폼에서는 학습자가 고른 언어 한 줄만 보여 주는 방식이 알맞다.'})
     M.append({'name': '정의', 'screens': s})
     # ── 용례
@@ -136,7 +145,8 @@ def build(p, names):
                       'memo': '듣고 쓰기(문장). ▶를 누르면 문장 전체가 나오고, 학생은 빈칸에 들어갈 오늘의 낱말만 쳐 넣는다(받아쓰기). 수식이나 문장 전체를 치게 하지 않는다.'}
     else:
         say_screen = {'type': 'listen', 'q': '다음 문장을 듣고 2번 따라 읽어 보세요.', 'items': [{'text': t, 'say': sy} if sy else {'text': t} for t, sy in p['says']]}
-    s = [{'type': 'vod', 'title': '교과서 문장 속의 낱말', 'cuts': [cut(c, text=t) for t, c in p['usage']], 'memo': '용례 단계. 학교 수업에서 실제로 만나는 교과서 문장을 보여 주고, 함께 쓰이는 말(공기관계어)과 수행 도구어를 자막으로 짚는다.'},
+    s = [{'type': 'vod', 'title': '교과서 문장 속의 낱말', 'cuts': [cut(c, text=t, ask=a) for (t, c), a in zip(p['usage'], p.get('usage_ask') or [None] * len(p['usage']))],
+          'memo': '용례 단계. 학교 수업에서 실제로 만나는 교과서 문장을 보여 주고, 함께 쓰이는 말(공기관계어)과 수행 도구어를 자막으로 짚는다.' + (' 문장마다 먼저 학생이 O·X로 낱말을 알맞게 썼는지 고르고, 그다음에 자막이 나온다(읽고 넘기지 않게).' if p.get('usage_ask') else '')},
          say_screen,
          dict({'type': 'drag_drop', 'q': '보기에서 알맞은 낱말을 골라 빈칸에 넣어 보세요.'}, **p['drag'])]
     i = p['instr']; i['q'] = '문제에서 무엇을 하라고 하나요?'; i['memo'] = '지시문을 이해하는지 확인하는 문항. 답을 구하게 하지 않는다.'; s.append(i)
@@ -158,6 +168,15 @@ def build(p, names):
          {'type': 'curation', 'q': '이제 학교 수업에서 만나요.', 'cols': [{'label': '오늘 익힌 낱말', 'hl': True, 'items': new}, {'label': '학교 수업', 'items': [{'t': p['school'], 's': p['school_use']}]},
                                                                {'label': '그다음에 볼 콘텐츠', 'items': [{'t': names[no + 1], 's': f'{no + 1}차시'}]}],
           'note': p['outro_note'], 'memo': '마무리(큐레이션). 익힌 낱말이 학교 수업의 어디에서 쓰이는지, 그다음에 볼 콘텐츠가 무엇인지 안내한다.'}]
+    if p.get('active'):   # 참여형 마무리: 정리 화면은 낱말 넣기로, 그 뒤에 스스로 점검(모르면 낱말 이야기로 돌아가기)을 넣는다
+        off = 1 if p.get('openers') else 0
+        s[0] = {'type': 'recall', 'q': '뜻과 예를 보고, 알맞은 낱말을 넣어 보세요.', 'items': [{'t': t, 'eg': eg, 'def': df} for t, eg, df in p['summary']],
+                'memo': '마무리 정리. 낱말을 다시 읽어 주지 않고, 뜻과 예가 적힌 카드에 학생이 낱말을 넣으면서 정리한다. 낱말을 누른 다음 카드를 누른다(끌어넣기로 만들어도 된다).'}
+        s.insert(1, {'type': 'checklist', 'q': '오늘 익힌 낱말을 스스로 점검해 봐요.', 'yes': '알아요', 'no': '다시 볼래요', 'allOk': '모두 익혔어요! 이제 학교 수업에서 만나요.', 'someNo': '‘낱말 이야기’를 한 번 더 보고 와도 좋아요.',
+                     'items': [{'t': t, 'ex': df, 'go': '→ ‘' + t + '’ 낱말 이야기 다시 보기', 'jump': [2, off, p.get('story_cut', {}).get(t, 0)]} for t, eg, df in p['summary']],
+                     'memo': '스스로 점검. ‘다시 볼래요’를 누르면 정의 단계의 낱말 이야기 가운데 그 낱말이 시작되는 컷으로 돌아가는 연결이 나온다. 점수를 매기지 않는다.'})
+        s[2]['cols'][0]['items'] = [pv(w) for w in new]
+        s[2]['note'] = p['outro_note'] + chr(10) + '낱말을 누르면 뜻과 예를 다시 볼 수 있어요.'
     M.append({'name': '마무리', 'screens': s})
     vocab = {f'새 어휘 = {kind_new} (이 차시에서 익힘)': [w + (' (충남대 핵심어)' if w in p.get('ess', []) else '') for w in new]}
     if aux: vocab['함께 처음 보는 말' + (' (수행 도구어)' if common else ' (보조·배경 개념어)')] = aux

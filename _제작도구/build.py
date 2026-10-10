@@ -23,6 +23,7 @@ def answer_text(sc):
     if t == 'input': return ' 또는 '.join(sc['answer'])
     if t in ('listen',): return ' / '.join(i['text'] for i in sc['items']) if sc.get('items') else sc['text']
     if t == 'step_recorde': return plain(sc['sentence'])
+    if t == 'recall': return ' / '.join(i['t'] for i in sc['items'])
     return ''
 
 def to_origin(sc):
@@ -53,6 +54,7 @@ def to_origin(sc):
     elif t == 'step_recorde': base['data_jung_dap'] = plain(sc['sentence']); base['custom'] = 'STT'
     elif t == 'ocr': base['data_jung_dap'] = sc['word']; base['object'] = [{"txt": "<type=blank>"}]
     elif t == 'curation': base['data_type'] = 'click'; base['custom'] = 'curation'; base['object'] = [{"txt": plain(col['label']) + ': ' + ', '.join(plain(i if isinstance(i, str) else i['t']) for i in col['items'])} for col in sc['cols']]
+    elif t == 'recall': base['data_type'] = 'drag_drop'; base['custom'] = 'recall'; base['data_jung_dap'] = ', '.join(i['t'] for i in sc['items']); base['object'] = [{"txt": i['t'] + ' — ' + plain(i['eg']) + ' / ' + plain(i['def'])} for i in sc['items']]
     elif t == 'checklist': base['data_type'] = 'click'; base['custom'] = 'checklist'; base['object'] = [{"txt": i['t'] + ' — ' + plain(i['ex'])} for i in sc['items']]
     elif t == 'lang_match': base['data_type'] = 'click'; base['custom'] = 'lang_match'; base['data_jung_dap'] = ', '.join(sc.get('words') or [sc['word']]); base['object'] = [{"txt": i['lang'] + ': ' + ' / '.join(i.get('terms') or [i['term']])} for i in sc['items']]
     return base
@@ -82,11 +84,13 @@ def main(folder):
             nv += 1
             s += [f"## 영상 {nv}. {sc.get('title', '')}", '', f"위치: {mi}. {m['name']} · 화면 {si}", '']
             if sc.get('memo'): s += [f"메모: {sc['memo']}", '']
-            s += ['| 컷 | 화면 | 대사 | 자막 | 내레이션 | 연출 |', '|---:|---|---|---|---|---|']
+            s += ['| 컷 | 화면 | 대사 | 자막 | 내레이션 | 연출 | 참여 활동(자막 전에 멈추고 묻기) |', '|---:|---|---|---|---|---|---|']
             for ci, c in enumerate(sc['cuts'], 1):
                 scr = '제목 화면' if c.get('title') else ('그림(시안 참조)' if c.get('fig') is not None else '')
                 talk = '<br>'.join(f"{L['cast'][b['who']]}: {b['text']}" for b in c.get('bubbles', []))
-                s.append(f"| {ci} | {scr} | {talk} | {c.get('caption', '')} | {c.get('narr', '')} | {c.get('dir', '')} |")
+                a = c.get('ask'); act = ''
+                if a: act = f"{a['q']} [{' / '.join(a['options'])}] → " + ('정답 없음(고르면 넘어감)' if a['answer'] is None else '정답: ' + a['options'][a['answer']]) + (f" · 답하기 전 화면 글: {a['text']}" if a.get('text') else '') + (' · 답하기 전에는 답이 되는 낱말을 가린 그림' if a.get('fig') else '')
+                s.append(f"| {ci} | {scr} | {talk} | {c.get('caption', '')} | {c.get('narr', '')} | {c.get('dir', '')} | {act} |".replace(chr(10), ' '))
             s.append('')
     io.open(os.path.join(out, '영상 대본.md'), 'w', encoding='utf-8').write('\n'.join(s))
     # 화면 목록
