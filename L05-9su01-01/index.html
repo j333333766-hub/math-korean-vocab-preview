@@ -91,6 +91,34 @@ input.ans.wide{width:6em}
 .say.col{flex-direction:column;align-items:stretch;text-align:center}.say.col .btnrow{justify-content:center;gap:1em}
 canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-action:none;width:70%;height:55%}
 .ghostword{position:absolute;font-size:5em;font-weight:800;color:#0001;pointer-events:none}
+/* 낱말 이야기 모션그래픽 */
+.mg{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75em;padding:.5em .7em;overflow:hidden}
+.board.withbub .mg{padding-top:3.4em}
+.mg .row{display:flex;align-items:center;justify-content:center;gap:.5em;flex-wrap:wrap;max-width:100%}
+.mg .mgcol{display:flex;flex-direction:column;align-items:center;gap:.3em;max-width:100%}
+.mg .wb{border:.14em solid #111;border-radius:.6em;padding:.12em .7em;font-weight:900;font-size:1.55em;background:#fff;white-space:nowrap}
+.mg .wb.hl{background:#ffe0ea;border-color:#d81e5b;color:#d81e5b}
+.mg .sg{color:#f08a24;font-weight:900;font-size:1.5em;line-height:1}.mg .sg.dn{font-size:1em}
+.mg .tx{font-weight:800;font-size:1.05em;text-align:center;line-height:1.45}.mg .tx.big{font-size:1.35em}.mg .tx.sm{font-size:.88em;color:#374151}
+.mg .nb{min-width:2em;height:2em;padding:0 .3em;border-radius:99px;border:.12em solid #111;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:1.15em}
+.mg .nb.hl{background:#ffe0ea;border-color:#d81e5b;color:#d81e5b}
+.mg .gd{display:grid;gap:.12em .2em;font-size:1.45em;line-height:1.15;background:#fff7dc;border:.08em solid #e6c96a;border-radius:.4em;padding:.15em .3em}
+.mg .pcs{align-items:stretch;flex-wrap:nowrap;width:100%}
+.mg .pc{flex:1;min-width:0;border:.12em solid #111;border-radius:.8em;padding:.4em .3em;background:#fffbe8;text-align:center}
+.mg .pc .e{font-size:2.5em;line-height:1.25}.mg .pc .s{font-size:.82em;font-weight:800;line-height:1.35}
+.mg .fl{border:.12em solid #111;border-radius:.6em;padding:.15em .6em;font-weight:900;font-size:1.3em;background:#fff;white-space:nowrap}.mg .fl.hl{background:#ffe0ea;border-color:#d81e5b}
+.mg .tr{flex:1;min-height:0;width:100%;display:flex;justify-content:center}
+.mg .in,.mg .mgcol,.mg .dn{animation:mgin .5s both}.mg .pop{animation:mgpop .45s both cubic-bezier(.3,1.6,.5,1)}
+.mg .pl{animation:mgl .6s both cubic-bezier(.3,1.4,.5,1)}.mg .pr{animation:mgr .6s both cubic-bezier(.3,1.4,.5,1)}
+.mg .jl{animation:mgjl .6s both}.mg .jr{animation:mgjr .6s both}
+@keyframes mgin{from{opacity:0;transform:translateY(.6em)}to{opacity:1;transform:none}}
+@keyframes mgpop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+@keyframes mgl{from{opacity:0;transform:translateX(70%)}to{opacity:1;transform:none}}
+@keyframes mgr{from{opacity:0;transform:translateX(-70%)}to{opacity:1;transform:none}}
+@keyframes mgjl{from{opacity:0;transform:translateX(-120%)}to{opacity:1;transform:none}}
+@keyframes mgjr{from{opacity:0;transform:translateX(120%)}to{opacity:1;transform:none}}
+.stage.port .board.withbub .mg{padding-top:.5em}.stage.port .mg{gap:.6em;padding:.4em .3em}.stage.port .mg .wb{font-size:1.3em;padding:.12em .5em}
+.stage.port .mg .pc .e{font-size:2em}.stage.port .mg .pc .s{font-size:.72em}.stage.port .mg .fl{font-size:1.1em}.stage.port .mg .nb{font-size:1em}
 /* 영상 대본(스토리보드) */
 .vod{position:absolute;inset:0;background:#6f9f9a;display:flex;flex-direction:column}
 .vod .scene{flex:1;position:relative;min-height:0;display:flex;align-items:center;justify-content:center;padding:1.2em 12% 0}
@@ -289,7 +317,7 @@ function speak(t,cb){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesis
 /* ---------- 그림: 두 직선과 한 직선 ---------- */
 const COL={A:'#ff8fb0',B:'#7db7ff',C:'#8fe0b0',D:'#ffd66b'};
 function fig(o){
-  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='word') return figWord(o); if(o.kind==='power') return figPower(o); if(o.kind==='num') return figNum(o); const W=420,H=320, rad=d=>d*Math.PI/180;
+  o=o||{}; if(o.kind==='tree') return figTree(o); if(o.kind==='eq') return figEq(o); if(o.kind==='word') return figWord(o); if(o.kind==='mg') return figMg(o); if(o.kind==='power') return figPower(o); if(o.kind==='num') return figNum(o); const W=420,H=320, rad=d=>d*Math.PI/180;
   const t=o.t||60, a1=0, a2=(o.par===false)?(o.tilt||-13):0;
   const P1={x:240,y:95}, Q={x:195,y:225};
   // 아래 직선과 가로지르는 직선의 교점
@@ -358,6 +386,24 @@ function figWord(o){
     r.parts.forEach((p,k)=>{ if(k){ g+=sign(x+sw/2,y,'+'); x+=sw; } g+=box(x,y,p,false); x+=bw(p); });
     g+=sign(x+aw/2,y,'→'); x+=aw; g+=box(x,y,r.result,true); });
   return `<svg class="fig notranslate" translate="no" viewBox="0 0 420 320" font-family="inherit">${g}</svg>`;
+}
+/* 낱말 이야기용 모션그래픽: 줄(rows)을 위에서부터 차례로 띄운다. 컷이 바뀔 때마다 다시 움직인다.
+   줄 종류 — split(낱말이 조각으로 갈라짐) · join(조각이 붙어 낱말이 됨) · def(낱말+뜻) · nums(수 동그라미) · grid(물건 늘어놓기)
+            · pics(그림 카드) · flow(왼쪽 → 오른쪽) · tx(문장) · tree(소인수분해 나무) */
+function figMg(o){
+  const d=(i,j)=>`style="animation-delay:${(0.25+i*0.6+(j||0)*0.28).toFixed(2)}s"`;
+  const wb=(t,hl,ex)=>`<span class="wb${hl?' hl':''}" ${ex||''}>${t}</span>`;
+  const row=(r,i)=>{
+    if(r.t==='split') return `<div class="mgcol" ${d(i)}>${wb(r.whole,true)}<span class="sg dn">▼</span><div class="row"><span class="wb pl" ${d(i,2)}>${r.parts[0]}</span><span class="sg" ${d(i,3)}>+</span><span class="wb pr" ${d(i,2)}>${r.parts[1]}</span></div></div>`;
+    if(r.t==='join') return `<div class="row"><span class="wb jl" ${d(i)}>${r.parts[0]}</span><span class="sg in" ${d(i,1)}>+</span><span class="wb jr" ${d(i)}>${r.parts[1]}</span><span class="sg in" ${d(i,2)}>→</span><span class="wb hl pop" ${d(i,3)}>${r.result}</span></div>`;
+    if(r.t==='def') return `<div class="row in" ${d(i)}>${wb(r.word,r.hl)}<span class="tx">${rich(r.text)}</span></div>`;
+    if(r.t==='nums') return `<div class="row">${r.label?`<span class="tx in" ${d(i)}>${rich(r.label)}</span>`:''}${r.items.map((n,j)=>{ const h=/^\*\*/.test(n); return `<span class="nb pop${h?' hl':''}" ${d(i,j*0.5+1)}>${String(n).replace(/\*/g,'')}</span>`; }).join('')}</div>`;
+    if(r.t==='grid') return `<div class="row in" ${d(i)}><div class="gd" style="grid-template-columns:repeat(${r.cols},1fr)">${Array.from({length:r.n},(_,j)=>`<span class="pop" ${d(i,j*0.25)}>${r.e}</span>`).join('')}</div>${r.label?`<span class="tx big">${rich(r.label)}</span>`:''}</div>`;
+    if(r.t==='pics') return `<div class="row pcs">${r.items.map((p,j)=>`<div class="pc pop" ${d(i,j*1.6)}><div class="e">${p.e}</div><div class="s">${rich(p.s)}</div></div>`).join('')}</div>`;
+    if(r.t==='flow') return `<div class="mgcol in" ${d(i)}><div class="row"><span class="fl">${rich(r.a)}</span><span class="sg">→</span><span class="fl hl">${rich(r.b)}</span></div>${r.cap?`<span class="tx sm">${rich(r.cap)}</span>`:''}</div>`;
+    if(r.t==='tree') return `<div class="tr in" ${d(i)}>${figTree({kind:'tree',n:r.n,eq:r.eq})}</div>`;
+    return `<div class="tx${r.big?' big':''} in" ${d(i)}>${rich(r.text)}</div>`; };
+  return `<div class="mg notranslate" translate="no">${o.rows.map(row).join('')}</div>`;
 }
 function figPower(o){
   const b=String(o.base), e=String(o.exp), bw=b.length*62, x0=150-bw/2;
@@ -437,7 +483,7 @@ R.vod=sc=>{
     if(c.title){ const t=el('div','title'); t.innerHTML=`<div class="t1 notranslate">어휘쑥쑥</div><div class="t2">수학편</div><div class="t3">${LESSON.grade}</div><div class="t4 notranslate">${LESSON.title}</div>`; box.append(t); }
     else{
       const scene=el('div','scene'); if(c.bg) box.style.background=c.bg;
-      if(c.fig) scene.append(el('div','board',fig(c.fig))); else if(c.text) scene.append(el('div','board notranslate','<div style="font-size:1.5em;font-weight:900;text-align:center;line-height:1.6">'+rich(c.text)+'</div>'));
+      if(c.fig) scene.append(el('div','board'+(c.fig.kind==='mg'&&(c.bubbles||[]).length?' withbub':''),fig(c.fig))); else if(c.text) scene.append(el('div','board notranslate','<div style="font-size:1.5em;font-weight:900;text-align:center;line-height:1.6">'+rich(c.text)+'</div>'));
       (c.bubbles||[]).forEach((b,k)=>{ const w=el('div','who notranslate w'+b.who,avatar(b.who)+LESSON.cast[b.who]); scene.append(w);
         const bb=el('div','bub b'+b.who+((c.bubbles.filter(x=>x.who===b.who).indexOf(b)>0)?' low':''),rich(b.text)); scene.append(bb); });
       box.append(scene);

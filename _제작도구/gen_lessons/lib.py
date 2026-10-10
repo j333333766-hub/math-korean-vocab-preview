@@ -15,6 +15,7 @@ def eq(*lines, size=None):
     if size: d['size'] = size
     return d
 def word(*rows): return {'kind': 'word', 'rows': [{'parts': list(r[:-1]), 'result': r[-1]} for r in rows]}   # 낱말 짜임: word(('소수', '인수', '소인수'), …)
+def mg(*rows): return {'kind': 'mg', 'rows': list(rows)}   # 낱말 이야기 모션그래픽(줄을 차례로 띄운다). 줄 종류는 template 의 figMg 참고
 def num(a, b, **k): return dict(kind='num', min=a, max=b, **k)
 def pw(base, exp, labels=True, eqs=None):
     d = {'kind': 'power', 'base': base, 'exp': exp, 'labels': labels}
@@ -118,7 +119,7 @@ def build(p, names):
         s.append({'type': 'listen', 'q': '다음 낱말을 듣고 2번 따라 읽어 보세요.', 'items': [{'text': t, 'say': sy} if sy else {'text': t} for t, sy in p['listen']]})
     M.append({'name': '어휘 제시', 'screens': s})
     # ── 정의
-    s = [{'type': 'vod', 'title': p['define_title'], 'cuts': p['define'], 'memo': '개념을 새로 가르치지 않는다. 이미 아는 말과 아는 개념을 차례로 써서 새 낱말에 이른다. 낱말에 들어 있는 한자말의 뜻(예: 최대 = 가장 큰)을 풀어 주어 한국어 낱말로 받아들이게 한다.'}]
+    s = [{'type': 'vod', 'title': p['define_title'], 'cuts': p['define'], 'memo': p.get('define_memo', '개념을 새로 가르치지 않는다. 이미 아는 말과 아는 개념을 차례로 써서 새 낱말에 이른다. 낱말에 들어 있는 한자말의 뜻(예: 최대 = 가장 큰)을 풀어 주어 한국어 낱말로 받아들이게 한다.')}]
     for front, back in p['cards']:
         s.append({'type': 'card_flip', 'q': '낱말을 클릭해 뜻을 확인해 보세요.', 'front': {'text': front}, 'back': back, 'answerText': front})
     s.append({'type': 'lang_match', 'q': '내가 아는 말과 연결해 보세요.', 'words': p['lang_words'], 'items': [{'lang': l, 'terms': t} for l, t in zip(LANGS, p['lang'])],
