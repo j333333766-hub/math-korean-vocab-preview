@@ -575,7 +575,7 @@ R.choice=sc=>{ const pad=frame(sc.q); const host=withFig(pad,sc); const sel=new 
   sc.options.forEach((o,k)=>{ const b=el('button','opt',o.fig?fig(o.fig):rich(o)); b.onclick=()=>{ if(!multi) sel.clear(); sel.has(k)?sel.delete(k):sel.add(k); [...g.children].forEach((c,i)=>{c.className='opt'+(sel.has(i)?' sel':'');}); }; g.append(b); });
   host.append(g); const fbk=feedback(host);
   checkRow(host,()=>{ const ok=sel.size===sc.answer.length&&sc.answer.every(a=>sel.has(a)); [...g.children].forEach((c,i)=>{ if(sel.has(i)) c.classList.add(sc.answer.includes(i)?'right':'wrong'); }); fbk(ok,ok?null:(sc.hint||null)); },()=>{sel.clear();[...g.children].forEach(c=>c.className='opt');fbk(true,'');}); };
-R.OX=sc=>{ const pad=frame(sc.q||'맞으면 O, 틀리면 X를 선택해 보세요.'); const host=withFig(pad,sc); host.append(el('div','sent',rich(sc.statement)));
+R.OX=sc=>{ const pad=frame(sc.q||'맞으면 O, 틀리면 X를 선택해 보세요.'); const host=withFig(pad,sc); (pad.querySelector('.two>.l')||host).append(el('div','sent',rich(sc.statement)));   /* 판단할 문장은 식 아래(왼쪽)에, O·X 단추는 오른쪽에 */
   const ox=el('div','ox'); const fbk=feedback(host); ['O','X'].forEach(v=>{ const b=el('button','opt',v); b.style.color=v==='O'?'#2f6fe4':'#e24b4b'; b.onclick=()=>{ [...ox.children].forEach(c=>c.className='opt'); const ok=v===sc.answer; b.classList.add(ok?'right':'wrong'); fbk(ok,ok?(sc.why||null):null); }; ox.append(b); });
   host.insertBefore(ox,host.lastChild); };
 R.linetoline=sc=>{ const pad=frame(sc.q||'알맞은 것끼리 연결해 보세요.'); const host=withFig(pad,sc); const lt=el('div','lt'); const L=el('div','col'), Rr=el('div','col'); const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); const map={}; let cur=null;
