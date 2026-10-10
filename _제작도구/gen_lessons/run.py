@@ -20,7 +20,8 @@ for p in [x for x in l01_07.L if x['no'] <= 4] + k05_06.L:
     # 원고와 목차(syllabus.json)가 어긋나지 않는지 확인
     assert p['new'] == d['new'] or p['no'] <= 4, (p['no'], p['new'], d['new'])
     if p['no'] > 4:
-        assert set(p.get('aux', [])) == set(d['aux']), (p['no'], p.get('aux'), d['aux'])
+        # aux_extra: 목차(syllabus.json)에는 아직 없지만 이 차시에서 함께 보여 주기로 한 말(예: 6차시의 밑·지수). 목차를 고치면 지운다.
+        assert set(p.get('aux', [])) - set(p.get('aux_extra', [])) == set(d['aux']), (p['no'], p.get('aux'), d['aux'])
         assert {(w, n) for w, n, _ in p.get('pre', [])} <= {(w, s) for w, s in d['review'] if isinstance(s, int)}, (p['no'], 'pre')
         assert {w for w, _ in p.get('elem', [])} <= {w for w, s in d['review'] if not isinstance(s, int)}, (p['no'], 'elem')
     L = lib.build(p, names); folder = lib.write(ROOT, L)
