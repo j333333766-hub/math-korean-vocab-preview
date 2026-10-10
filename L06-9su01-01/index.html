@@ -29,6 +29,10 @@ button{font:inherit;cursor:pointer}
 .stage{position:relative;flex:none;width:100%;aspect-ratio:16/9;background:linear-gradient(#cfe8fb,#eef7fd);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.12)}
 .qbar{position:absolute;left:9%;right:9%;top:3.2%;min-height:9.5%;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--blue);color:#fff;border:.18em solid #111;border-radius:1.2em;padding:.25em 1em;font-weight:700;font-size:1.02em;line-height:1.3}
 .qbar.hide{display:none}
+.qin{display:flex;align-items:center;justify-content:center;gap:.5em;width:100%;background:#eaf2ff;border:.12em solid #2f6fe4;border-radius:.8em;padding:.3em .6em;font-weight:900;font-size:1.08em;line-height:1.35;color:#12357a;text-align:center}
+.qin .qm{flex:none;background:#2f6fe4;color:#fff;border-radius:50%;width:1.5em;height:1.5em;display:flex;align-items:center;justify-content:center;font-size:.85em}
+.qin .qsp{flex:none;border:0;background:none;font-size:.85em;cursor:pointer;padding:0}
+.two>.r .qin{font-size:1em}
 .tools{position:absolute;left:2%;top:3.5%;display:flex;gap:.4em}
 .tools button{width:2.3em;height:2.3em;border-radius:50%;border:.14em solid #111;background:#f58a1f;color:#fff;font-size:.8em}
 .pad{position:absolute;left:9%;right:9%;top:16%;bottom:0;background:#fff;border:.16em solid #111;border-bottom:0;border-radius:1.2em 1.2em 0 0;padding:1.2em 1.3em .6em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6em}
@@ -480,9 +484,8 @@ function avatar(i){ const C=[
 /* ---------- 화면 그리기 ---------- */
 function frame(q,noBar){
   const st=$('#stage'); st.innerHTML=''; st.classList.remove('isvod');
-  if(!noBar){ const bar=el('div','qbar'+(q?'':' hide'),'<span>'+rich(q||'')+'</span>'); st.append(bar);
-    const tools=el('div','tools'); const sp=el('button','', '🔊'); sp.title='지시문 듣기'; sp.onclick=()=>speak(q); if(q) tools.append(sp); st.append(tools); }
-  const pad=el('div','pad'+(q||noBar?'':' full')); if(!noBar) st.append(pad);
+  const pad=el('div','pad full'); if(!noBar) st.append(pad);
+  if(!noBar&&q){ const h=el('div','qin'), sp=el('button','qsp','🔊'); sp.title='물음 듣기'; sp.onclick=()=>speak(q); h.append(el('span','qm notranslate','Q'),el('span','qt',rich(q)),sp); pad.append(h); }
   return pad;
 }
 function chrome(sc){
@@ -497,7 +500,7 @@ function feedback(pad){ const f=el('div','fb'); pad.append(f); return (ok,msg)=>
 function checkRow(pad,onCheck,onReset){ const r=el('div','btnrow'); const c=el('button','btn','확인'), z=el('button','btn sub','다시'); c.onclick=onCheck; z.onclick=onReset; r.append(c,z); pad.append(r); }
 function withFig(pad,sc){ // 그림이 있으면 좌우로 나눔
   if(!sc.fig) return pad;
-  const two=el('div','two'), l=el('div','l',fig(sc.fig)), r=el('div','r'); two.append(l,r); pad.append(two); pad.style.justifyContent='stretch'; return r;
+  const two=el('div','two'), l=el('div','l',fig(sc.fig)), r=el('div','r'); two.append(l,r); const qh=pad.querySelector('.qin'); if(qh) r.append(qh); pad.append(two); pad.style.justifyContent='stretch'; return r;
 }
 const R={};
 R.vod=sc=>{
