@@ -50,7 +50,7 @@ def card(front, back_text=None, cap=None, fig=None):
     return (front, back)
 
 OPENERS = {'도입': ('🧭', '오늘 무엇을 익힐지 살펴봐요', False), '어휘 제시': ('👀', '오늘의 낱말을 만나요', True), '정의': ('💡', '아는 것에 한국어 이름을 붙여요', False),
-           '용례': ('📖', '교과서 문장에서 낱말을 만나요', False), '연습': ('✏️', '낱말을 고르고 말해 봐요', False), '마무리': ('🎒', '오늘 익힌 낱말을 정리해요', True)}
+           '용례': ('📖', '교과서 문장에서 낱말을 만나요', False), '연습': ('✏️', '낱말을 고르고 써 봐요', False), '마무리': ('🎒', '오늘 익힌 낱말을 정리해요', True)}
 
 def build(p, names):
     no = p['no']; common = no <= 4
@@ -147,6 +147,10 @@ def build(p, names):
     sp = {'type': 'step_recorde', 'q': '다음을 듣고 따라 말해 보세요.', 'sentence': p['speak'][0], 'memo': '원본의 step_recorde(듣고 따라 말하기, 녹음) 기능을 연결한다.'}
     if p['speak'][1]: sp['say'] = p['speak'][1]
     if len(p['speak']) > 2: sp['fig'] = p['speak'][2]
+    if p.get('write_final'):   # 따라 말하기 대신 듣고 쓰기(받아쓰기): [(문장, 읽는 법, 빈칸 낱말)]
+        sp = {'type': 'listen', 'mode': 'type', 'q': '문장을 듣고, 빈칸에 들어갈 낱말을 써 보세요.',
+              'items': [{'text': t.replace(w, '{0}', 1), 'answer': w, 'say': sy or t} for t, sy, w in p['write_final']],
+              'memo': '연습의 마무리. 듣고 쓰기(받아쓰기). ▶를 누르면 문장 전체가 나오고, 학생은 빈칸에 들어갈 오늘의 낱말을 낱말을 보지 않고 쳐 넣는다. 오늘의 낱말을 모두 한 번씩 쓴다. 맞게 쓰면 ✓가 생긴다.'}
     s.append(sp)
     M.append({'name': '연습', 'screens': s})
     # ── 마무리

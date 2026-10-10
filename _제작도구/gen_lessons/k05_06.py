@@ -129,6 +129,9 @@ p['preview'] = {'인수': {'def': '약수를 ‘인수’라고도 해요.', 'eg
 p['intro_preview'] = True
 p['aux_extra'] = ['밑', '지수']   # 39차시의 학습 어휘. 6차시에서는 함께 보는 말로 이름만 보여 준다. syllabus.json·추천안에는 아직 반영하지 않았다
 p['type_listen'] = True   # 따라 읽기 대신 듣고 쓰기
+p['write_final'] = [('18의 소인수는 2와 3입니다.', '십팔의 소인수는 이와 삼입니다.', '소인수'),
+                    ('18을 소인수분해하면 2 × 3²입니다.', '십팔을 소인수분해하면 이 곱하기 삼의 제곱입니다.', '소인수분해'),
+                    ('2 × 2 × 2를 거듭제곱으로 나타내면 2³입니다.', '이 곱하기 이 곱하기 이를 거듭제곱으로 나타내면 이의 세제곱입니다.', '거듭제곱')]   # 연습 마지막: 따라 말하기 대신 받아쓰기
 p['chat_url'] = 'https://script.google.com/macros/s/AKfycbwB6R5cWqCF7lY8wBxwsEtu45AKvTrceFa9mjPvFSCPKfHWmh8NpN10yzFiXTdPrbiL/exec'   # 질문하기 챗봇 서버(Apps Script, 키는 서버에만)
 p['openers'] = True   # 단계마다 모션그래픽 표지
 p['school_goal'] = '이 단원에서는 자연수를 소인수들의 곱으로 나타내요. 오늘 익힐 낱말은 최대공약수, 최소공배수를 배울 때도 계속 나와요.'

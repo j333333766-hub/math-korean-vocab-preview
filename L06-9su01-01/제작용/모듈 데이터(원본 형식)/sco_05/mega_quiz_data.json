@@ -171,25 +171,35 @@
             "custom": "horizontal"
         },
         {
-            "data_type": "step_recorde",
-            "data_jung_dap": "12를 소인수분해하면 2² × 3입니다.",
+            "data_type": "listen",
+            "data_jung_dap": "18의 {0}는 2와 3입니다.",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
             "data_point": "",
             "data_load_stroge_name": "",
-            "data_guide": "false",
+            "data_guide": "true",
             "data_guide_points": "",
-            "question": "다음을 듣고 따라 말해 보세요.",
+            "question": "문장을 듣고, 빈칸에 들어갈 낱말을 써 보세요.",
             "sub_question": "",
             "selection": "",
             "img": "",
-            "object": [],
+            "object": [
+                {
+                    "txt": "18의 {0}는 2와 3입니다."
+                },
+                {
+                    "txt": "18을 {0}하면 2 × 3²입니다."
+                },
+                {
+                    "txt": "2 × 2 × 2를 {0}으로 나타내면 2³입니다."
+                }
+            ],
             "basket_name": "",
             "drop": "",
             "character": "false",
             "commentary": "",
-            "custom": "STT"
+            "double": "true"
         }
     ]
 }
