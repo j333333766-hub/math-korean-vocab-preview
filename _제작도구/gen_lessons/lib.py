@@ -62,10 +62,10 @@ def build(p, names):
         cols.append({'label': '수학 문제의 끝말', 'items': [{'t': '~하시오', 's': '무엇을 하라는 말일까요?'}]})
     cols.append({'label': '오늘 새로 익힐 말', 'hl': True, 'items': new})
     school = {'label': '학교 수업', 'items': [{'t': p['school'], 's': p['school_s']}]}
-    if p.get('school_goal'): school['desc'] = p['school_goal']   # 이 단원에서 무엇을 왜 배우는지 한두 문장
+    if p.get('school_goal'): school['desc'] = p['school_goal']   # 이 단원에서 무엇을 하고 오늘 낱말이 어디에 쓰이는지 한두 문장(낱말 쪽에서 말한다)
     cols.append(school)
     s.append({'type': 'curation', 'q': p['intro_q'], 'cols': cols, 'note': p['intro_note'],
-              'memo': '도입(큐레이션). 이 콘텐츠는 학교에서 해당 단원을 배우기 전에 보는 것임을 먼저 알린다. 이미 아는 말 → 새로 익힐 말 → 학교 수업의 흐름을 한 화면에 보여 준다. 학교 수업 칸에는 그 단원에서 무엇을 왜 배우는지 한두 문장으로 알려, 낱말과 학습 목표를 함께 확인하게 한다.'})
+              'memo': '도입(큐레이션). 이 콘텐츠는 학교에서 해당 단원을 배우기 전에 보는 것임을 먼저 알린다. 이미 아는 말 → 새로 익힐 말 → 학교 수업의 흐름을 한 화면에 보여 준다. 학교 수업 칸에는 그 단원에서 무엇을 하는지, 오늘 낱말이 어디에서 쓰이는지를 한두 문장으로 알린다(교과 내용을 설명하지 않고 낱말 쪽에서 말한다).'})
     for c in p.get('checks', []):
         c.setdefault('memo', '미리 확인할 말의 뜻 확인. 새로 가르치지 않는다. 틀리면 그 낱말을 익히는 차시로 안내한다.'); s.append(c)
     if pre:
