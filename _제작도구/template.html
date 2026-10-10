@@ -263,7 +263,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 @media(max-width:1200px){.top .ttl{display:none}.lang{flex:1;min-width:0}#langSel{flex:1;min-width:0;max-width:none}}
 /* ── 반응형: 좁은 화면(휴대폰)에서는 위쪽 줄을 줄이고, 세로로 긴 화면에서는 무대를 세로형(.port)으로 바꿔 내용을 위아래로 쌓는다 ── */
 @media(max-width:900px),(max-height:500px){
-  .top{flex-wrap:wrap;gap:6px;padding:6px 8px}.top .ttl,#memoBtn{display:none}
+  .top{flex-wrap:wrap;gap:6px;padding:6px 8px}.top .ttl,#memoBtn,#resetBtn span{display:none}
   .homebtn{padding:5px 10px;font-size:13px}.top button{padding:5px 10px;font-size:13px}
   .lang{flex:1;min-width:0;padding:2px 8px}#langSel{max-width:none;flex:1;min-width:0;width:100%}#langReset{padding:3px 8px;font-size:12px}
   .wrap{padding:6px}
@@ -323,6 +323,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
     <div class="top">
       <a class="homebtn notranslate" href="../">🏠 홈</a>
       <button class="ghost notranslate" id="memoBtn">제작 메모</button>
+      <button class="ghost" id="resetBtn" title="이 차시에서 한 활동 기록을 지워요">↺<span> 기록 지우기</span></button>
       <div class="lang notranslate" translate="no"><span>🌐</span><select id="langSel" aria-label="번역 언어 선택 / Language"></select><button id="langReset" title="한국어로 되돌리기 / Back to Korean">↺ 한국어 · Korean</button><div id="google_translate_element"></div></div>
       <div class="ttl notranslate" id="topTitle"></div>
       <button id="prevMod">‹ 목차</button><button id="nextMod">목차 ›</button>
@@ -337,6 +338,20 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 const LESSON = /*__LESSON__*/null;
 const TYPE_KO={opener:'단계 표지(모션그래픽)',curation:'큐레이션',checklist:'낱말 확인',recall:'낱말 정리(넣기)',lang_match:'아는 말과 연결',vod:'영상(대본)',motion:'오늘의 어휘 제시',card_flip:'카드 뒤집기',listen:'듣고 따라 읽기',drag_drop:'끌어다 빈칸에 넣기',choice:'고르기',OX:'O·X 고르기',linetoline:'선으로 잇기',input:'직접 써넣기',step_recorde:'듣고 따라 말하기',ocr:'손글씨 쓰기'};
 let mi=0, si=0, memoOn=false;
+// 활동 기록: 학생이 한 활동을 이 기기의 브라우저에 화면별로 적어 둔다. 다른 화면에 갔다 오거나 새로 고쳐도 그대로 보인다. '기록 지우기'로 지운다.
+//  - 영상: 답한 컷과 보던 컷 / 끌어넣기: 빈칸에 넣은 낱말 / 그 밖의 화면: 누른 단추의 순서와 써넣은 글자(다시 그릴 때 같은 순서로 되풀이한다)
+const PKEY='vocabdone:'+((LESSON&&(LESSON.code||LESSON.title))||''); let replaying=false;
+const prog={ all(){ try{ return JSON.parse(localStorage.getItem(PKEY)||'{}')||{}; }catch(e){ return {}; } }, get(k){ return this.all()[k]; },
+  set(k,v){ try{ const a=this.all(); a[k]=v; localStorage.setItem(PKEY,JSON.stringify(a)); }catch(e){} }, clear(){ try{ localStorage.removeItem(PKEY); }catch(e){} } };
+const pkey=()=>mi+'-'+si, PSEL='.opt,.chip,.btn,.cd,.card,.lgb', PSKIP={vod:1,drag_drop:1,opener:1};
+function progInit(){ const st=$('#stage');
+  st.addEventListener('click',e=>{ if(replaying||PSKIP[LESSON.modules[mi].screens[si].type]) return; const pad=st.querySelector('.pad'); if(!pad) return; const t=e.target.closest(PSEL); if(!t||!pad.contains(t)) return;
+    const i=[...pad.querySelectorAll(PSEL)].indexOf(t); if(i<0) return; const v=prog.get(pkey())||{}; v.log=(v.log||[]).concat(i).slice(-300); prog.set(pkey(),v); },true);
+  const inp=e=>{ if(replaying||e.target.tagName!=='INPUT'||!e.target.closest('.pad')) return; const v=prog.get(pkey())||{}; v.inp=[...st.querySelectorAll('.pad input')].map(x=>x.value); prog.set(pkey(),v); };
+  st.addEventListener('input',inp); st.addEventListener('compositionend',inp); }
+function progReplay(sc){ if(PSKIP[sc.type]) return; const v=prog.get(pkey()); if(!v) return; const pad=$('#stage .pad'); if(!pad) return; replaying=true;
+  try{ (v.log||[]).forEach(i=>{ const e=pad.querySelectorAll(PSEL)[i]; if(e) e.click(); });
+    (v.inp||[]).forEach((x,k)=>{ const e=pad.querySelectorAll('input')[k]; if(e&&x){ e.value=x; e.dispatchEvent(new Event('input',{bubbles:true})); } }); }catch(e){} replaying=false; }
 const $=(s,r=document)=>r.querySelector(s);
 const el=(tag,cls,html)=>{const e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e;};
 const KW=(LESSON.keep||LESSON.words||[]).slice().sort((a,b)=>b.length-a.length);
@@ -508,11 +523,11 @@ function withFig(pad,sc){ // 그림이 있으면 물음은 종이 맨 위에 가
 }
 const R={};
 R.vod=sc=>{
-  const st=$('#stage'); st.innerHTML=''; let ci=Math.min(sc.cuts.length-1,window.__cut||0), timer=null; window.__cut=0;
-  const box=el('div','vod'); st.append(box); st.classList.add('isvod'); const done={};   // 참여 활동(ask)에 답한 컷 → 학생에게 돌려준 말
+  const st=$('#stage'); st.innerHTML=''; const PK=pkey(), saved=prog.get(PK)||{}; let ci=Math.min(sc.cuts.length-1,window.__cut!=null?window.__cut:(saved.ci||0)), timer=null; window.__cut=null;
+  const box=el('div','vod'); st.append(box); st.classList.add('isvod'); const done=saved.done||{};   // 참여 활동(ask)에 답한 컷 → 학생에게 돌려준 말
   const draw=()=>{
     // 참여 활동이 있는 컷은 먼저 물음과 단추가 나오고(자막·일부 그림·대사는 숨김), 답하면 그림이 움직이며 자막이 나온다.
-    const c=sc.cuts[ci], a=c.ask, open=!!a&&!(ci in done); st.innerHTML=''; st.append(box); box.innerHTML='';
+    prog.set(PK,{ci,done}); const c=sc.cuts[ci], a=c.ask, open=!!a&&!(ci in done); st.innerHTML=''; st.append(box); box.innerHTML='';
     const F=open&&a.fig?a.fig:c.fig, T=open&&a.text!=null?a.text:c.text, bubs=(c.bubbles||[]).filter(b=>!(open&&b.after));
     box.append(el('div','tag notranslate','영상 대본 · 컷 '+(ci+1)+'/'+sc.cuts.length));
     if(c.title){ const t=el('div','title'); t.innerHTML=`<div class="t1 notranslate">어휘쑥쑥</div><div class="t2">수학편</div><div class="t3">${LESSON.grade}</div><div class="t4 notranslate">${LESSON.title}</div>`; box.append(t); }
@@ -562,13 +577,13 @@ R.listen=sc=>{ const pad=frame(sc.q||'다음 낱말을 듣고 2번 따라 읽어
     box.append(el('span','',rich(it.text)),b,dots); pad.append(box); });
   pad.append(el('div','', '<span style="font-size:.8em;color:#6b7280">🔊를 누르고 따라 읽으면 동그라미가 채워져요.</span>')); };
 R.drag_drop=sc=>{ const pad=frame(sc.q||'보기에서 알맞은 낱말을 골라 빈칸에 넣어 보세요.'); const host=withFig(pad,sc);
-  const fill=[]; const sent=el('div','sent'); sent.innerHTML=rich(sc.sentence).replace(/\{(\d)\}/g,(m,i)=>`<span class="blank" data-i="${i}"></span>`);
+  const PK=pkey(), fill=((prog.get(PK)||{}).fill||[]).slice(); const sent=el('div','sent'); sent.innerHTML=rich(sc.sentence).replace(/\{(\d)\}/g,(m,i)=>`<span class="blank" data-i="${i}"></span>`);
   const chips=el('div','chips'); const fbk=feedback(host);
-  const paint=()=>{ sent.querySelectorAll('.blank').forEach(b=>{const i=+b.dataset.i; const v=fill[i]; b.innerHTML=v==null?'':rich(sc.options[v]); b.classList.toggle('filled',v!=null);}); [...chips.children].forEach((c,k)=>c.classList.toggle('used',fill.includes(k))); };
+  const paint=()=>{ sent.querySelectorAll('.blank').forEach(b=>{const i=+b.dataset.i; const v=fill[i]; b.innerHTML=v==null?'':rich(sc.options[v]); b.classList.toggle('filled',v!=null);}); [...chips.children].forEach((c,k)=>c.classList.toggle('used',fill.includes(k))); prog.set(PK,{fill:fill.slice()}); };
   const put=(k,i)=>{ if(i==null){ i=[...sent.querySelectorAll('.blank')].map(b=>+b.dataset.i).find(j=>fill[j]==null); } if(i==null) return; fill[i]=k; paint(); };
   sc.options.forEach((o,k)=>{ const c=el('div','chip',rich(o)); c.draggable=true; c.onclick=()=>put(k); c.ondragstart=e=>e.dataTransfer.setData('text',k); chips.append(c); });
   sent.querySelectorAll('.blank').forEach(b=>{ b.onclick=()=>{fill[+b.dataset.i]=null;paint();}; b.ondragover=e=>e.preventDefault(); b.ondrop=e=>{e.preventDefault(); put(+e.dataTransfer.getData('text'),+b.dataset.i);}; });
-  host.insertBefore(sent,host.lastChild); host.insertBefore(chips,host.lastChild);
+  host.insertBefore(sent,host.lastChild); host.insertBefore(chips,host.lastChild); if(fill.length) paint();
   checkRow(host,()=>fbk(sc.answer.every((a,i)=>fill[i]===a)),()=>{fill.length=0;paint();fbk(true,'');}); };
 R.choice=sc=>{ const pad=frame(sc.q); const host=withFig(pad,sc); const sel=new Set(); const multi=sc.answer.length>1;
   const g=el('div','opts'); g.style.gridTemplateColumns=sc.cols?`repeat(${sc.cols},1fr)`:(sc.options.length>3&&!sc.fig?'1fr 1fr':'1fr');
@@ -715,6 +730,7 @@ function render(){
   [...$('#toc').children].forEach((b,i)=>b.classList.toggle('on',i===mi));
   const self=(R[sc.type]||(()=>{frame('준비 중인 유형: '+sc.type);}))(sc);
   if(!self){ chrome(sc); showMemo(sc); }
+  progReplay(sc);
   document.querySelectorAll('#stage .sent, #stage .chips, #stage .opts, #stage .ox, #stage .lt, #stage .say, #stage .card, #stage .motion, #stage .nav, #stage input, #stage .cur .it').forEach(e=>{e.classList.add('notranslate'); e.setAttribute('translate','no');});
   history.replaceState(null,'','#'+(mi+1)+'-'+(si+1)); if(window._chat) window._chat.where();
 }
@@ -723,7 +739,8 @@ function init(){
   $('#lessonCode').textContent=LESSON.code||''; $('#lessonTitle').textContent=LESSON.title; $('#topTitle').textContent=LESSON.title; $('#lessonMeta').textContent=LESSON.grade+' · '+LESSON.standard;
   LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();}; $('#toc').append(b); });
   $('#prevMod').onclick=()=>{ if(mi>0){mi--;si=0;render();} }; $('#nextMod').onclick=()=>{ if(mi<LESSON.modules.length-1){mi++;si=0;render();} };
-  initChat();
+  initChat(); progInit();
+  { const rb=$('#resetBtn'); let arm=0; rb.onclick=()=>{ if(!arm){ arm=1; rb.textContent='한 번 더 누르면 지워요'; setTimeout(()=>{ arm=0; rb.innerHTML='↺<span> 기록 지우기</span>'; },3000); return; } arm=0; prog.clear(); rb.innerHTML='↺<span> 기록 지우기</span>'; render(); }; }
   $('#memoBtn').onclick=()=>{ memoOn=!memoOn; $('#memo').classList.toggle('on',memoOn); $('#memoBtn').classList.toggle('on',memoOn); render(); };
   const hc=location.hash.match(/#\d+-\d+-(\d+)/); if(hc) window.__cut=hc[1]-1;
   const h=location.hash.match(/#(\d+)-(\d+)(?:-\d+)?(m?)/); if(h){ mi=Math.min(LESSON.modules.length-1,h[1]-1); si=Math.min(LESSON.modules[mi].screens.length-1,h[2]-1); if(h[3]){memoOn=true;$('#memo').classList.add('on');$('#memoBtn').classList.add('on');} }
