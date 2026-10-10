@@ -1,6 +1,27 @@
 {
     "quiz": [
         {
+            "data_type": "opener",
+            "data_jung_dap": "",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "intro": "true"
+        },
+        {
             "data_type": "click",
             "data_jung_dap": "",
             "data_audsrc": "",
@@ -29,8 +50,7 @@
             "drop": "",
             "character": "false",
             "commentary": "",
-            "custom": "curation",
-            "intro": "true"
+            "custom": "curation"
         },
         {
             "data_type": "choice",

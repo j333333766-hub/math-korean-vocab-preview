@@ -48,6 +48,9 @@ def card(front, back_text=None, cap=None, fig=None):
     if cap: back['caption'] = cap
     return (front, back)
 
+OPENERS = {'도입': ('🧭', '오늘 무엇을 익힐지 살펴봐요', False), '어휘 제시': ('👀', '오늘의 낱말을 만나요', True), '정의': ('💡', '아는 것에 한국어 이름을 붙여요', False),
+           '용례': ('📖', '교과서 문장에서 낱말을 만나요', False), '연습': ('✏️', '낱말을 고르고 말해 봐요', False), '마무리': ('🎒', '오늘 익힌 낱말을 정리해요', True)}
+
 def build(p, names):
     no = p['no']; common = no <= 4
     new, aux, pre, elem, perf = p['new'], p.get('aux', []), p.get('pre', []), p.get('elem', []), p.get('perf', [])
@@ -137,6 +140,14 @@ def build(p, names):
     if perf: vocab['수행 도구어 (문제에서 쓰는 말)'] = [f'{v} → {n}차시' if n else f'{v} (익히는 차시 없음)' for v, n in perf]
     if p.get('colloc'): vocab['공기관계어'] = p['colloc']
     keep = sorted({w for w in new + aux + [x[0] for x in pre] + [x[0] for x in elem] + p.get('keep', []) if len(w) >= 2 or w in new}, key=len, reverse=True)
+    # 단계 표지(모션그래픽): p['openers'] 가 참이면 여섯 단계의 맨 앞에 하나씩 넣는다.
+    if p.get('openers'):
+        for m in M:
+            icon, subt, chips = OPENERS[m['name']]
+            o = {'type': 'opener', 'name': m['name'], 'icon': icon, 'sub': subt,
+                 'memo': '단계 표지(모션그래픽). 3~4초 길이. 위쪽 길에서 여섯 단계 가운데 지금 어디인지 보여 주고, 단계 이름과 이 단계에서 할 일이 차례로 나타난다. 시안에서는 자동으로 넘어가지 않고 ▶를 눌러 넘긴다.'}
+            if chips: o['chips'] = new
+            m['screens'].insert(0, o)
     return {'code': f'L{no:02d}', 'no': no, 'title': names[no], 'grade': '중학교 1학년' if not common else '중학교 1~2학년 공통', 'standard': p['std'], 'unit': p['unit'],
             'lessonType': f'{"수행" if p.get("type") == "수행" else "개념"} 중심 차시 (10분 안팎) · 새 어휘 {len(new)}개' + (f', 미리 확인할 말 {len(pre)}개' if pre else '') + (f', 초등에서 배운 말 안내 {len(elem)}개' if elem else ''),
             'words': new, 'keep': keep, 'cast': ['아미르', '유나'], 'vocab': vocab, 'modules': M}
