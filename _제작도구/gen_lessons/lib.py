@@ -156,7 +156,12 @@ def build(p, names):
                  'memo': '단계 표지(모션그래픽). 3~4초 길이. 위쪽 길에서 여섯 단계 가운데 지금 어디인지 보여 주고, 단계 이름과 이 단계에서 할 일이 차례로 나타난다. 시안에서는 자동으로 넘어가지 않고 ▶를 눌러 넘긴다.'}
             if chips: o['chips'] = new
             m['screens'].insert(0, o)
-    return {'code': f'L{no:02d}', 'no': no, 'title': names[no], 'grade': '중학교 1학년' if not common else '중학교 1~2학년 공통', 'standard': p['std'], 'unit': p['unit'],
+    chat = None
+    if p.get('chat_url'):   # 질문하기 챗봇: 차시의 낱말 풀이를 기본 자료로 함께 보낸다
+        gl = [f'{t}: {df} (예: {eg})' for t, eg, df in p.get('summary', [])] + [f'{w}: {ex} ({n}차시에서 익힌 말)' for w, n, ex in pre]
+        gl += [f'{w}: {d.get("def", "")}' for w, d in p.get('preview', {}).items() if d.get('def')] + ['교과서 문장: ' + ' '.join(t.replace('*', '').split()) for t, _ in p.get('usage', []) if isinstance(t, str)]
+        chat = {'url': p['chat_url'], 'words': chr(10).join(gl)}
+    return {'chat': chat, 'code': f'L{no:02d}', 'no': no, 'title': names[no], 'grade': '중학교 1학년' if not common else '중학교 1~2학년 공통', 'standard': p['std'], 'unit': p['unit'],
             'lessonType': f'{"수행" if p.get("type") == "수행" else "개념"} 중심 차시 (10분 안팎) · 새 어휘 {len(new)}개' + (f', 미리 확인할 말 {len(pre)}개' if pre else '') + (f', 초등에서 배운 말 안내 {len(elem)}개' if elem else ''),
             'words': new, 'keep': keep, 'cast': ['아미르', '유나'], 'vocab': vocab, 'modules': M}
 

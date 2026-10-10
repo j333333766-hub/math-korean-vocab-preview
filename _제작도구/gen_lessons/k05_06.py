@@ -92,6 +92,7 @@ p['outro_note'] = '수업에서 ‘소인수’, ‘소인수분해’, ‘거�
 p['school_use'] = '‘소인수’, ‘소인수분해’, ‘거듭제곱’이라는 말이 나와요'
 p['preview'] = {'인수': {'def': '약수를 ‘인수’라고도 해요.', 'eg': '12의 인수: 1, 2, 3, 4, 6, 12'}, '소수': {'sent': '2, 3, 5, 7은 **소수**이다.'}}
 p['intro_preview'] = True
+p['chat_url'] = 'https://script.google.com/macros/s/AKfycbwB6R5cWqCF7lY8wBxwsEtu45AKvTrceFa9mjPvFSCPKfHWmh8NpN10yzFiXTdPrbiL/exec'   # 질문하기 챗봇 서버(Apps Script, 키는 서버에만)
 p['openers'] = True   # 단계마다 모션그래픽 표지
 p['school_goal'] = '이 단원에서는 자연수를 소인수들의 곱으로 나타내요. 오늘 익힐 낱말은 최대공약수, 최소공배수를 배울 때도 계속 나와요.'
 L.append(p)

@@ -170,6 +170,24 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 #langSel{font:inherit;font-size:13px;font-weight:700;border:0;background:transparent;max-width:210px;cursor:pointer}
 #langReset{border:1px solid #cfd5df;background:#fff7dc;color:#1d2433;border-radius:99px;padding:3px 10px;font-size:12.5px;font-weight:800}
 #langReset.off{opacity:.45}
+/* 질문하기 챗봇 */
+#chatBtn{position:fixed;right:18px;bottom:18px;z-index:60;background:#e8457a;color:#fff;border:2px solid #111;border-radius:99px;padding:10px 18px;font:inherit;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 3px 0 #111}
+#chat{position:fixed;right:18px;bottom:18px;z-index:61;width:370px;max-width:calc(100vw - 24px);height:460px;max-height:calc(100vh - 24px);background:#fff;border:2px solid #111;border-radius:16px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 6px 24px #0004;font-size:14.5px}
+#chat.on{display:flex}
+#chat .hd{background:#e8457a;color:#fff;padding:9px 12px;font-weight:800;display:flex;align-items:center;gap:8px}#chat .hd span{flex:1}
+#chat .hd button{background:#fff;border:0;border-radius:99px;padding:2px 10px;font:inherit;font-weight:800;cursor:pointer}
+#chat .ctx{background:#fff1b8;padding:5px 12px;font-size:12.5px;font-weight:700;color:#5b4a00;border-bottom:1px solid #e6dca8}
+#chat .log{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px;background:#f6f8fb}
+#chat .m{max-width:86%;padding:8px 11px;border-radius:12px;line-height:1.5;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+#chat .m.q{align-self:flex-end;background:#2f6fe4;color:#fff;border-bottom-right-radius:3px}
+#chat .m.a{align-self:flex-start;background:#fff;border:1px solid #cfd5df;border-bottom-left-radius:3px}
+#chat .m.wait{color:#6b7280;font-style:italic}
+#chat .qs{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px 0;background:#f6f8fb}
+#chat .qs button{border:1px solid #e8457a;color:#c22a5f;background:#fff;border-radius:99px;padding:3px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+#chat form{display:flex;gap:6px;padding:10px;background:#f6f8fb}
+#chat input{flex:1;min-width:0;border:2px solid #111;border-radius:99px;padding:8px 13px;font:inherit;font-size:16px}
+#chat form button{background:#f58a1f;color:#fff;border:2px solid #111;border-radius:99px;padding:0 15px;font:inherit;font-weight:800;cursor:pointer}
+#chat .ft{font-size:11px;color:#6b7280;text-align:center;padding:0 10px 8px;background:#f6f8fb}
 /* 제작 메모 */
 .memo{width:300px;align-self:stretch;background:#fffdf3;border:1px solid #e6dca8;border-radius:12px;padding:12px;overflow:auto;font-size:13px;line-height:1.55;display:none}
 .memo.on{display:block}
@@ -413,6 +431,32 @@ R.opener=sc=>{ frame('',true); const st=$('#stage'), o=el('div','op'), names=LES
   if(sc.sub) o.append(el('div','sub',rich(sc.sub)));
   if(sc.chips){ const c=el('div','chips notranslate'); sc.chips.forEach((w,i)=>{ const d=el('div','',w); d.style.animationDelay=(2.1+i*.25)+'s'; c.append(d); }); o.append(c); }
   st.append(o); };
+// 질문하기 챗봇: 질문을 보낼 때마다 '학생이 지금 보고 있는 화면'의 글을 함께 보낸다. 키는 서버(Apps Script)에만 있다.
+function pageCtx(){ const mod=LESSON.modules[mi], sc=mod.screens[si], st=$('#stage');
+  const txt=st.innerText.replace(/[◀▶🔊🔍]/g,' ').replace(/[ \t]+/g,' ').replace(/\s*\n\s*/g,'\n').trim();
+  const figs=[...st.querySelectorAll('svg')].map(s=>[...s.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean).join(' ')).filter(Boolean).join(' / ');
+  return `단계: ${mod.name} (${si+1}/${mod.screens.length}) · 화면 종류: ${TYPE_KO[sc.type]||sc.type}\n화면에 보이는 글:\n${txt}`+(figs?`\n그림 속 글자: ${figs}`:''); }
+function initChat(){ const C=LESSON.chat; if(!C||!C.url) return; const hist=[]; let busy=false;
+  const btn=el('button','notranslate','💬 질문하기'); btn.id='chatBtn'; btn.translate=false;
+  const box=el('div','notranslate'); box.id='chat'; box.translate=false;
+  box.innerHTML='<div class="hd"><span>💬 쑥쑥이에게 질문하기</span><button type="button" class="x">닫기</button></div><div class="ctx"></div><div class="log"></div><div class="qs"></div><form><input maxlength="300" placeholder="궁금한 것을 물어봐요 (내 나라 말도 돼요)" autocomplete="off"><button>보내기</button></form><div class="ft">AI가 답해요. 틀릴 수도 있으니 선생님께도 물어봐요.</div>';
+  document.body.append(btn,box); const log=$('.log',box), inp=$('input',box), ctx=$('.ctx',box), qs=$('.qs',box);
+  const say=(cls,t)=>{ const m=el('div','m '+cls); m.textContent=t; log.append(m); log.scrollTop=log.scrollHeight; return m; };
+  const where=()=>{ const mod=LESSON.modules[mi]; ctx.textContent='지금 보는 화면: '+mod.name+' '+(si+1)+'/'+mod.screens.length+' — 이 화면 내용을 보고 답해요'; };
+  ['이 화면을 쉽게 설명해 줘','이 낱말은 어떻게 읽어?','이 낱말을 넣은 문장을 보여 줘'].forEach(t=>{ const b=el('button','',t); b.type='button'; b.onclick=()=>ask(t); qs.append(b); });
+  say('a','안녕하세요! 저는 쑥쑥이예요. 지금 보는 화면에서 모르는 낱말이 있으면 물어봐요.');
+  async function ask(q){ q=(q||'').trim(); if(!q||busy) return; busy=true; where(); say('q',q); const w=say('a wait','생각하고 있어요…');
+    const body={q,lesson:LESSON.title+' ('+LESSON.grade+')',words:C.words||'',page:pageCtx(),hist:hist.slice(-8)};
+    try{ const r=await fetch(C.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}); const d=await r.json();
+      w.classList.remove('wait');
+      if(d.ok){ w.textContent=d.a; hist.push({r:'q',t:q},{r:'a',t:d.a}); }
+      else w.textContent=(d.err==='quota'||d.err==='limit')?'오늘은 질문을 더 받을 수 없어요. 내일 다시 물어봐요.':'지금은 답하기 어려워요. 조금 뒤에 다시 물어봐요.';
+    }catch(e){ w.classList.remove('wait'); w.textContent='연결이 안 돼요. 인터넷을 확인하고 다시 물어봐요.'; }
+    busy=false; log.scrollTop=log.scrollHeight; }
+  $('form',box).onsubmit=e=>{ e.preventDefault(); const q=inp.value; inp.value=''; ask(q); };
+  btn.onclick=()=>{ where(); box.classList.add('on'); btn.style.display='none'; inp.focus(); };
+  $('.x',box).onclick=()=>{ box.classList.remove('on'); btn.style.display=''; };
+  window._chat={ask,where}; }
 // 낱말 미리 보기: 어휘 제시 화면에서 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 먼저 보여 준다.
 function preview(w,pv){ const st=$('#stage'); const old=st.querySelector('.pvback'); if(old) old.remove();
   const back=el('div','pvback'), box=el('div','pvbox'); const row=(k,v,cls)=>v?'<div class="pvrow"><span class="k">'+k+'</span><span class="v'+(cls?' '+cls:'')+'">'+rich(v)+'</span></div>':'';
@@ -454,13 +498,14 @@ function render(){
   if(!self){ chrome(sc); showMemo(sc); }
   document.querySelectorAll('#stage .sent, #stage .chips, #stage .opts, #stage .ox, #stage .lt, #stage .say, #stage .card, #stage .motion, #stage .nav, #stage input, #stage .cur .it').forEach(e=>{e.classList.add('notranslate'); e.setAttribute('translate','no');});
   const st=$('#stage'); st.style.fontSize=(st.clientWidth/46)+'px';
-  history.replaceState(null,'','#'+(mi+1)+'-'+(si+1));
+  history.replaceState(null,'','#'+(mi+1)+'-'+(si+1)); if(window._chat) window._chat.where();
 }
 function go(d){ const mod=LESSON.modules[mi]; if(d>0){ if(si<mod.screens.length-1) si++; else if(mi<LESSON.modules.length-1){mi++;si=0;} } else { if(si>0) si--; else if(mi>0){mi--;si=LESSON.modules[mi].screens.length-1;} } render(); }
 function init(){
   $('#lessonCode').textContent=LESSON.code||''; $('#lessonTitle').textContent=LESSON.title; $('#topTitle').textContent=LESSON.title; $('#lessonMeta').textContent=LESSON.grade+' · '+LESSON.standard;
   LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();}; $('#toc').append(b); });
   $('#prevMod').onclick=()=>{ if(mi>0){mi--;si=0;render();} }; $('#nextMod').onclick=()=>{ if(mi<LESSON.modules.length-1){mi++;si=0;render();} };
+  initChat();
   $('#memoBtn').onclick=()=>{ memoOn=!memoOn; $('#memo').classList.toggle('on',memoOn); $('#memoBtn').classList.toggle('on',memoOn); render(); };
   const hc=location.hash.match(/#\d+-\d+-(\d+)/); if(hc) window.__cut=hc[1]-1;
   const h=location.hash.match(/#(\d+)-(\d+)(?:-\d+)?(m?)/); if(h){ mi=Math.min(LESSON.modules.length-1,h[1]-1); si=Math.min(LESSON.modules[mi].screens.length-1,h[2]-1); if(h[3]){memoOn=true;$('#memo').classList.add('on');$('#memoBtn').classList.add('on');} }
