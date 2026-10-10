@@ -32,7 +32,8 @@ button{font:inherit;cursor:pointer}
 .qin{display:flex;align-items:center;justify-content:center;gap:.5em;width:100%;background:#eaf2ff;border:.12em solid #2f6fe4;border-radius:.8em;padding:.3em .6em;font-weight:900;font-size:1.08em;line-height:1.35;color:#12357a;text-align:center}
 .qin .qm{flex:none;background:#2f6fe4;color:#fff;border-radius:50%;width:1.5em;height:1.5em;display:flex;align-items:center;justify-content:center;font-size:.85em}
 .qin .qsp{flex:none;border:0;background:none;font-size:.85em;cursor:pointer;padding:0}
-.two>.l{flex-direction:column;gap:.5em}.two>.l .lf{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}
+.two>.l{flex-direction:column;gap:.9em}.two>.l .lf{flex:0 1 auto;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}.two>.l .lf svg.fig{max-height:13em}
+.stage.port .two>.l .lf svg.fig{max-height:10em}
 .tools{position:absolute;left:2%;top:3.5%;display:flex;gap:.4em}
 .tools button{width:2.3em;height:2.3em;border-radius:50%;border:.14em solid #111;background:#f58a1f;color:#fff;font-size:.8em}
 .pad{position:absolute;left:9%;right:9%;top:16%;bottom:0;background:#fff;border:.16em solid #111;border-bottom:0;border-radius:1.2em 1.2em 0 0;padding:1.2em 1.3em .6em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6em}
@@ -282,7 +283,7 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .stage.port .nav{top:auto;bottom:.6%;height:2.2em;font-size:1.7em}.stage.port .nav.prev{left:27%}.stage.port .nav.next{right:27%}
 .stage.port .count{bottom:1.8%}.stage.port .type{bottom:1.8%;max-width:26%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stage.port.isvod .nav{bottom:auto;top:.3%;height:1.6em;font-size:1.5em}.stage.port.isvod .nav.prev{left:30%}.stage.port.isvod .nav.next{right:30%}
-.stage.port .two{flex-direction:column;gap:.6em}.stage.port .two>.l{flex:none;width:100%;height:46%}.stage.port .two>.r{flex:1;width:100%;min-height:0}
+.stage.port .two{flex-direction:column;gap:.6em}.stage.port .two>.l{flex:none;width:100%;height:auto}.stage.port .two>.r{flex:1;width:100%;min-height:0}
 .stage.port .cur{flex-direction:column;gap:.25em}.stage.port .cur .arr{transform:rotate(90deg);font-size:1.1em;line-height:.8}
 .stage.port .cur .col{flex:none;padding:.4em .5em;gap:.3em}.stage.port .cur .col.wide{flex:none}
 .stage.port .cur .lab{font-size:.78em}.stage.port .cur .it{font-size:.95em;padding:.22em .5em}.stage.port .curnote{font-size:.8em}
@@ -500,7 +501,10 @@ function feedback(pad){ const f=el('div','fb'); pad.append(f); return (ok,msg)=>
 function checkRow(pad,onCheck,onReset){ const r=el('div','btnrow'); const c=el('button','btn','확인'), z=el('button','btn sub','다시'); c.onclick=onCheck; z.onclick=onReset; r.append(c,z); pad.append(r); }
 function withFig(pad,sc){ // 그림이 있으면 좌우로 나눔. 물음 → 그림(식) → 보기 순서로 읽히게, 물음을 그림 위에 둔다
   if(!sc.fig) return pad;
-  const two=el('div','two'), l=el('div','l'), r=el('div','r'); two.append(l,r); const qh=pad.querySelector('.qin'); if(qh) l.append(qh); l.append(el('div','lf',fig(sc.fig))); pad.append(two); pad.style.justifyContent='stretch'; return r;
+  const two=el('div','two'), l=el('div','l'), r=el('div','r'); two.append(l,r); const qh=pad.querySelector('.qin'); if(qh) l.append(qh); l.append(el('div','lf',fig(sc.fig))); pad.append(two); pad.style.justifyContent='stretch';
+  // 그림의 빈 둘레를 잘라 내어 물음과 그림이 한 덩어리로 붙게 한다(크기 비율은 그대로).
+  const sv=l.querySelector('svg.fig'); try{ const b=sv.getBBox(), p=12, w=b.width+2*p, h=b.height+2*p; if(b.width&&b.height){ sv.setAttribute('viewBox',`${b.x-p} ${b.y-p} ${w} ${h}`); sv.style.width=Math.min(100,w/420*100)+'%'; sv.style.height='auto'; sv.style.aspectRatio=w/h; } }catch(e){}
+  return r;
 }
 const R={};
 R.vod=sc=>{
