@@ -70,7 +70,7 @@ def build(p, names):
     flow = p.get('flow1011')
     M = []
     # 낱말 미리 보기: 낱말을 누르면 뜻·예·교과서 문장이 작은 창으로 나온다. 정리 화면(summary)과 용례(usage)에서 가져오고, p['preview'] 로 고치거나 더한다.
-    def pv(w):
+    def pv(w, cheer=False):
         d = {}
         for t, eg, df in p.get('summary', []):
             if t == w: d = {'def': df, 'eg': eg}
@@ -78,7 +78,10 @@ def build(p, names):
         hit = [t for t in sents if '**' + w in t] or [t for t in sents if w in t.replace('*', '')]
         if d and hit: d['sent'] = hit[0]
         d.update(p.get('preview', {}).get(w, {}))
-        return {'t': w, 'pv': d} if d else {'t': w}
+        if cheer and p.get('cheer', {}).get(w): d['cheer'] = p['cheer'][w]   # 낱말을 누르면 뜨는 응원하는 말(학습 동기)
+        r = {'t': w, 'pv': d} if d else {'t': w}
+        if flow and w in p.get('ess', []): r['core'] = True   # 핵심 학습 어휘(충남대 필수 어휘)는 색을 달리해 강조한다
+        return r
     def pv_pre(w, n, ex):   # 미리 확인할 말: 앞 차시에서 익힌 뜻을 그대로 보여 준다
         df, _, eg = ex.partition(' 예: ')
         d = {'def': df.rstrip('.'), 'tip': f'{n}차시에서 익힌 말이에요.'}
@@ -120,13 +123,13 @@ def build(p, names):
     M.append({'name': '도입', 'screens': s})
     # ── 어휘 제시
     s = []
-    cols = [{'label': '오늘 새로 익힐 말', 'hl': True, 'items': [pv(w) for w in new]}]
+    cols = [{'label': '오늘 새로 익힐 말', 'hl': True, 'items': [pv(w, cheer=True) for w in new]}]
     if aux: cols.append({'label': '함께 보는 말', 'items': [pv(w) for w in aux]})
     can_tap = any('pv' in it for c in cols for it in c['items'])
     known = [{'t': w, 's': f'{n}차시'} for w, n, _ in pre] + [{'t': w, 's': '초등'} for w, _ in elem]
     if known and not (aux and perf): cols.append({'label': '이미 아는 말', 'items': known[:4]})
     if perf: cols.append({'label': '문제에서 쓰는 말', 'items': [{'t': v, 's': f'{n}차시' if n else ''} for v, n in perf]})
-    s.append({'type': 'curation', 'noArrow': True, 'q': '오늘 만날 낱말이에요.', 'cols': cols, 'note': p.get('present_note', '이미 아는 말을 가지고 새 낱말의 뜻을 알아봐요.') + (chr(10) + '궁금한 낱말을 누르면 뜻과 예를 미리 볼 수 있어요.' if can_tap else ''),
+    s.append({'type': 'curation', 'noArrow': True, 'q': '오늘 만날 낱말이에요.', 'cols': cols, 'note': p.get('present_note', '이미 아는 말을 가지고 새 낱말의 뜻을 알아봐요.') + (chr(10) + '궁금한 낱말을 누르면 뜻과 예를 미리 볼 수 있어요.' if can_tap else '') + (' ★ 색이 다른 낱말은 꼭 알아야 하는 핵심 낱말이에요.' if flow and p.get('ess') else ''),
               'memo': f'새 어휘({kind_new}), 함께 보는 말·이미 아는 말(보조·배경 개념어), 문제에서 쓰는 말(수행 도구어)을 나누어 보여 준다.' + (' 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 미리 볼 수 있다(선택 활동, 보지 않아도 뒤에서 모두 배운다).' if can_tap else '')})
     if not common:
         s.append({'type': 'vod', 'title': '수업 장면: 교과서에서 만난 낱말', 'cuts': p['scene'], 'memo': '새 낱말을 수업 장면 속에서 처음 보여 준다. 이미 아는 말과 이미 아는 개념에서 출발한다는 점을 대사로 짚는다.'})
@@ -214,6 +217,10 @@ def build(p, names):
             o = {'type': 'opener', 'name': m['name'], 'icon': icon, 'sub': subt,
                  'memo': '단계 표지(모션그래픽). 3~4초 길이. 위쪽 길에서 여섯 단계 가운데 지금 어디인지 보여 주고, 단계 이름과 이 단계에서 할 일이 차례로 나타난다. 시안에서는 자동으로 넘어가지 않고 ▶를 눌러 넘긴다.'}
             if chips: o['chips'] = new
+            if chips and flow and m['name'] == '어휘 제시':   # 어휘 제시 첫 화면: 핵심 낱말은 색을 달리하고, 낱말을 누르면 응원하는 말이 뜬다
+                o['core'] = [w for w in new if w in p.get('ess', [])]
+                if p.get('cheer'): o['cheer'] = p['cheer']
+                o['memo'] += ' 핵심 학습 어휘(★)는 다른 낱말과 색을 달리해 강조한다. 낱말을 누르면 그 낱말을 익히고 싶게 하는 짧은 말(학습 동기)이 작은 창으로 뜬다. 뜻을 설명하는 말은 넣지 않는다.'
             m['screens'].insert(0, o)
     for i, sc in enumerate(M[0]['screens']):   # 도입의 갈림길 화면에 넘어갈 곳을 붙인다
         if sc.pop('fork', None):

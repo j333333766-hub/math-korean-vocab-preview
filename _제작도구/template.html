@@ -192,6 +192,10 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .pvback{position:absolute;inset:0;background:#1119;display:flex;align-items:center;justify-content:center;z-index:30;border-radius:inherit}
 .pvbox{background:#fff;border:.16em solid #111;border-radius:1em;padding:1em 1.4em .9em;width:62%;max-height:84%;overflow:auto;display:flex;flex-direction:column;gap:.55em;box-shadow:0 .4em 0 #1115}
 .pvw{font-size:1.5em;font-weight:900;color:#e8457a;text-align:center}
+.pvcheer{background:#fff4c7;border:.1em solid #f1b90e;border-radius:.7em;padding:.5em .8em;margin:.5em 0;font-weight:800;line-height:1.5;text-align:center}.pvcheer::before{content:'💪 '}
+.cur .it.core{background:#ffe27a;border-width:.16em;color:#b3134d}.cur .it .star,.op .chips b{color:#e8457a;margin-right:.25em;font-size:.85em}
+.op .chips div.core{background:#ffe27a;color:#b3134d;transform-origin:center}.op .chips div.tap{cursor:pointer}.op .chips div.tap:hover{box-shadow:0 .18em 0 #111}
+.op .chiphint{margin-top:.6em;font-size:.72em;font-weight:700;color:#fff;opacity:.92;animation:oppop .45s 3.1s both}
 .pvrow{display:flex;gap:.7em;align-items:flex-start;font-size:.95em;font-weight:700;line-height:1.45}
 .pvrow .k{flex:none;min-width:3em;text-align:center;background:#2f6fe4;color:#fff;border-radius:99px;padding:.05em .6em;font-size:.82em;font-weight:800;margin-top:.12em}
 .pvtip{font-size:.74em;font-weight:600;color:#6b7280;text-align:center}
@@ -523,7 +527,7 @@ function withFig(pad,sc){ // 그림이 있으면 물음은 종이 맨 위에 가
 }
 const R={};
 R.vod=sc=>{
-  const st=$('#stage'); st.innerHTML=''; const PK=pkey(), saved=prog.get(PK)||{}; let ci=Math.min(sc.cuts.length-1,window.__cut!=null?window.__cut:(saved.ci||0)), timer=null; window.__cut=null;
+  const st=$('#stage'); st.innerHTML=''; const PK=pkey(), saved=prog.get(PK)||{}, explicit=window.__cut!=null; let ci=Math.min(sc.cuts.length-1,window.__cut!=null?window.__cut:(saved.ci||0)), timer=null; window.__cut=null;
   const box=el('div','vod'); st.append(box); st.classList.add('isvod'); const done=saved.done||{};   // 참여 활동(ask)에 답한 컷 → 학생에게 돌려준 말
   const draw=()=>{
     // 참여 활동이 있는 컷은 먼저 물음과 단추가 나오고(자막·일부 그림·대사는 숨김), 답하면 그림이 움직이며 자막이 나온다.
@@ -547,11 +551,16 @@ R.vod=sc=>{
     const bar=el('div','bar'); sc.cuts.forEach((_,k)=>bar.append(el('i',k<=ci?'on':'')));
     if(a&&!open&&ci<sc.cuts.length-1) nb.classList.add('pulse');
     pb.onclick=()=>{stop(); if(ci>0){ci--;draw();}}; nb.onclick=()=>{stop(); if(ci<sc.cuts.length-1){ci++;draw();}};
-    au.onclick=()=>{ if(timer){stop();draw();} else {timer=setInterval(()=>{ const k=sc.cuts[ci]; if(k.ask&&!(ci in done)) return; if(ci<sc.cuts.length-1){ci++;draw();} else {stop();draw();} },3500); draw();} };
+    au.onclick=()=>{ if(timer){stop();draw();} else {play();draw();} };
     sp.onclick=()=>speak(open?a.q:(c.narr||(bubs.map(b=>b.text).join(' ')+' '+(c.caption||''))));
     ctrl.append(pb,bar,nb,au,sp); box.append(ctrl); chrome(sc); showMemo(sc,c);
   };
-  const stop=()=>{ if(timer){clearInterval(timer); timer=null;} };
+  const stop=()=>{ if(timer){clearTimeout(timer); timer=null;} };
+  // 이어 보기: 컷마다 글의 양에 맞춰 머무는 시간을 정한다(2.6초 + 글자당 0.085초, 길어도 9초). 참여 활동이 있는 컷은 답할 때까지 기다린다.
+  const dur=()=>{ const c=sc.cuts[ci]; const n=((c.caption||'')+(c.text||'')+(c.bubbles||[]).map(b=>b.text).join('')).length; return Math.min(9000,2600+n*85); };
+  const step=()=>{ const k=sc.cuts[ci]; if(k.ask&&!(ci in done)){ timer=setTimeout(step,1000); return; } if(ci<sc.cuts.length-1){ ci++; timer=setTimeout(step,dur()); draw(); } else { stop(); draw(); } };
+  const play=()=>{ timer=setTimeout(step,dur()); };
+  if(!explicit&&ci<sc.cuts.length-1) play();   // 기본은 자동 재생(이어 보기). ■ 멈춤을 누르면 선다
   R._cleanup=stop; draw(); return true;
 };
 R.motion=sc=>{ const pad=frame(sc.q||'오늘 배울 낱말이에요.'); const m=el('div','motion'); sc.words.forEach((w,i)=>{const d=el('div','notranslate',w); m.append(d); setTimeout(()=>d.classList.add('in'),300+i*600);}); pad.append(m); };
@@ -620,7 +629,8 @@ R.opener=sc=>{ frame('',true); const st=$('#stage'), o=el('div','op'), names=LES
   o.append(el('div','ic notranslate',sc.icon||'✨')); o.append(el('div','no',`${mi+1}단계`));
   const nm=el('div','nm'); [...sc.name].forEach((ch,i)=>{ const s=el('span','',ch); s.style.animationDelay=(1+i*.09)+'s'; nm.append(s); }); o.append(nm);
   if(sc.sub) o.append(el('div','sub',rich(sc.sub)));
-  if(sc.chips){ const c=el('div','chips notranslate'); sc.chips.forEach((w,i)=>{ const d=el('div','',w); d.style.animationDelay=(2.1+i*.25)+'s'; c.append(d); }); o.append(c); }
+  if(sc.chips){ const c=el('div','chips notranslate'); sc.chips.forEach((w,i)=>{ const core=(sc.core||[]).includes(w), msg=(sc.cheer||{})[w]; const d=el('div',(core?'core ':'')+(msg?'tap':''),(core?'<b>★</b>':'')+w); d.style.animationDelay=(2.1+i*.25)+'s'; if(msg) d.onclick=()=>preview(w,{cheer:msg,tip:''}); c.append(d); }); o.append(c);
+    if(sc.cheer||(sc.core||[]).length) o.append(el('div','chiphint',((sc.core||[]).length?'★ 색이 다른 낱말은 꼭 알아야 하는 핵심 낱말이에요. ':'')+(sc.cheer?'낱말을 눌러 보세요!':''))); }
   st.append(o); };
 // 질문하기 챗봇: 질문을 보낼 때마다 '학생이 지금 보고 있는 화면'의 글을 함께 보낸다. 키는 서버(Apps Script)에만 있다.
 function pageCtx(){ const mod=LESSON.modules[mi], sc=mod.screens[si], st=$('#stage');
@@ -660,11 +670,11 @@ function initChat(){ const C=LESSON.chat; if(!C||!C.url) return; let hist=[], bu
 // 낱말 미리 보기: 어휘 제시 화면에서 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 먼저 보여 준다.
 function preview(w,pv){ const st=$('#stage'); const old=st.querySelector('.pvback'); if(old) old.remove();
   const back=el('div','pvback'), box=el('div','pvbox'); const row=(k,v,cls)=>v?'<div class="pvrow"><span class="k">'+k+'</span><span class="v'+(cls?' '+cls:'')+'">'+rich(v)+'</span></div>':'';
-  box.innerHTML='<div class="pvw notranslate" translate="no">'+rich(w)+'</div>'+row('뜻',pv.def)+row('예',pv.eg,'notranslate')+row('문장',pv.sent,'notranslate')+row('안내',pv.info)+(pv.tip===''?'':'<div class="pvtip">'+rich(pv.tip||'뒤에서 더 자세히 배워요.')+'</div>');
+  box.innerHTML='<div class="pvw notranslate" translate="no">'+rich(w)+'</div>'+(pv.cheer?'<div class="pvcheer">'+rich(pv.cheer)+'</div>':'')+row('뜻',pv.def)+row('예',pv.eg,'notranslate')+row('문장',pv.sent,'notranslate')+row('안내',pv.info)+(pv.tip===''?'':'<div class="pvtip">'+rich(pv.tip||'뒤에서 더 자세히 배워요.')+'</div>');
   const x=el('button','pvx','닫기'); x.onclick=()=>back.remove(); box.append(x); back.onclick=e=>{ if(e.target===back) back.remove(); }; back.append(box); st.append(back); }
 R.curation=sc=>{ const pad=frame(sc.q); const c=el('div','cur');
   sc.cols.forEach((col,i)=>{ if(i&&!sc.noArrow) c.append(el('div','arr','➜')); const d=el('div','col'+(col.hl?' hl':'')); d.append(el('div','lab',rich(col.label)));
-    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; const e=el('div','it',rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':'')); if(t.pv){ e.classList.add('tap'); e.title='눌러서 뜻과 예 미리 보기'; e.onclick=()=>preview(t.t,t.pv); } d.append(e); });
+    col.items.forEach(it=>{ const t=typeof it==='string'?{t:it}:it; const e=el('div','it'+(t.core?' core':''),(t.core?'<b class="star">★</b>':'')+rich(t.t)+(t.s?'<small>'+rich(t.s)+'</small>':'')); if(t.pv){ e.classList.add('tap'); e.title='눌러서 뜻과 예 미리 보기'; e.onclick=()=>preview(t.t,t.pv); } d.append(e); });
     if(col.desc){ d.classList.add('wide'); d.append(el('div','desc',rich(col.desc))); } c.append(d); });
   pad.append(c); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
 // 낱말 정리: 뜻과 예가 적힌 카드에 알맞은 낱말을 넣는다. 낱말을 누른 다음 카드를 누른다.
@@ -685,7 +695,7 @@ R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el(
       if(state[i]===false){ if(it.jump){ const a=el('button','lnk',rich(it.go||'')); a.onclick=()=>{ mi=it.jump[0]; si=it.jump[1]; window.__cut=it.jump[2]||0; render(); }; go.append(a); }   // 같은 차시 안의 화면(컷)으로 돌아가기
         else go.innerHTML=it.href?'<a href="'+it.href+'" target="_blank" rel="noopener">'+rich(it.go||'')+'</a>':rich(it.go||''); }
       if(state.every(v=>v!==null)){ const k=state.filter(v=>v).length; sum.className='fb ok'; sum.textContent=k===state.length?(sc.allOk||'모두 아는 말이에요. 바로 시작해요!'):(sc.someNo||'표시한 낱말의 차시를 먼저 봐도 좋아요.');
-        const j=k===state.length?sc.yesJump:sc.noJump; if(j) setTimeout(()=>{ mi=j[0]; si=j[1]; window.__cut=0; render(); },700); } };   // 갈림길: 모두 ‘알아요’면 yesJump, 하나라도 ‘잘 몰라요’면 noJump 화면으로 넘어간다
+        const j=k===state.length?sc.yesJump:sc.noJump; if(j) setTimeout(()=>{ mi=j[0]; si=j[1]; window.__cut=null; render(); },700); } };   // 갈림길: 모두 ‘알아요’면 yesJump, 하나라도 ‘잘 몰라요’면 noJump 화면으로 넘어간다
     y.onclick=()=>{state[i]=true;upd();}; n.onclick=()=>{state[i]=false;upd();};
     const mid=el('div','ex'); mid.append(el('div','',rich(it.ex)),go);
     row.append(el('div','tm notranslate',it.t),mid,y,n); box.append(row); });
