@@ -62,7 +62,7 @@
             "data_load_stroge_name": "",
             "data_guide": "false",
             "data_guide_points": "",
-            "question": "이 말을 알고 있나요? 잘 모르면 먼저 배우고 와요.",
+            "question": "이 말을 알고 있나요?",
             "sub_question": "",
             "selection": "",
             "img": "",
@@ -76,6 +76,33 @@
             "character": "false",
             "commentary": "",
             "custom": "checklist"
+        },
+        {
+            "data_type": "choice",
+            "data_jung_dap": "1",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "true",
+            "data_guide_points": "",
+            "question": "이런 수를 한국어로 무엇이라고 하나요?",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "소수"
+                },
+                {
+                    "txt": "합성수"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
         }
     ]
 }

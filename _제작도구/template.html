@@ -684,7 +684,8 @@ R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el(
     const upd=()=>{ y.style.background=state[i]===true?'#c9f2df':'#fff'; n.style.background=state[i]===false?'#fbd0d0':'#fff'; go.innerHTML='';
       if(state[i]===false){ if(it.jump){ const a=el('button','lnk',rich(it.go||'')); a.onclick=()=>{ mi=it.jump[0]; si=it.jump[1]; window.__cut=it.jump[2]||0; render(); }; go.append(a); }   // 같은 차시 안의 화면(컷)으로 돌아가기
         else go.innerHTML=it.href?'<a href="'+it.href+'" target="_blank" rel="noopener">'+rich(it.go||'')+'</a>':rich(it.go||''); }
-      if(state.every(v=>v!==null)){ const k=state.filter(v=>v).length; sum.className='fb ok'; sum.textContent=k===state.length?(sc.allOk||'모두 아는 말이에요. 바로 시작해요!'):(sc.someNo||'표시한 낱말의 차시를 먼저 봐도 좋아요.'); } };
+      if(state.every(v=>v!==null)){ const k=state.filter(v=>v).length; sum.className='fb ok'; sum.textContent=k===state.length?(sc.allOk||'모두 아는 말이에요. 바로 시작해요!'):(sc.someNo||'표시한 낱말의 차시를 먼저 봐도 좋아요.');
+        const j=k===state.length?sc.yesJump:sc.noJump; if(j) setTimeout(()=>{ mi=j[0]; si=j[1]; window.__cut=0; render(); },700); } };   // 갈림길: 모두 ‘알아요’면 yesJump, 하나라도 ‘잘 몰라요’면 noJump 화면으로 넘어간다
     y.onclick=()=>{state[i]=true;upd();}; n.onclick=()=>{state[i]=false;upd();};
     const mid=el('div','ex'); mid.append(el('div','',rich(it.ex)),go);
     row.append(el('div','tm notranslate',it.t),mid,y,n); box.append(row); });

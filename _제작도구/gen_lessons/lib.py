@@ -100,9 +100,15 @@ def build(p, names):
     cols.append(school)
     s.append({'type': 'curation', 'q': p['intro_q'], 'cols': cols, 'note': p['intro_note'] + (chr(10) + '낱말이나 단원 이름을 누르면 미리 볼 수 있어요.' if tap else ''),
               'memo': '도입(큐레이션). 이 콘텐츠는 학교에서 해당 단원을 배우기 전에 보는 것임을 먼저 알린다. 이미 아는 말 → 새로 익힐 말 → 학교 수업의 흐름을 한 화면에 보여 준다. 학교 수업 칸에는 그 단원에서 무엇을 하는지, 오늘 낱말이 어디에서 쓰이는지를 한두 문장으로 알린다(교과 내용을 설명하지 않고 낱말 쪽에서 말한다). 낱말과 단원 이름은 눌렀을 때만 뜻·예·안내가 작은 창으로 나온다(선택 활동).'})
-    for c in p.get('checks', []):
+    for c in ([] if flow else p.get('checks', [])):
         c.setdefault('memo', '미리 확인할 말의 뜻 확인. 새로 가르치지 않는다. 틀리면 그 낱말을 익히는 차시로 안내한다.'); s.append(c)
-    if pre:
+    if pre and flow:   # 갈림길: ‘알아요’ → 바로 어휘 제시로, ‘잘 몰라요’ → 다음 화면(뜻 확인)으로. 화면 번호(yesJump·noJump)는 아래에서 단계 표지를 넣은 뒤에 붙인다
+        s.append({'type': 'checklist', 'q': '이 말을 알고 있나요?', 'fork': True, 'allOk': '좋아요! 바로 시작해요.', 'someNo': '괜찮아요. 뜻을 한 번 확인하고 가요.',
+                  'items': [{'t': w, 'ex': ex} for w, n, ex in pre], 'note': '‘알아요’를 누르면 바로 오늘의 낱말로 가요. ‘잘 몰라요’를 누르면 뜻을 한 번 확인하고 가요.',
+                  'memo': '선수학습 낱말 확인(2026-10-11 회의: 알아요/잘 몰라요). ‘알아요’를 고르면 다음 화면(뜻 확인)을 건너뛰고 어휘 제시 단계로 바로 넘어간다. ‘잘 몰라요’를 고르면 다음 화면으로 넘어가 뜻을 한 번 확인한다. 학습 어휘로 다시 가르치지 않는다.'})
+        for c in p.get('checks', []):
+            c.setdefault('memo', '‘잘 몰라요’를 고른 학생만 보는 화면. 미리 확인할 말의 뜻과 예를 보여 주고 낱말을 고르게 한다. 새로 가르치지 않는다. 그래도 모르면 그 낱말을 익히는 차시로 안내한다.'); s.append(c)
+    elif pre:
         s.append({'type': 'checklist', 'q': '이 말을 알고 있나요? 잘 모르면 먼저 배우고 와요.',
                   'items': [{'t': w, 'ex': ex, 'go': f'→ {n}차시 ‘{names[n]}’ 먼저 보고 오기', 'href': f'../{FOLD[n]}/'} for w, n, ex in pre],
                   'memo': '미리 확인할 말(이 차시에 필요하지만 앞 차시에서 이미 익힌 말) 확인의 마무리. 학습 어휘로 다시 가르치지 않는다. ‘잘 몰라요’를 누르면 그 낱말을 익히는 차시로 가는 연결이 나온다. 초등에서 배운 말은 여기에 넣지 않고 다음 화면에서 바로 안내한다.'})
@@ -209,6 +215,10 @@ def build(p, names):
                  'memo': '단계 표지(모션그래픽). 3~4초 길이. 위쪽 길에서 여섯 단계 가운데 지금 어디인지 보여 주고, 단계 이름과 이 단계에서 할 일이 차례로 나타난다. 시안에서는 자동으로 넘어가지 않고 ▶를 눌러 넘긴다.'}
             if chips: o['chips'] = new
             m['screens'].insert(0, o)
+    for i, sc in enumerate(M[0]['screens']):   # 도입의 갈림길 화면에 넘어갈 곳을 붙인다
+        if sc.pop('fork', None):
+            sc['yesJump'] = [1, 0]
+            if i + 1 < len(M[0]['screens']): sc['noJump'] = [0, i + 1]
     chat = None
     if p.get('chat_url'):   # 질문하기 챗봇: 차시의 낱말 풀이를 기본 자료로 함께 보낸다
         gl = [f'{t}: {df} (예: {eg})' for t, eg, df in p.get('summary', [])] + [f'{w}: {ex} ({n}차시에서 익힌 말)' for w, n, ex in pre]
