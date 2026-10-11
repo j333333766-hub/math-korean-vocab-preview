@@ -18,7 +18,7 @@ button{font:inherit;cursor:pointer}
 .toc button{display:block;width:100%;text-align:left;border:0;background:#f4f6f9;margin:7px 0;padding:11px 14px;border-radius:10px;font-size:15px}
 .toc button.on{background:var(--teal);color:#fff;font-weight:700}
 .toc small{float:right;opacity:.7;font-weight:400}
-.toc .tipb{float:right;margin-left:8px;font-size:11px;font-weight:800;line-height:1;padding:4px 8px;border-radius:99px;background:#ffd84d;color:#3a2c00;border:1px solid #c79a00;cursor:pointer}.toc .tipb:hover{background:#ffc400}
+.toc .tipb{display:inline-block;vertical-align:middle;margin-left:7px;position:relative;top:-1px;font-size:11px;font-weight:800;line-height:1;padding:4px 8px;border-radius:99px;background:#ffd84d;color:#3a2c00;border:1px solid #c79a00;cursor:pointer}.toc .tipb:hover{background:#ffc400}
 #tipback{position:fixed;inset:0;background:#0b1220aa;display:none;align-items:center;justify-content:center;z-index:200;padding:16px}#tipback.on{display:flex}
 #tipbox{background:#fff;border-radius:16px;max-width:680px;width:100%;max-height:88vh;overflow:auto;padding:22px 24px 18px;box-shadow:0 20px 60px #0006;font-size:14.5px;line-height:1.65;color:#1d2433}
 #tipbox h2{margin:0 0 4px;font-size:19px;color:#1e56b8}#tipbox h2 span{display:inline-block;background:#ffd84d;color:#3a2c00;border-radius:99px;font-size:12px;padding:2px 10px;margin-right:8px;vertical-align:middle}
@@ -200,6 +200,24 @@ canvas.wr{border:.14em solid #111;border-radius:.8em;background:#fffdf2;touch-ac
 .pvbox{background:#fff;border:.16em solid #111;border-radius:1em;padding:1em 1.4em .9em;width:62%;max-height:84%;overflow:auto;display:flex;flex-direction:column;gap:.55em;box-shadow:0 .4em 0 #1115}
 .pvw{font-size:1.5em;font-weight:900;color:#e8457a;text-align:center}
 .say.col b.hl{color:#e02424}
+.finrow{display:flex;justify-content:center;width:100%}.finbtn{border:.14em solid #111;background:#e8457a;color:#fff;border-radius:99px;padding:.3em 1.5em;font-weight:900;font-size:1em;cursor:pointer;font-family:inherit;box-shadow:0 .2em 0 #111;animation:finpulse 1.6s infinite}
+@keyframes finpulse{50%{transform:scale(1.06)}}
+.fin{position:absolute;inset:0;z-index:40;border-radius:inherit;overflow:hidden;background:linear-gradient(160deg,#1e3fae,#2f6fe4 45%,#19b5a5);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35em;text-align:center;animation:finin .5s both}
+@keyframes finin{from{opacity:0;transform:scale(1.08)}to{opacity:1;transform:none}}
+.fin .cf{position:absolute;top:-8%;width:.55em;height:.9em;border-radius:.12em;opacity:.95;animation:finfall linear infinite}
+@keyframes finfall{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(125vh) rotate(720deg)}}
+.fin .ring{position:absolute;left:50%;top:30%;width:2em;height:2em;margin:-1em;border-radius:50%;border:.25em solid #ffe36b;opacity:0;animation:finring 1.4s ease-out .2s 3}
+@keyframes finring{0%{transform:scale(.2);opacity:.9}100%{transform:scale(9);opacity:0}}
+.fin .cup{font-size:3.6em;line-height:1;animation:fincup .9s cubic-bezier(.3,1.8,.5,1) both,finbob 2.2s ease-in-out 1s infinite}
+@keyframes fincup{from{transform:scale(0) rotate(-40deg)}to{transform:none}}@keyframes finbob{50%{transform:translateY(-.12em)}}
+.fin .ft{font-size:1.9em;font-weight:900;letter-spacing:.02em;text-shadow:0 .08em 0 #0b2a7a}.fin .ft span{display:inline-block;animation:oppop .45s both cubic-bezier(.3,1.7,.5,1)}
+.fin .fw{display:flex;gap:.5em;flex-wrap:wrap;justify-content:center}.fin .fw div{background:#fff;color:#e8457a;font-weight:900;font-size:1.05em;border-radius:.6em;padding:.12em .75em;border:.12em solid #111;animation:oppop .45s both cubic-bezier(.3,1.7,.5,1)}.fin .fw div::before{content:'✓ ';color:#0a8f5b}
+.fin .fm{max-width:76%;font-weight:800;font-size:.98em;line-height:1.6}.fin .fm p{margin:.15em 0;opacity:0;animation:finline .6s both}.fin .fm p b{color:#ffe36b}
+@keyframes finline{from{opacity:0;transform:translateY(.6em)}to{opacity:1;transform:none}}
+.fin .fa{position:absolute;bottom:4%;width:4.2em;animation:finjump 1s ease-in-out infinite}.fin .fa svg{width:100%;height:auto;display:block}.fin .fa.a0{left:6%}.fin .fa.a1{right:6%;animation-delay:.5s}
+@keyframes finjump{50%{transform:translateY(-.5em)}}
+.fin .fb2{display:flex;gap:.6em;margin-top:.3em;opacity:0;animation:finline .6s both}.fin .fb2 button{border:.12em solid #111;border-radius:99px;padding:.25em 1.2em;font-weight:800;font-size:.85em;cursor:pointer;font-family:inherit;background:#ffd84d;color:#111}.fin .fb2 button.sub{background:#fff}
+.stage.port .fin .ft{font-size:1.5em}.stage.port .fin .fm{max-width:90%;font-size:.92em}.stage.port .fin .fa{width:3em;bottom:2%}
 .tk{flex:1;min-height:0;width:100%;display:flex;gap:.7em;align-items:stretch}
 .tkboard{flex:1;min-width:0;border:.12em dashed #8fa3c8;border-radius:.8em;background:#f4f8ff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.3em;position:relative;overflow:hidden}
 .tkboard .lb{position:absolute;left:.6em;top:.35em;font-size:.62em;font-weight:800;color:#5b6b8c}.tkboard .bf{width:100%;display:flex;align-items:center;justify-content:center;animation:tkpop .35s both}
@@ -697,6 +715,18 @@ function showTip(name,i){ const T=LESSON.tips.stages[name]; let back=$('#tipback
   const li=a=>'<ul>'+a.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul>';
   back.innerHTML='<div id="tipbox"><h2><span>TIP</span>'+(i+1)+'단계 · '+name+' — 이렇게 구성해요</h2><div class="role">'+rich(T.role)+'</div><h3 class="do">✔ 이렇게 구성해요</h3>'+li(T.do)+'<h3 class="dont">✘ 하지 않아요</h3>'+li(T.dont)+'<h3 class="eg">예: 이 차시(소인수분해)에서는</h3><div class="eg">'+rich(T.eg)+'</div><div class="src">근거 — '+rich(T.src)+'</div><div class="common">'+rich(LESSON.tips.common)+'</div><button class="x" type="button">닫기</button></div>';
   $('.x',back).onclick=()=>back.classList.remove('on'); back.classList.add('on'); }
+// 학습 끝내기: 마무리 마지막 화면의 단추를 누르면 축하 모션그래픽(색종이·트로피·오늘의 낱말)과 함께, 학교에서 이 단원을 배울 때 힘이 되는 말을 보여 준다.
+function finish(F){ const st=$('#stage'); const old=st.querySelector('.fin'); if(old) old.remove(); const o=el('div','fin');
+  const col=['#ffe36b','#ff7aa8','#7ee0c3','#ffffff','#ffb14d','#9db8ff'];
+  for(let i=0;i<46;i++){ const c=el('i','cf'); c.style.cssText='left:'+(Math.random()*100)+'%;background:'+col[i%col.length]+';animation-duration:'+(2.6+Math.random()*2.6)+'s;animation-delay:'+(-Math.random()*4)+'s;transform:rotate('+(Math.random()*360)+'deg)'; o.append(c); }
+  o.append(el('div','ring'),el('div','cup notranslate',F.icon||'🏆'));
+  const t=el('div','ft'); [...(F.title||'학습 끝!')].forEach((ch,i)=>{ const s=el('span','',ch===' '?'&nbsp;':ch); s.style.animationDelay=(.5+i*.06)+'s'; t.append(s); }); o.append(t);
+  if(F.words){ const w=el('div','fw notranslate'); F.words.forEach((x,i)=>{ const d=el('div','',x); d.style.animationDelay=(1.3+i*.25)+'s'; w.append(d); }); o.append(w); }
+  const m=el('div','fm'); (F.msg||[]).forEach((x,i)=>{ const p=el('p','',rich(x)); p.style.animationDelay=(2.1+i*.7)+'s'; m.append(p); }); o.append(m);
+  [0,1].forEach(i=>o.append(el('div','fa a'+i+' notranslate',avatar(i))));
+  const r=el('div','fb2'); r.style.animationDelay=(2.3+(F.msg||[]).length*.7)+'s'; const again=el('button','sub','처음부터 다시 보기'), x=el('button','','닫기');
+  again.onclick=()=>{ mi=0; si=0; window.__cut=null; render(); }; x.onclick=()=>o.remove(); r.append(again,x); o.append(r);
+  st.append(o); try{ speak((F.title||'')+'. '+(F.msg||[]).map(plain).join(' ')); }catch(e){} }
 // 낱말 미리 보기: 어휘 제시 화면에서 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 먼저 보여 준다.
 function preview(w,pv){ const st=$('#stage'); const old=st.querySelector('.pvback'); if(old) old.remove();
   const back=el('div','pvback'), box=el('div','pvbox'); const row=(k,v,cls)=>v?'<div class="pvrow"><span class="k">'+k+'</span><span class="v'+(cls?' '+cls:'')+'">'+rich(v)+'</span></div>':'';
@@ -756,7 +786,8 @@ R.checklist=sc=>{ const pad=frame(sc.q); const box=el('div','ck'); const sum=el(
     y.onclick=()=>{state[i]=true;upd();}; n.onclick=()=>{state[i]=false;upd();};
     const mid=el('div','ex'); mid.append(el('div','',rich(it.ex)),go);
     row.append(el('div','tm notranslate',it.t),mid,y,n); box.append(row); });
-  pad.append(box,sum); if(sc.note) pad.append(el('div','curnote',rich(sc.note))); };
+  pad.append(box,sum); if(sc.note) pad.append(el('div','curnote',rich(sc.note)));
+  if(sc.finish){ const r=el('div','finrow'), b=el('button','finbtn',rich(sc.finish.label||'학습 끝내기')); b.onclick=()=>finish(sc.finish); r.append(b); pad.append(r); } };
 R.lang_match=sc=>{ const pad=frame(sc.q); const words=sc.words||[sc.word];
   const table=()=>{ let h='<table class="lmt notranslate"><tr><th class="lg"></th>'+words.map(w=>'<th>'+w+'</th>').join('')+'</tr>';
     sc.items.forEach(it=>{ const ts=it.terms||[it.term]; h+='<tr><td class="lg">'+it.lang+'</td>'+ts.map(t=>'<td>'+t+'</td>').join('')+'</tr>'; }); return el('div','lmwrap',h+'</table>'); };
@@ -806,7 +837,7 @@ function go(d){ const mod=LESSON.modules[mi]; if(d>0){ if(si<mod.screens.length-
 function init(){
   $('#lessonCode').textContent=LESSON.code||''; $('#lessonTitle').textContent=LESSON.title; $('#topTitle').textContent=LESSON.title; $('#lessonMeta').textContent=LESSON.grade+' · '+LESSON.standard;
   LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();};
-    const T=LESSON.tips&&LESSON.tips.stages[m.name]; if(T){ const t=el('span','tipb notranslate','TIP'); t.title=m.name+' 단계를 어떻게 구성하는지 보기'; t.onclick=e=>{ e.stopPropagation(); showTip(m.name,i); }; b.append(t); }
+    const T=LESSON.tips&&LESSON.tips.stages[m.name]; if(T){ const t=el('span','tipb notranslate','TIP'); t.title=m.name+' 단계를 어떻게 구성하는지 보기'; t.onclick=e=>{ e.stopPropagation(); showTip(m.name,i); }; b.querySelector('span').after(t); }
     $('#toc').append(b); });
   $('#prevMod').onclick=()=>{ if(mi>0){mi--;si=0;render();} }; $('#nextMod').onclick=()=>{ if(mi<LESSON.modules.length-1){mi++;si=0;render();} };
   initChat(); progInit();
