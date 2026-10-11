@@ -53,6 +53,8 @@ def to_origin(sc):
     elif t == 'input': base['data_jung_dap'] = sc['answer'][0]; base['selection'] = 'input_txt'; base['sub_question'] = plain(sc.get('sentence', ''))
     elif t == 'step_recorde': base['data_jung_dap'] = plain(sc['sentence']); base['custom'] = 'STT'
     elif t == 'ocr': base['data_jung_dap'] = sc['word']; base['object'] = [{"txt": "<type=blank>"}]
+    elif t == 'talk': base['data_type'] = 'click'; base['custom'] = 'talk'; base['character'] = 'true'; base['object'] = [{"txt": ('[용례] ' if l.get('use') else '') + ('인물%d: ' % (l['who'] + 1)) + plain(l['text'])} for l in sc['lines']]
+    elif t == 'spot': base['data_type'] = 'choice'; base['custom'] = 'spot'; base['data_jung_dap'] = ','.join(str(i + 1) for i, it in enumerate(sc['items']) if not it['ok']); base['object'] = [{"txt": plain(it['text']) + ('' if it['ok'] else ' → ' + plain(it['fix']))} for it in sc['items']]
     elif t == 'curation': base['data_type'] = 'click'; base['custom'] = 'curation'; base['object'] = [{"txt": plain(col['label']) + ': ' + ', '.join(plain(i if isinstance(i, str) else i['t']) for i in col['items'])} for col in sc['cols']]
     elif t == 'recall': base['data_type'] = 'drag_drop'; base['custom'] = 'recall'; base['data_jung_dap'] = ', '.join(i['t'] for i in sc['items']); base['object'] = [{"txt": i['t'] + ' — ' + plain(i['eg']) + ' / ' + plain(i['def'])} for i in sc['items']]
     elif t == 'checklist': base['data_type'] = 'click'; base['custom'] = 'checklist'; base['object'] = [{"txt": i['t'] + ' — ' + plain(i['ex'])} for i in sc['items']]
