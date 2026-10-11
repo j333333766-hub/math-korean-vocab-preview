@@ -18,6 +18,13 @@ button{font:inherit;cursor:pointer}
 .toc button{display:block;width:100%;text-align:left;border:0;background:#f4f6f9;margin:7px 0;padding:11px 14px;border-radius:10px;font-size:15px}
 .toc button.on{background:var(--teal);color:#fff;font-weight:700}
 .toc small{float:right;opacity:.7;font-weight:400}
+.toc .tipb{float:right;margin-left:8px;font-size:11px;font-weight:800;line-height:1;padding:4px 8px;border-radius:99px;background:#ffd84d;color:#3a2c00;border:1px solid #c79a00;cursor:pointer}.toc .tipb:hover{background:#ffc400}
+#tipback{position:fixed;inset:0;background:#0b1220aa;display:none;align-items:center;justify-content:center;z-index:200;padding:16px}#tipback.on{display:flex}
+#tipbox{background:#fff;border-radius:16px;max-width:680px;width:100%;max-height:88vh;overflow:auto;padding:22px 24px 18px;box-shadow:0 20px 60px #0006;font-size:14.5px;line-height:1.65;color:#1d2433}
+#tipbox h2{margin:0 0 4px;font-size:19px;color:#1e56b8}#tipbox h2 span{display:inline-block;background:#ffd84d;color:#3a2c00;border-radius:99px;font-size:12px;padding:2px 10px;margin-right:8px;vertical-align:middle}
+#tipbox .role{font-weight:700;margin:6px 0 12px;padding:10px 12px;background:#f1f6ff;border-radius:10px}#tipbox h3{font-size:14px;margin:14px 0 4px}#tipbox h3.do{color:#0a8f5b}#tipbox h3.dont{color:#d23a3a}#tipbox h3.eg{color:#8a5a00}
+#tipbox ul{margin:0;padding-left:20px}#tipbox li{margin:3px 0}#tipbox .eg{background:#fff8e1;border-radius:10px;padding:8px 12px}#tipbox .src,#tipbox .common{font-size:12.5px;color:#5b6b8c;margin-top:12px}#tipbox .common{border-top:1px dashed #cfd6e4;padding-top:10px}
+#tipbox .x{display:block;margin:14px auto 0;border:0;background:#1e56b8;color:#fff;font-weight:800;border-radius:99px;padding:7px 26px;font-size:14px;cursor:pointer;font-family:inherit}
 .note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:14px;border-top:1px dashed #d5dae3;padding-top:10px}
 .main{display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
 .top{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#e9ecf1}
@@ -684,6 +691,11 @@ function initChat(){ const C=LESSON.chat; if(!C||!C.url) return; let hist=[], bu
   $('.new',box).onclick=()=>{ if(busy) return; hist=[]; save(); draw(); };
   try{ if(sessionStorage.getItem(KEY+':open')) open(true); }catch(e){}
   window._chat={ask,where}; }
+// 단계별 구성 가이드(TIP): 왼쪽 단계 목록의 TIP 단추를 누르면, 그 단계를 어떻게 구성(설계)하는지 안내 창이 뜬다. 집필진용이며 학생 화면에는 넣지 않는다.
+function showTip(name,i){ const T=LESSON.tips.stages[name]; let back=$('#tipback'); if(!back){ back=el('div','notranslate'); back.id='tipback'; back.setAttribute('translate','no'); back.onclick=e=>{ if(e.target===back) back.classList.remove('on'); }; document.body.append(back); }
+  const li=a=>'<ul>'+a.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul>';
+  back.innerHTML='<div id="tipbox"><h2><span>TIP</span>'+(i+1)+'단계 · '+name+' — 이렇게 구성해요</h2><div class="role">'+rich(T.role)+'</div><h3 class="do">✔ 이렇게 구성해요</h3>'+li(T.do)+'<h3 class="dont">✘ 하지 않아요</h3>'+li(T.dont)+'<h3 class="eg">예: 이 차시(소인수분해)에서는</h3><div class="eg">'+rich(T.eg)+'</div><div class="src">근거 — '+rich(T.src)+'</div><div class="common">'+rich(LESSON.tips.common)+'</div><button class="x" type="button">닫기</button></div>';
+  $('.x',back).onclick=()=>back.classList.remove('on'); back.classList.add('on'); }
 // 낱말 미리 보기: 어휘 제시 화면에서 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 먼저 보여 준다.
 function preview(w,pv){ const st=$('#stage'); const old=st.querySelector('.pvback'); if(old) old.remove();
   const back=el('div','pvback'), box=el('div','pvbox'); const row=(k,v,cls)=>v?'<div class="pvrow"><span class="k">'+k+'</span><span class="v'+(cls?' '+cls:'')+'">'+rich(v)+'</span></div>':'';
@@ -792,7 +804,9 @@ function render(){
 function go(d){ const mod=LESSON.modules[mi]; if(d>0){ if(si<mod.screens.length-1) si++; else if(mi<LESSON.modules.length-1){mi++;si=0;} } else { if(si>0) si--; else if(mi>0){mi--;si=LESSON.modules[mi].screens.length-1;} } render(); }
 function init(){
   $('#lessonCode').textContent=LESSON.code||''; $('#lessonTitle').textContent=LESSON.title; $('#topTitle').textContent=LESSON.title; $('#lessonMeta').textContent=LESSON.grade+' · '+LESSON.standard;
-  LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();}; $('#toc').append(b); });
+  LESSON.modules.forEach((m,i)=>{ const b=el('button','',`<span>${m.name}</span><small class="notranslate">${m.screens.length}</small>`); b.onclick=()=>{mi=i;si=0;render();};
+    const T=LESSON.tips&&LESSON.tips.stages[m.name]; if(T){ const t=el('span','tipb notranslate','TIP'); t.title=m.name+' 단계를 어떻게 구성하는지 보기'; t.onclick=e=>{ e.stopPropagation(); showTip(m.name,i); }; b.append(t); }
+    $('#toc').append(b); });
   $('#prevMod').onclick=()=>{ if(mi>0){mi--;si=0;render();} }; $('#nextMod').onclick=()=>{ if(mi<LESSON.modules.length-1){mi++;si=0;render();} };
   initChat(); progInit();
   { const rb=$('#resetBtn'); let arm=0; rb.onclick=()=>{ if(!arm){ arm=1; rb.textContent='한 번 더 누르면 지워요'; setTimeout(()=>{ arm=0; rb.innerHTML='↺<span> 기록 지우기</span>'; },3000); return; } arm=0; prog.clear(); rb.innerHTML='↺<span> 기록 지우기</span>'; render(); }; }
