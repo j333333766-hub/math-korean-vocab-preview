@@ -59,12 +59,15 @@ def card(front, back_text=None, cap=None, fig=None):
     return (front, back)
 
 OPENERS = {'도입': ('🧭', '오늘 무엇을 익힐지 살펴봐요', False), '어휘 제시': ('👀', '오늘의 낱말을 만나요', True), '정의': ('💡', '아는 것에 한국어 이름을 붙여요', False),
-           '용례': ('📖', '교과서 문장에서 낱말을 만나요', False), '연습': ('✏️', '낱말을 고르고 써 봐요', False), '마무리': ('🎒', '오늘 익힌 낱말을 정리해요', True)}
+           '용례': ('📖', '문장 속에서 낱말을 만나요', False), '연습': ('✏️', '낱말을 고르고, 쓰고, 말해 봐요', False), '마무리': ('🎒', '오늘 익힌 낱말을 점검해요', True)}
 
 def build(p, names):
     no = p['no']; common = no <= 4
     new, aux, pre, elem, perf = p['new'], p.get('aux', []), p.get('pre', []), p.get('elem', []), p.get('perf', [])
     kind_new = '수행 도구어' if common else '핵심 개념어'
+    # flow1011: 2026-10-11 회의에서 정한 단계별 역할. 정의 = 영상 + 리마인드(뜻 카드), 용례 = 충남대 자료의 용례 소개,
+    # 쓰고 말하는 활동은 모두 연습 단계, 마무리 = ‘점검해 봐요’ 한 화면. 문제에서 쓰는 말(수행 도구어)은 개념어 차시에서 다루지 않는다.
+    flow = p.get('flow1011')
     M = []
     # 낱말 미리 보기: 낱말을 누르면 뜻·예·교과서 문장이 작은 창으로 나온다. 정리 화면(summary)과 용례(usage)에서 가져오고, p['preview'] 로 고치거나 더한다.
     def pv(w):
@@ -121,7 +124,10 @@ def build(p, names):
               'memo': f'새 어휘({kind_new}), 함께 보는 말·이미 아는 말(보조·배경 개념어), 문제에서 쓰는 말(수행 도구어)을 나누어 보여 준다.' + (' 낱말을 누르면 뜻·예·교과서 문장을 작은 창으로 미리 볼 수 있다(선택 활동, 보지 않아도 뒤에서 모두 배운다).' if can_tap else '')})
     if not common:
         s.append({'type': 'vod', 'title': '수업 장면: 교과서에서 만난 낱말', 'cuts': p['scene'], 'memo': '새 낱말을 수업 장면 속에서 처음 보여 준다. 이미 아는 말과 이미 아는 개념에서 출발한다는 점을 대사로 짚는다.'})
-    if p.get('type_listen'):   # 듣고 쓰기: 따라 읽기 대신 ▶로 듣고 낱말을 쳐 넣는다(낱말은 보여 준다 — 처음 만나는 단계라 보고 쓰기)
+    if flow:   # 어휘 제시에서는 듣기만 한다(따라 말하기·쓰기는 연습 단계)
+        s.append({'type': 'listen', 'q': '낱말을 눌러 소리를 들어 보세요.', 'tip': '🔊를 누르면 낱말을 읽어 줘요. 쓰고 말하는 것은 ‘연습’에서 해요.', 'items': [{'text': t, 'say': sy} if sy else {'text': t} for t, sy in p['listen']],
+                  'memo': '어휘 제시 단계에서는 낱말의 모양과 소리만 만난다. 따라 읽기·쓰기는 넣지 않는다(쓰고 말하는 활동은 연습 단계에서만 — 2026-10-11 회의).'})
+    elif p.get('type_listen'):   # 듣고 쓰기: 따라 읽기 대신 ▶로 듣고 낱말을 쳐 넣는다(낱말은 보여 준다 — 처음 만나는 단계라 보고 쓰기)
         s.append({'type': 'listen', 'mode': 'type', 'q': '낱말을 듣고, 보면서 따라 써 보세요.', 'items': [dict({'text': t, 'answer': t}, **({'say': sy} if sy else {})) for t, sy in p['listen']],
                   'memo': '듣고 쓰기(낱말). ▶를 누르면 발음이 나오고, 학생은 낱말을 보면서 자판으로 쳐 넣는다. 맞게 쓰면 ✓가 생긴다. 틀렸다는 표시는 하지 않는다. 원본 유형에 맞는 것이 없으면 input(직접 써넣기) 유형에 듣기 단추를 붙여 구현한다.'})
     else:
@@ -149,7 +155,11 @@ def build(p, names):
           'memo': '용례 단계. 학교 수업에서 실제로 만나는 교과서 문장을 보여 주고, 함께 쓰이는 말(공기관계어)과 수행 도구어를 자막으로 짚는다.' + (' 문장마다 먼저 학생이 O·X로 낱말을 알맞게 썼는지 고르고, 그다음에 자막이 나온다(읽고 넘기지 않게).' if p.get('usage_ask') else '')},
          say_screen,
          dict({'type': 'drag_drop', 'q': '보기에서 알맞은 낱말을 골라 빈칸에 넣어 보세요.'}, **p['drag'])]
-    i = p['instr']; i['q'] = '문제에서 무엇을 하라고 하나요?'; i['memo'] = '지시문을 이해하는지 확인하는 문항. 답을 구하게 하지 않는다.'; s.append(i)
+    if flow:   # 용례 = 사례를 보여 주는 것. 충남대 학습어휘 자료의 용례를 그대로 소개하고, 활동은 넣지 않는다
+        s = [{'type': 'vod', 'title': '용례: 문장 속의 낱말', 'cuts': [cut(c, text=t) for t, c in p['usage']],
+              'memo': '용례 단계. 충남대 학습어휘 자료(학습어휘추출 엑셀)의 용례를 그대로 소개한다. 낱말마다 용례 한 문장. 자막으로는 함께 쓰이는 말(공기관계어)만 짚는다. 수학 문제 풀이는 넣지 않고, 학생이 쓰거나 말하는 활동도 넣지 않는다(연습 단계에서 한다).'}]
+    else:
+        i = p['instr']; i['q'] = '문제에서 무엇을 하라고 하나요?'; i['memo'] = '지시문을 이해하는지 확인하는 문항. 답을 구하게 하지 않는다.'; s.append(i)
     M.append({'name': '용례', 'screens': s})
     # ── 연습
     s = list(p['practice'])
@@ -157,11 +167,12 @@ def build(p, names):
     sp = {'type': 'step_recorde', 'q': '다음을 듣고 따라 말해 보세요.', 'sentence': p['speak'][0], 'memo': '원본의 step_recorde(듣고 따라 말하기, 녹음) 기능을 연결한다.'}
     if p['speak'][1]: sp['say'] = p['speak'][1]
     if len(p['speak']) > 2: sp['fig'] = p['speak'][2]
-    if p.get('write_final'):   # 따라 말하기 대신 듣고 쓰기(받아쓰기): [(문장, 읽는 법, 빈칸 낱말)]
+    if flow: sp = None   # 연습 화면은 원고(p['practice'])에 차례대로 모두 적는다: 낱말 고르기 → 듣고 쓰기 → 손글씨 → 말하기 → 받아쓰기
+    elif p.get('write_final'):   # 따라 말하기 대신 듣고 쓰기(받아쓰기): [(문장, 읽는 법, 빈칸 낱말)]
         sp = {'type': 'listen', 'mode': 'type', 'q': '문장을 듣고, 빈칸에 들어갈 낱말을 써 보세요.',
               'items': [{'text': t.replace(w, '{0}', 1), 'answer': w, 'say': sy or t} for t, sy, w in p['write_final']],
               'memo': '연습의 마무리. 듣고 쓰기(받아쓰기). ▶를 누르면 문장 전체가 나오고, 학생은 빈칸에 들어갈 오늘의 낱말을 낱말을 보지 않고 쳐 넣는다. 오늘의 낱말을 모두 한 번씩 쓴다. 맞게 쓰면 ✓가 생긴다.'}
-    s.append(sp)
+    if sp: s.append(sp)
     M.append({'name': '연습', 'screens': s})
     # ── 마무리
     s = [{'type': 'curation', 'noArrow': True, 'q': '오늘 새로 익힌 낱말을 정리해요.', 'cols': [{'label': lb, 'hl': True, 'items': [{'t': t, 's': sub}]} for lb, t, sub in p['summary']], 'memo': '새 어휘를 한 화면에서 다시 본다.'},
@@ -177,6 +188,11 @@ def build(p, names):
                      'memo': '스스로 점검. ‘다시 볼래요’를 누르면 정의 단계의 낱말 이야기 가운데 그 낱말이 시작되는 컷으로 돌아가는 연결이 나온다. 점수를 매기지 않는다.'})
         s[2]['cols'][0]['items'] = [pv(w) for w in new]
         s[2]['note'] = p['outro_note'] + chr(10) + '낱말을 누르면 뜻과 예를 다시 볼 수 있어요.'
+    if flow:   # 마무리 = ‘점검해 봐요’ 한 화면. 문제 풀이 없이 오늘 익힌 낱말을 뜻·예와 함께 다시 보고 스스로 점검한다
+        s = [{'type': 'checklist', 'q': '점검해 봐요. 오늘 익힌 낱말을 알고 있나요?', 'yes': '알아요', 'no': '다시 볼래요', 'allOk': '모두 익혔어요! 이제 학교 수업에서 만나요.', 'someNo': '‘낱말 이야기’를 한 번 더 보고 와도 좋아요.',
+              'items': [{'t': t, 'ex': df + chr(10) + '예: ' + eg, 'go': '→ ‘' + t + '’ 낱말 이야기 다시 보기', 'jump': [2, 1 if p.get('openers') else 0, p.get('story_cut', {}).get(t, 0)]} for t, eg, df in p['summary']],
+              'note': p['outro_note'],
+              'memo': '마무리는 이 한 화면이다(2026-10-11 회의: ‘점검해 봐요’ 한 페이지 또는 짧은 정리 영상 하나). 오늘 익힌 낱말을 뜻·예와 함께 요약해 보여 주고 스스로 점검한다. 문제를 풀게 하지 않고 점수도 매기지 않는다. ‘다시 볼래요’를 누르면 정의 단계의 낱말 이야기에서 그 낱말이 시작되는 컷으로 돌아간다.'}]
     M.append({'name': '마무리', 'screens': s})
     vocab = {f'새 어휘 = {kind_new} (이 차시에서 익힘)': [w + (' (충남대 핵심어)' if w in p.get('ess', []) else '') for w in new]}
     if aux: vocab['함께 처음 보는 말' + (' (수행 도구어)' if common else ' (보조·배경 개념어)')] = aux

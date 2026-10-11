@@ -22,7 +22,7 @@
         },
         {
             "data_type": "choice",
-            "data_jung_dap": "1",
+            "data_jung_dap": "2",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -30,19 +30,19 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "그림처럼 나타내는 것을 무엇이라고 하나요?",
+            "question": "이렇게 나타내는 것을 무엇이라고 할까요?",
             "sub_question": "",
             "selection": "",
             "img": "",
             "object": [
                 {
+                    "txt": "소인수"
+                },
+                {
                     "txt": "소인수분해"
                 },
                 {
                     "txt": "거듭제곱"
-                },
-                {
-                    "txt": "약수"
                 }
             ],
             "basket_name": "",
@@ -60,7 +60,7 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "색이 들어간 수 2와 3을 12의 무엇이라고 하나요?",
+            "question": "색이 들어간 수 2와 3을 12의 무엇이라고 할까요?",
             "sub_question": "",
             "selection": "",
             "img": "",
@@ -69,10 +69,10 @@
                     "txt": "소인수"
                 },
                 {
-                    "txt": "거듭제곱"
+                    "txt": "소인수분해"
                 },
                 {
-                    "txt": "합성수"
+                    "txt": "거듭제곱"
                 }
             ],
             "basket_name": "",
@@ -82,7 +82,7 @@
         },
         {
             "data_type": "choice",
-            "data_jung_dap": "2",
+            "data_jung_dap": "3",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
@@ -90,7 +90,7 @@
             "data_load_stroge_name": "",
             "data_guide": "true",
             "data_guide_points": "",
-            "question": "2³처럼 나타낸 것을 무엇이라고 하나요?",
+            "question": "2³처럼 나타낸 것을 무엇이라고 할까요?",
             "sub_question": "",
             "selection": "",
             "img": "",
@@ -99,10 +99,10 @@
                     "txt": "소인수"
                 },
                 {
-                    "txt": "거듭제곱"
+                    "txt": "소인수분해"
                 },
                 {
-                    "txt": "소인수분해"
+                    "txt": "거듭제곱"
                 }
             ],
             "basket_name": "",
@@ -111,36 +111,16 @@
             "commentary": ""
         },
         {
-            "data_type": "OX",
-            "data_jung_dap": "2",
+            "data_type": "listen",
+            "data_jung_dap": "소인수",
             "data_audsrc": "",
             "data_is_auto_play": "true",
             "data_trynum": "",
             "data_point": "",
             "data_load_stroge_name": "",
-            "data_guide": "false",
+            "data_guide": "true",
             "data_guide_points": "",
-            "question": "맞으면 O, 틀리면 X를 선택해 보세요.",
-            "sub_question": "2와 3을 12의 ‘거듭제곱’이라고 한다.",
-            "selection": "",
-            "img": "",
-            "object": [],
-            "basket_name": "",
-            "drop": "",
-            "character": "false",
-            "commentary": ""
-        },
-        {
-            "data_type": "linetoline",
-            "data_jung_dap": "1@c,2@a,3@b",
-            "data_audsrc": "",
-            "data_is_auto_play": "true",
-            "data_trynum": "",
-            "data_point": "",
-            "data_load_stroge_name": "",
-            "data_guide": "false",
-            "data_guide_points": "",
-            "question": "낱말과 뜻을 알맞게 연결해 보세요.",
+            "question": "낱말을 듣고, 보면서 따라 써 보세요.",
             "sub_question": "",
             "selection": "",
             "img": "",
@@ -153,22 +133,148 @@
                 },
                 {
                     "txt": "거듭제곱"
-                },
-                {
-                    "txt": "자연수를 소인수들만의 곱으로 나타내는 것"
-                },
-                {
-                    "txt": "같은 수를 여러 번 곱한 것"
-                },
-                {
-                    "txt": "소수인 인수"
                 }
             ],
             "basket_name": "",
             "drop": "",
             "character": "false",
             "commentary": "",
-            "custom": "horizontal"
+            "double": "true"
+        },
+        {
+            "data_type": "ocr",
+            "data_jung_dap": "소인수",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 손글씨로 따라 써 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "<type=blank>"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "ocr",
+            "data_jung_dap": "소인수분해",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 손글씨로 따라 써 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "<type=blank>"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "ocr",
+            "data_jung_dap": "거듭제곱",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "낱말을 손글씨로 따라 써 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [
+                {
+                    "txt": "<type=blank>"
+                }
+            ],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": ""
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "2와 3은 6의 소인수입니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "문장을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "6을 소인수분해하면 6 = 2 × 3입니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "문장을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
+        },
+        {
+            "data_type": "step_recorde",
+            "data_jung_dap": "2 × 2 × 2는 2의 거듭제곱입니다.",
+            "data_audsrc": "",
+            "data_is_auto_play": "true",
+            "data_trynum": "",
+            "data_point": "",
+            "data_load_stroge_name": "",
+            "data_guide": "false",
+            "data_guide_points": "",
+            "question": "문장을 듣고 따라 말해 보세요.",
+            "sub_question": "",
+            "selection": "",
+            "img": "",
+            "object": [],
+            "basket_name": "",
+            "drop": "",
+            "character": "false",
+            "commentary": "",
+            "custom": "STT"
         },
         {
             "data_type": "listen",

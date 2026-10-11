@@ -53,36 +53,6 @@
             "custom": "curation"
         },
         {
-            "data_type": "choice",
-            "data_jung_dap": "1",
-            "data_audsrc": "",
-            "data_is_auto_play": "true",
-            "data_trynum": "",
-            "data_point": "",
-            "data_load_stroge_name": "",
-            "data_guide": "true",
-            "data_guide_points": "",
-            "question": "확인: 이런 수를 한국어로 무엇이라고 하나요?",
-            "sub_question": "",
-            "selection": "",
-            "img": "",
-            "object": [
-                {
-                    "txt": "소수"
-                },
-                {
-                    "txt": "합성수"
-                },
-                {
-                    "txt": "약수"
-                }
-            ],
-            "basket_name": "",
-            "drop": "",
-            "character": "false",
-            "commentary": ""
-        },
-        {
             "data_type": "click",
             "data_jung_dap": "",
             "data_audsrc": "",
